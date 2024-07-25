@@ -1,0 +1,777 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel= "stylesheet" href= "https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css" >
+    <link rel="stylesheet" href="estilo prev.css">
+    <title>panel v2</title>
+</head>
+<body>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+:root{
+    --main-color: #DD2F6E;
+    --color-dark: #1D2231;
+    --text-grey:  #8390A2;
+}
+
+*{
+    padding: 0;
+    margin : 0;
+    box-sizing: border-box;
+    list-style-type: none;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+.sidebar{
+    width: 230px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: var(--main-color);
+    z-index: 100;
+    transition: width    300ms;
+}
+
+.sidebar-brand{
+   height: 90px;
+   padding: 1rem 0rem 1rem 2rem;
+   color: #fff;
+}
+
+.sidebar-brand span {
+   display: inline-block;
+   padding-right: 1rem;
+}
+
+.sidebar-menu {
+    margin-top: 1rem;
+}
+
+.sidebar-menu li {
+    width: 100%;
+    margin-bottom: 1.3rem;
+    padding-left: 2rem;
+}
+.sidebar-menu a {
+    padding-left: 1rem;
+    display: block;
+    color: #fff;
+    font-size: 1.1rem;
+}
+.sidebar-menu a:hover{
+    background: #fff;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    color: var(--main-color);
+    border-radius: 30px 0px 0px 30px;
+
+}
+.sidebar-menu a span:first-child {
+    font-size: 1.5rem;
+    padding-right: 1rem;
+}
+
+.main-content {
+    transition: margin-left 300ms;
+    margin-left: 235px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem;
+    box-shadow: 4px 2px 5px rgba(0,0,0,0.1);
+    position: absolute;
+    left: 234px;
+    width: calc(100% - 230px);
+    top: 0;
+    z-index: 100;
+    transition: left 300ms;
+}
+
+header h2 {
+color: #222:
+}
+
+header label span {
+font-size: 1.7rem;
+padding-right: 1rem;
+}
+
+.search-wrapper{
+border: 1px solid #f0f0f0;
+border-radius: 30px;
+height: 50px;
+display: flex;
+align-items: center;
+overflow-x: hidden;
+}
+
+.search-wrapper span {
+    display: inline-block;
+    padding: 0rem 1rem;
+    font-size: 1.5rem;
+}
+
+.search-wrapper input {
+height: 100%;
+padding: .5rem;
+ border: none;
+ outline: none;
+}
+
+.user-wrapper {
+    display: flex;
+    align-items: center;
+
+}
+
+.user-wrapper img {
+  border-radius: 50%;
+  margin-right: 1rem;
+}
+
+.user-wrapper small {
+display: inline-block;
+color: var(--text-grey);
+margin-top: -3px !important;
+}
+
+main {
+    margin-top: 111px;
+    padding: 2rem 1.5rem;
+    background: #f1f5f9;
+    min-height: calc(100vh - 90px);
+}
+
+.cards {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+grid-gap: 2rem;
+margin-top: .1rem;
+}
+
+.card-single {
+display:flex;
+justify-content: space-between;
+background: #fff;
+padding: 1rem;
+border-radius: 6px;
+}
+.card-single:hover {
+background: var(--main-color);
+color: #fff;
+}
+.card-single h1 + span {
+color: var(--text-grey);
+}
+
+.card-single:hover h1 + span {
+color: #fff;
+}
+.card-single:hover span {
+color: #fff;
+}
+
+.card-single span {
+color: var(--text-grey);
+}
+
+
+
+
+.recent-grid {
+margin-top: 1rem;
+display: grid;
+grid-gap: 2rem;
+grid-template-columns: 70% auto;
+}
+.card {
+background: #fff;
+}
+
+.card-header,
+.card-body {
+padding: 1rem;
+}
+
+.card-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+table {
+border-collapse: collapse;
+}
+
+thead tr {
+border-top: 1px solid #f0f0f0;
+border-bottom: 1px solid #f0f0f0;
+}
+thead td {
+font-weight: 700;
+}
+
+td {
+padding: .5rem 1rem;
+font-size: .9rem;
+color: #222;
+}
+
+td .status {
+height:20px;
+width: 20px;
+border-radius: 50%;
+display: inline-block;
+margin-right: 1rem;
+}
+
+tr td:last-child {
+display: flex;
+align-items: center;
+}
+
+td .status-orange {
+height:20px;
+width: 20px;
+border-radius: 50%;
+display: inline-block;
+margin-right: 1rem;
+}
+.status-orange {
+    background: orange;
+}
+
+td .status-green {
+height:20px;
+width: 20px;
+border-radius: 50%;
+display: inline-block;
+margin-right: 1rem;
+}
+.status-green {
+    background: green;
+}
+td .status-red {
+height:20px;
+width: 20px;
+border-radius: 50%;
+display: inline-block;
+margin-right: 1rem;
+}
+.status-red {
+    background: red;
+}
+
+td .status-yellow {
+height:20px;
+width: 20px;
+border-radius: 50%;
+display: inline-block;
+margin-right: 1rem;
+}
+.status-yellow {
+    background: yellow;
+}
+
+.table-responsive {
+width: 100%;
+overflow-x: auto;
+}
+
+.customer {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: .3rem .2rem;
+}
+
+.info {
+display: flex;
+align-items: center;
+}
+
+.info img {
+border-radius: 80%;
+margin-right: 1rem;
+}
+
+.info h4 {
+font-size: .8rem;
+font-weight: 700;
+color: #222;
+}
+
+.info small {
+font-weight: 600;
+color: var(--text-grey);
+}
+
+#nav-toggle:checked + .sidebar {
+width: 100px;
+}
+#nav-toggle:checked + .sidebar .sidebar-brand,
+#nav-toggle:checked + .sidebar li a {
+padding-left: 1.5rem;
+text-align: center;
+}
+
+#nav-toggle:checked + .sidebar .sidebar-brand h2,
+#nav-toggle:checked + .sidebar li a span:last-child {
+display: none;
+}
+
+#nav-toggle:checked ~ .main-content {
+margin-left: 100px;
+}
+#nav-toggle:checked ~ .main-content header {
+left: 100px;
+width: calc(100% - 100px);
+}
+
+@media only screen and (max-width: 1200px) {
+.sidebar {
+width: 100px;
+}
+.sidebar .sidebar-brand,
+.sidebar li a {
+padding-left: 1.5rem;
+text-align: center;
+}
+
+.sidebar .sidebar-brand h2,
+.sidebar li a span:last-child {
+display: none;
+}
+
+.main-content {
+margin-left: 100px;
+}
+.main-content header {
+left: 100px;
+width: calc(100% - 100px);
+}
+}
+
+.tarjetas {
+display: grid;
+  grid-template-columns: 200px 200px;
+  padding: 1rem;
+}
+
+.carde {
+display: grid;
+  grid-template-columns: 350px 300px;
+  background: lightgrey;
+}
+
+.red-btn {
+  width: 300px;
+  height: 150px;
+  margin: 15px;
+  background: rgb(255, 0, 0);
+  background: rgb(131, 58, 180);
+  background: linear-gradient(
+    90deg,
+    rgba(131, 58, 180, 1) 0%,
+    rgba(253, 29, 29, 1) 50%,
+    rgba(252, 176, 69, 1) 100%
+  );
+  color: white;
+  border: none;
+  border-radius: 0.625em;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+.blue-btn {
+  width: 300px;
+  height: 150px;
+  margin: 15px;
+  background: rgb(0, 8, 144);
+  background: linear-gradient(
+    90deg,
+    rgba(0, 8, 144, 1) 0%,
+    rgba(16, 0, 255, 1) 22%,
+    rgba(86, 255, 247, 1) 100%
+  );
+  color: white;
+  border: none;
+  border-radius: 0.625em;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+button:hover {
+  color: rgb(0, 0, 0);
+}
+
+button:after {
+  content: "";
+  background: white;
+  position: absolute;
+  z-index: -1;
+  left: -20%;
+  right: -20%;
+  top: 0;
+  bottom: 0;
+  transform: skewX(-45deg) scale(0, 1);
+  transition: all 0.5s;
+}
+
+button:hover:after {
+  transform: skewX(-45deg) scale(1, 1);
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+</style>
+
+    <input type="checkbox" id="nav-toggle">
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <h2><span class="lab la-facebook-f"></span>Fincomun</h2>
+        </div>
+
+            <div class="sidebar-menu">
+                <div class="navbar">
+                <ul>
+
+                    <li>
+                        <a href="#Red comercial" class="active"><span class="las la-money-bill-wave"></span><span>Red comercial</span></a>
+                    </li>
+                     <li>
+                        <a href="#alianzas" class="active"><span class="las la-users"></span><span>Alianzas</span></a>
+                    </li>
+                     <li>
+                        <a href="" class="active"><span class="las la-handshake"></span><span>Patrimonial</span></a>
+                    </li>
+                     <li>
+                        <a href="#cobranza" class="active"><span class="las la-donate"></span><span>Cobranza</span></a>
+                    </li>
+                    <li>
+                        <a href="#marketing" class="active"><span class="las la-comments"></span><span>Marketing</span></a>
+                    </li>
+                    <li>
+                        <a href="" class="active"><span class="las la-landmark"></span><span>Dirección</span></a>
+                    </li>
+                </ul>
+                </div>
+            </div>
+
+    </div>
+
+    <div class="main-content">
+        <header>
+            <h2>
+                <label for="nav-toggle">
+                    <span class="las la-bars"></span>
+                </label>
+
+                Productividad
+            </h2>
+            <div class="search-wrapper">
+                <span class="las la-search"></span>
+                <input type="search" placeholder="Buscar" />
+            </div>
+            <div class="user-wrapper">
+                <img src="Pagina web\images\logo2.png" width="60px" alt="">
+                <div>
+                    <h4>Planeación Financiera</h4>
+                    <small>Subdireción de incentivos y pleaneación estrategica</small>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div class="cards">
+                <div class="card-single">
+                    <div>
+                        <h1>114</h1>
+                        <span>Reportes totales</span>
+                    </div>
+                    <div>
+                        <span class="las la-clipboard-list"></span>
+                    </div>
+                </div>
+                <div class="card-single">
+                    <div>
+                        <h1>14</h1>
+                        <span>Automatizado Parcial</span>
+                    </div>
+                    <div>
+                        <span class="las la-tools"></span>
+
+                    </div>
+                </div>
+                <div class="card-single">
+                        <div>
+                        <h1>0</h1>
+                        <span>Automatizado total</span>
+                        </div>
+                        <div>
+                        <span class="las la-sync-alt"></span>
+                        </div>
+                </div>
+
+                    <div class="card-single">
+                        <div>
+                        <h1>50</h1>
+                        <span>Aclaraciones</span>
+                        </div>
+                        <div>
+                        <span class="las la-bullhorn"></span>
+                        </span>
+                        </div>
+                    </div>
+            </div>
+            <div class="recent-grid">
+                <div class="projects">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Projectos</h3>
+
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table width="100%">
+                                    <thead>
+                                        <tr>
+                                            <td>Encargado</td>
+                                            <td>Tarea</td>
+                                            <td>Progreso</td>
+                                        </tr>
+
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Michael</td>
+                                            <td>Credinomina</td>
+                                            <td>
+                                                <span class="status-green"></span>
+                                                80%
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Alfredo</td>
+                                            <td>Procesos diarios</td>
+                                            <td>
+                                                <span class="status-yellow"></span>
+                                                70%
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Cesar</td>
+                                            <td>Tablero de pagos</td>
+                                            <td>
+                                                <span class="status-green"></span>
+                                                95%
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Mizael</td>
+                                            <td>Aclaraciones</td>
+                                            <td>
+                                                <span class="status-orange"></span>
+                                                55%
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Juan Carlos</td>
+                                            <td>Traspasos</td>
+                                            <td>
+                                                <span class="status-green"></span>
+                                                85%
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Christian</td>
+                                            <td>Evaluaciones</td>
+                                            <td>
+                                                <span class="status-red"></span>
+                                                30%
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Carlos David</td>
+                                            <td>Recompras</td>
+                                            <td>
+                                                <span class="status-orange"></span>
+                                                76%
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="customers">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Equipo</h3>
+
+                        </div>
+                        <div class="card-body">
+                            <div class="customer">
+                                <div class="info">
+                                    <img src="Pagina web\images\christian.PNG" width="40px"
+                                    height="40px" alt="">
+                                    <div>
+                                        <h4>Christian Bello</h4>
+                                        <small>Gerente de información y analisis</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="customer">
+                                <div class="info">
+                                    <img src="Pagina web\images\carlos.png" width="40px"
+                                    height="40px" alt="">
+                                    <div>
+                                        <h4>Carlos David</h4>
+                                        <small>Coordinador de información y analisis</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="customer">
+                                <div class="info">
+                                    <img src="Pagina web\images\mizael.png" width="40px"
+                                    height="40px" alt="">
+                                    <div>
+                                        <h4>Mizael Dario</h4>
+                                        <small>Coordinador de estadistica</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="customer">
+                                <div class="info">
+                                    <img src="Pagina web\images\alfredo.png" width="40px"
+                                    height="40px" alt="">
+                                    <div>
+                                        <h4>Jose Alfredo</h4>
+                                        <small>Analista de Informacion y Estadistica</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="customer">
+                                <div class="info">
+                                    <img src="Pagina web\images\cesar.png" width="30px"
+                                    height="40px" alt="">
+                                    <div>
+                                        <h4>Cesar Cervantes</h4>
+                                        <small>Analista de inteligencia de mercados</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="customer">
+                                <div class="info">
+                                    <img src="Pagina web\images\juan.png" width="40px"
+                                    height="40px" alt="">
+                                    <div>
+                                        <h4>Juan Carlos</h4>
+                                        <small>Analista de inteligencia geografica</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="customer">
+                                <div class="info">
+                                    <img src="Pagina web\images\michel.png" width="35px"
+                                    height="40px" alt="">
+                                    <div>
+                                        <h4>Michael Castillo</h4>
+                                        <small>Analista de Informacion y Analisis</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div id="Red comercial">
+                <div class="red-card">
+                        <h1>
+                            Red comercial
+                        </h1>
+                </div>
+                <div class="tarjetas">
+
+                    <div class="carde">
+                      <button class="red-btn">Cartera clientes</button>
+
+                     <button class="blue-btn">Seguimiento campañas</button>
+                    </div>
+
+                </div>
+            </div>
+            <div id="alianzas">
+                <div class="red-card">
+                        <h1>
+                            Alianzas
+                        </h1>
+                </div>
+                <div class="tarjetas">
+
+                    <div class="carde">
+                      <button class="red-btn">Captación</button>
+
+                     <button class="blue-btn">Plan de reconocimiento</button>
+                        <button class="red-btn">Credinomina</button>
+                    </div>
+
+                </div>
+            </div>
+            <div id="cobranza">
+                <div class="red-card">
+                        <h1>
+                            Cobranza
+                        </h1>
+                </div>
+                <div class="tarjetas">
+                    <div class="carde">
+                     <button class="blue-btn">Tablero de pagos</button>
+
+                    </div>
+                </div>
+            </div>
+            <div id="marketing">
+                <div class="red-card">
+                        <h1>
+                            Marketing
+                        </h1>
+                </div>
+                <div class="tarjetas">
+                    <div class="carde">
+                     <button class="blue-btn">Clasificación de encuestas</button>
+                     <button class="red-btn">Clasificación de clientes</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    </div>
+<script src="3.js"></script>
+</body>
+</html>
