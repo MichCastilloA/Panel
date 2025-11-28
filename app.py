@@ -16,12 +16,42 @@ RUTA_BASE_DEF = r"C:\Users\mcastillo\Documents\pedidos\04 Seguimiento campañas\
 RUTA_CLIENTES_DEF = r"C:\Users\mcastillo\Documents\pedidos\04 Seguimiento campañas\Insumos\Clientes.csv"
 
 @st.cache_data(ttl=300)
-def load_csv(path, encoding='utf-8-sig'):
-    try:
-        df = pd.read_csv(path, encoding=encoding, on_bad_lines='skip', low_memory=False)
-        return df
-    except Exception:
-        return pd.DataFrame()
+def load_csv_fallback(uploaded_file, local_path='Base.csv', github_raw_url=None, encoding='utf-8-sig'):
+    """
+    Prioridad de lectura:
+    1) uploaded_file (st.file_uploader)
+    2) local_path (archivo incluido en el repo, p.ej. './Base.csv')
+    3) github_raw_url (string), si el archivo está en un repo público
+    Devuelve DataFrame (o pd.DataFrame() vacío si no encuentra nada).
+    """
+    # 1) Si el usuario hizo upload
+    if uploaded_file is not None:
+        try:
+            return pd.read_csv(uploaded_file, encoding=encoding, on_bad_lines='skip', low_memory=False)
+        except Exception as e:
+            st.error(f"Error leyendo archivo subido: {e}")
+            return pd.DataFrame()
+
+    # 2) Intentar archivo local (en el repo)
+    if os.path.exists(local_path):
+        try:
+            return pd.read_csv(local_path, encoding=encoding, on_bad_lines='skip', low_memory=False)
+        except Exception as e:
+            st.error(f"Error leyendo {local_path}: {e}")
+            return pd.DataFrame()
+
+    # 3) Intentar GitHub raw URL (si se proporcionó)
+    if github_raw_url:
+        try:
+            r = requests.get(github_raw_url, timeout=30)
+            r.raise_for_status()
+            return pd.read_csv(io.StringIO(r.text), encoding=encoding, on_bad_lines='skip', low_memory=False)
+        except Exception as e:
+            st.error(f"Error leyendo desde URL {github_raw_url}: {e}")
+            return pd.DataFrame()
+
+    # No encontrado
+    return pd.DataFrame()
 
 def safe_prepare(df):
     if df is None:
@@ -229,4 +259,5 @@ st.sidebar.markdown("Exportar / Descargar")
 if not df_filtered_global.empty:
     st.sidebar.download_button("Descargar Base filtrada (CSV)", data=to_csv_bytes(df_filtered_global), file_name="Base_filtrada.csv", mime="text/csv")
 else:
+
     st.sidebar.info("No hay datos para descargar con los filtros actuales.")
