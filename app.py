@@ -11,6 +11,7 @@ import plotly.graph_objects as go
 import requests
 import io
 import os
+import unicodedata
 
 st.set_page_config(layout="wide", page_title="Dashboard Campañas", initial_sidebar_state="expanded")
 
@@ -72,63 +73,97 @@ def load_base_fallback(uploaded_file=None, local_path='Base.csv', github_raw_url
     return pd.DataFrame()
 
 # --- Normalizar y preparar base ---
+def remove_diacritics(text):
+    if pd.isna(text):
+        return ""
+    s = str(text)
+    s = s.strip().lower()
+    s = unicodedata.normalize("NFKD", s)
+    s = "".join([c for c in s if not unicodedata.combining(c)])
+    return s
+
 def safe_prepare(df):
     if df is None or df.empty:
         return pd.DataFrame()
     df = df.copy()
-    # Normalizar nombres de columnas comunes en tu flujo
     # Asegurar columnas necesarias
-    for col in ['Cliente_Consec', 'Campana', 'Territorio', 'Zona', 'Sucursal', 'inicial', 'Etiqueta', 'ACUM', 'Colocacion', 'Fecha', 'Semana', 'Campo', 'dictamen']:
+    expected = ['Cliente_Consec', 'Campana', 'Territorio', 'Zona', 'Sucursal', 'inicial', 'Etiqueta', 'ACUM', 'Colocacion', 'Fecha', 'Semana', 'Campo', 'dictamen']
+    for col in expected:
         if col not in df.columns:
             if col in ['ACUM', 'Colocacion']:
                 df[col] = 0
             else:
-                df[col] = ''
-    # Tipo y limpieza mínima
+                df[col] = ""
+
+    # Normalizaciones
     df['Cliente_Consec'] = df['Cliente_Consec'].astype(str)
     df['Etiqueta'] = df['Etiqueta'].fillna('Pendiente').astype(str)
-    # Asegurar campos numéricos
-    df['ACUM'] = pd.to_numeric(df['ACUM'], errors='coerce').fillna(0).astype(int)
-    # Colocacion puede tener 1/0 o True/False
-    df['Colocacion'] = pd.to_numeric(df['Colocacion'], errors='coerce').fillna(0).astype(int)
-    # Fecha como datetime cuando exista
+    # create normalized etiqueta for robust matching
+    df['Etiqueta_norm'] = df['Etiqueta'].apply(remove_diacritics)
+    # ensure Colocacion numeric and treat any positive as count (if it's binary or amount)
+    df['Colocacion'] = pd.to_numeric(df['Colocacion'], errors='coerce').fillna(0)
+    # If Colocacion values are amounts, convert to counts by treating >0 as 1 per row? 
+    # User said "suma de toda la columna Colocacion (obviamente con respecto a su Campana)" -> we will sum numeric values.
+    # If your Colocacion is already 1/0, sum is fine. If it's amount, sum will be amount; if you need count of rows with colocacion>0 instead, switch below.
+    try:
+        df['ACUM'] = pd.to_numeric(df['ACUM'], errors='coerce').fillna(0).astype(int)
+    except:
+        df['ACUM'] = 0
     try:
         df['Fecha'] = pd.to_datetime(df['Fecha'], dayfirst=True, errors='coerce')
     except:
         pass
     return df
 
-# --- Nuevo cálculo: Potencial, Gestiones, Desembolsos según tu definición ---
+# --- Cálculo correcto según tu definición ---
 def compute_summary_correct(df, group_by):
     """
     Potencial = número de registros con el mismo valor del grupo (count rows)
-    Gestiones = conteo de registros donde Etiqueta != 'Pendiente'
+    Gestiones = conteo de registros donde Etiqueta in ['En trámite','No acepta','No localizado','No viable'] 
+               + suma de la columna Colocacion (por campaña)
     Desembolsos = conteo de registros donde Etiqueta == 'Desembolsado'
-    Devuelve DataFrame con columnas: [group_by, Potencial, Gestiones, Desembolsos, Conv_Gestiones_%, Conv_Desemb_%]
     """
     if df is None or df.empty:
         return pd.DataFrame(columns=[group_by, 'Potencial', 'Gestiones', 'Desembolsos', 'Conv_Gestiones_%', 'Conv_Desemb_%'])
-    g = group_by
-    # Asegurar que la columna exista
-    if g not in df.columns:
-        st.warning(f"No existe la columna '{g}' en la base. Usando 'Campana' como fallback.")
-        g = 'Campana' if 'Campana' in df.columns else df.columns[0]
-    grouped = df.groupby(g).agg(
-        Potencial = ('Campana', 'count'),  # count of rows in the group
-        Gestiones = ('Etiqueta', lambda s: s.ne('Pendiente').sum()),
-        Desembolsos = ('Etiqueta', lambda s: (s == 'Desembolsado').sum())
-    ).reset_index()
-    # Conversiones relativas al Potencial
+
+    # normalizar nombre de la columna de agrupación si necesario
+    if group_by not in df.columns:
+        st.warning(f"No existe la columna '{group_by}' en la base. Usando 'Campana' como fallback.")
+        group_by = 'Campana' if 'Campana' in df.columns else df.columns[0]
+
+    # etiquetas target (normalizadas)
+    etiquetas_gestiones_raw = ['en trámite', 'en tramite', 'no acepta', 'no localizado', 'no viable']
+    etiquetas_gestiones = set([remove_diacritics(x) for x in etiquetas_gestiones_raw])
+    etiqueta_desemb = remove_diacritics('desembolsado')
+
+    # Group by and compute metrics
+    def agg_group(gdf):
+        potencial = len(gdf)  # count rows
+        # Count rows whose normalized etiqueta is in the desired set
+        count_etiquetas = int(gdf['Etiqueta_norm'].isin(etiquetas_gestiones).sum())
+        # Sum Colocacion (numeric). If Colocacion is an indicator 1/0 this will be count of colocaciones.
+        sum_coloc = int(gdf['Colocacion'].sum())
+        gestiones = count_etiquetas + sum_coloc
+        desembolsos = int((gdf['Etiqueta_norm'] == etiqueta_desemb).sum())
+        return pd.Series({
+            'Potencial': potencial,
+            'Gestiones': gestiones,
+            'Desembolsos': desembolsos
+        })
+
+    grouped = df.groupby(group_by).apply(agg_group).reset_index()
+
+    # conversiones (relative to potencial)
     grouped['Conv_Gestiones_%'] = (grouped['Gestiones'] / grouped['Potencial']).replace([np.inf, -np.inf], 0).fillna(0)
     grouped['Conv_Desemb_%'] = (grouped['Desembolsos'] / grouped['Potencial']).replace([np.inf, -np.inf], 0).fillna(0)
+
     grouped = grouped.sort_values('Potencial', ascending=False).reset_index(drop=True)
     return grouped
 
-# --- UI: Sidebar / carga ---
+# --- UI: Sidebar / Carga / filtros ---
 st.sidebar.title("Filtros / Carga")
 
 uploaded = st.sidebar.file_uploader("Subir Base.csv (opcional)", type=['csv'])
-# Intentamos cargar desde GitHub raw (tu repo). Si es privado, añade GITHUB_TOKEN en Secrets.
 df_base = load_base_fallback(uploaded_file=uploaded, local_path='./Base.csv', github_raw_url=GITHUB_RAW_URL)
 
 if df_base.empty:
@@ -136,23 +171,22 @@ if df_base.empty:
 else:
     st.sidebar.success(f"Base cargada: {len(df_base):,} filas")
 
-# --- Preparar y limpiar ---
 df_base = safe_prepare(df_base)
 
-# --- Construir opciones de filtros (sin Vigencia) ---
+# Build filters
 campanas = sorted(df_base['Campana'].dropna().unique().tolist())
 territorios = sorted(df_base['Territorio'].dropna().unique().tolist())
 zonas = sorted(df_base['Zona'].dropna().unique().tolist())
 sucursales = sorted(df_base['Sucursal'].dropna().unique().tolist())
 ejecutivos = sorted(df_base['inicial'].dropna().unique().tolist())
 
-sel_campanas = st.sidebar.multiselect("Campaña", options=campanas, default=campanas if len(campanas)<=50 else campanas[:50])
+sel_campanas = st.sidebar.multiselect("Campaña", options=campanas, default=campanas)
 sel_territorios = st.sidebar.multiselect("Territorio", options=territorios, default=territorios)
 sel_zonas = st.sidebar.multiselect("Zona", options=zonas, default=zonas)
 sel_suc = st.sidebar.multiselect("Sucursal", options=sucursales, default=sucursales)
 sel_ejecutivos = st.sidebar.multiselect("Ejecutivo (Inicial)", options=ejecutivos, default=ejecutivos)
 
-# Aplicar filtros
+# Apply filters (do not drop rows unintentionally)
 if df_base.empty:
     df_filtered = pd.DataFrame(columns=df_base.columns)
 else:
@@ -171,7 +205,6 @@ st.markdown("Resumen y visualizaciones por Campaña / Territorio / Zona. Usa los
 
 tab = st.tabs(["General", "Tipo de gestión", "Lugar de gestión", "Por semanas", "Históricas"])
 
-# General
 with tab[0]:
     st.header("General")
     col1, col2 = st.columns([3,1])
@@ -180,7 +213,6 @@ with tab[0]:
         top_n = st.number_input("Mostrar top N", min_value=3, max_value=200, value=20)
 
     resumen = compute_summary_correct(df_filtered, agr)
-    # Formateo de porcentajes para visual
     resumen_display = resumen.copy()
     resumen_display['Conv_Gestiones_%'] = resumen_display['Conv_Gestiones_%'].apply(lambda x: f"{x:.2%}")
     resumen_display['Conv_Desemb_%'] = resumen_display['Conv_Desemb_%'].apply(lambda x: f"{x:.2%}")
@@ -190,13 +222,11 @@ with tab[0]:
     else:
         st.dataframe(resumen_display.head(top_n), width='stretch')
 
-        # Gráfica: Gestiones por grupo
         fig_g = px.bar(resumen, x=agr, y='Gestiones', text='Gestiones', title=f'Gestiones por {agr}')
         fig_g.update_traces(textposition='outside')
         fig_g.update_layout(yaxis_title='Gestiones', xaxis_title=agr, margin=dict(t=50))
         st.plotly_chart(fig_g, width='stretch')
 
-        # Combinada: Desembolsos y conversión
         fig = go.Figure()
         fig.add_trace(go.Bar(x=resumen[agr], y=resumen['Desembolsos'], name='Desembolsos', marker_color='steelblue', text=resumen['Desembolsos'], textposition='auto'))
         fig.add_trace(go.Scatter(x=resumen[agr], y=resumen['Conv_Desemb_%']*100, name='Conv Desemb %', mode='lines+markers+text',
@@ -211,7 +241,6 @@ with tab[0]:
         )
         st.plotly_chart(fig, width='stretch')
 
-# Tipo de gestión
 with tab[1]:
     st.header("Tipo de gestión")
     df_tab = df_filtered.copy()
@@ -221,7 +250,6 @@ with tab[1]:
         tg = df_tab.groupby(['Campana', 'dictamen']).size().unstack(fill_value=0)
         st.dataframe(tg, width='stretch')
 
-# Lugar de gestión
 with tab[2]:
     st.header("Lugar de gestión")
     df_tab = df_filtered.copy()
@@ -232,7 +260,6 @@ with tab[2]:
         lg = df_tab.groupby([lugar_col, 'Campana']).size().unstack(fill_value=0)
         st.dataframe(lg, width='stretch')
 
-# Por semanas
 with tab[3]:
     st.header("Por semanas")
     df_tab = df_filtered.copy()
@@ -240,7 +267,6 @@ with tab[3]:
         st.info("No hay datos de 'Semana' en la base filtrada.")
     else:
         series = df_tab.groupby('Semana').agg({'Cliente_Consec': 'count', 'ACUM': 'sum', 'Colocacion': 'sum'}).rename(columns={'Cliente_Consec': 'Potencial'}).reset_index()
-        # orden sencillo por texto/semana
         try:
             series['order_week'] = series['Semana'].apply(lambda x: int(str(x).split('Sem')[-1]) if 'Sem' in str(x) else 0)
             series = series.sort_values('order_week')
@@ -253,7 +279,6 @@ with tab[3]:
         st.plotly_chart(fig_s, width='stretch')
         st.dataframe(series, width='stretch')
 
-# Históricas
 with tab[4]:
     st.header("Históricas")
     df_tab = df_filtered.copy()
@@ -280,4 +305,3 @@ if not df_filtered.empty:
     st.sidebar.download_button("Descargar Base filtrada (CSV)", data=csv_bytes, file_name="Base_filtrada.csv", mime="text/csv")
 else:
     st.sidebar.info("No hay datos para descargar con los filtros actuales.")
-
