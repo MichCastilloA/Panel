@@ -114,7 +114,7 @@ def compute_summary_correct(df, group_by):
         st.warning(f"No existe la columna '{g}' en la base. Usando 'Campana' como fallback.")
         g = 'Campana' if 'Campana' in df.columns else df.columns[0]
     grouped = df.groupby(g).agg(
-        Potencial = ('Cliente_Consec', 'count'),  # count of rows in the group
+        Potencial = ('Campana', 'count'),  # count of rows in the group
         Gestiones = ('Etiqueta', lambda s: s.ne('Pendiente').sum()),
         Desembolsos = ('Etiqueta', lambda s: (s == 'Desembolsado').sum())
     ).reset_index()
@@ -280,3 +280,4 @@ if not df_filtered.empty:
     st.sidebar.download_button("Descargar Base filtrada (CSV)", data=csv_bytes, file_name="Base_filtrada.csv", mime="text/csv")
 else:
     st.sidebar.info("No hay datos para descargar con los filtros actuales.")
+
