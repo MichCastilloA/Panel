@@ -1,0 +1,6 @@
+@echo off
+C:\Users\planfin\AppData\Local\Programs\Python\Python314\.venv\Scripts\streamlit>=1.20.0
+pandas>=2.0
+numpy>=1.25
+plotly>=5.15
+openpyxl>=3.1python.exe "\\fc-fs01\Planeacion\Michel\Python\Comprimir base de campanas.py"
