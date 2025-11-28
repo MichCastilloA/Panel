@@ -132,9 +132,9 @@ def compute_summary_correct(df, group_by):
         group_by = 'Campana' if 'Campana' in df.columns else df.columns[0]
 
     # etiquetas target (normalizadas)
-    etiquetas_gestiones_raw = ['en trámite', 'en tramite', 'no acepta', 'no localizado', 'no viable']
+    etiquetas_gestiones_raw = ['En trámite', 'en tramite', 'No acepta', 'No localizado', 'No viable']
     etiquetas_gestiones = set([remove_diacritics(x) for x in etiquetas_gestiones_raw])
-    etiqueta_desemb = remove_diacritics('desembolsado')
+    etiqueta_desemb = remove_diacritics('Desembolsado')
 
     # Group by and compute metrics
     def agg_group(gdf):
@@ -305,3 +305,4 @@ if not df_filtered.empty:
     st.sidebar.download_button("Descargar Base filtrada (CSV)", data=csv_bytes, file_name="Base_filtrada.csv", mime="text/csv")
 else:
     st.sidebar.info("No hay datos para descargar con los filtros actuales.")
+
