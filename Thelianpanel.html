@@ -1,0 +1,765 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <link rel="stylesheet" href="estilo prev.css">
+    <title>panel v2</title>
+</head>
+<body>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+    :root{
+        --main-color: #DD2F6E;
+        --color-dark: #1D2231;
+        --text-grey:  #8390A2;
+    }
+
+    *{
+        padding: 0;
+        margin : 0;
+        box-sizing: border-box;
+        list-style-type: none;
+        text-decoration: none;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .sidebar{
+        width: 230px;
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100%;
+        background: var(--main-color);
+        z-index: 100;
+        transition: width 300ms;
+    }
+
+    .sidebar-brand{
+       height: 90px;
+       padding: 1rem 0rem 1rem 2rem;
+       color: #fff;
+    }
+
+    .sidebar-brand span {
+       display: inline-block;
+       padding-right: 1rem;
+    }
+
+    .sidebar-menu {
+        margin-top: 1rem;
+    }
+
+    .sidebar-menu li {
+        width: 100%;
+        margin-bottom: 1.3rem;
+        padding-left: 2rem;
+    }
+    .sidebar-menu a {
+        padding-left: 1rem;
+        display: block;
+        color: #fff;
+        font-size: 1.1rem;
+    }
+    .sidebar-menu a:hover{
+        background: #fff;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        color: var(--main-color);
+        border-radius: 30px 0px 0px 30px;
+    }
+    .sidebar-menu a span:first-child {
+        font-size: 1.5rem;
+        padding-right: 1rem;
+    }
+
+    .main-content {
+        transition: margin-left 300ms;
+        margin-left: 235px;
+    }
+
+    header {
+        display: flex;
+        justify-content: space-between;
+        padding: 2rem;
+        box-shadow: 4px 2px 5px rgba(0,0,0,0.1);
+        position: absolute;
+        left: 234px;
+        width: calc(100% - 230px);
+        top: 0;
+        z-index: 100;
+        transition: left 300ms;
+    }
+
+    header h2 {
+        color: #222;
+    }
+
+    header label span {
+        font-size: 1.7rem;
+        padding-right: 1rem;
+    }
+
+    .search-wrapper{
+        border: 1px solid #f0f0f0;
+        border-radius: 30px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        overflow-x: hidden;
+    }
+
+    .search-wrapper span {
+        display: inline-block;
+        padding: 0rem 1rem;
+        font-size: 1.5rem;
+    }
+
+    .search-wrapper input {
+        height: 100%;
+        padding: .5rem;
+        border: none;
+        outline: none;
+    }
+
+    .user-wrapper {
+        display: flex;
+        align-items: center;
+    }
+
+    .user-wrapper img {
+      border-radius: 50%;
+      margin-right: 1rem;
+    }
+
+    .user-wrapper small {
+        display: inline-block;
+        color: var(--text-grey);
+        margin-top: -3px !important;
+    }
+
+    main {
+        margin-top: 111px;
+        padding: 2rem 1.5rem;
+        background: #f1f5f9;
+        min-height: calc(100vh - 90px);
+    }
+
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 2rem;
+        margin-top: .1rem;
+    }
+
+    .card-single {
+        display:flex;
+        justify-content: space-between;
+        background: #fff;
+        padding: 1rem;
+        border-radius: 6px;
+    }
+    .card-single:hover {
+        background: var(--main-color);
+        color: #fff;
+    }
+    .card-single h1 + span {
+        color: var(--text-grey);
+    }
+
+    .card-single:hover h1 + span {
+        color: #fff;
+    }
+    .card-single:hover span {
+        color: #fff;
+    }
+
+    .card-single span {
+        color: var(--text-grey);
+    }
+
+    .recent-grid {
+        margin-top: 1rem;
+        display: grid;
+        grid-gap: 2rem;
+        grid-template-columns: 70% auto;
+    }
+    .card {
+        background: #fff;
+    }
+
+    .card-header,
+    .card-body {
+        padding: 1rem;
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    table {
+        border-collapse: collapse;
+    }
+
+    thead tr {
+        border-top: 1px solid #f0f0f0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    thead td {
+        font-weight: 700;
+    }
+
+    td {
+        padding: .5rem 1rem;
+        font-size: .9rem;
+        color: #222;
+    }
+
+    td .status {
+        height:20px;
+        width: 20px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 1rem;
+    }
+
+    tr td:last-child {
+        display: flex;
+        align-items: center;
+    }
+
+    td .status-orange {
+        height:20px;
+        width: 20px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 1rem;
+    }
+    .status-orange {
+        background: orange;
+    }
+
+    td .status-green {
+        height:20px;
+        width: 20px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 1rem;
+    }
+    .status-green {
+        background: green;
+    }
+    td .status-red {
+        height:20px;
+        width: 20px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 1rem;
+    }
+    .status-red {
+        background: red;
+    }
+
+    td .status-yellow {
+        height:20px;
+        width: 20px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 1rem;
+    }
+    .status-yellow {
+        background: yellow;
+    }
+
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .customer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: .3rem .2rem;
+    }
+
+    .info {
+        display: flex;
+        align-items: center;
+    }
+
+    .info img {
+        border-radius: 80%;
+        margin-right: 1rem;
+    }
+
+    .info h4 {
+        font-size: .8rem;
+        font-weight: 700;
+        color: #222;
+    }
+
+    .info small {
+        font-weight: 600;
+        color: var(--text-grey);
+    }
+
+    #nav-toggle:checked + .sidebar {
+        width: 100px;
+    }
+    #nav-toggle:checked + .sidebar .sidebar-brand,
+    #nav-toggle:checked + .sidebar li a {
+        padding-left: 1.5rem;
+        text-align: center;
+    }
+
+    #nav-toggle:checked + .sidebar .sidebar-brand h2,
+    #nav-toggle:checked + .sidebar li a span:last-child {
+        display: none;
+    }
+
+    #nav-toggle:checked ~ .main-content {
+        margin-left: 100px;
+    }
+    #nav-toggle:checked ~ .main-content header {
+        left: 100px;
+        width: calc(100% - 100px);
+    }
+
+    @media only screen and (max-width: 1200px) {
+        .sidebar {
+            width: 100px;
+        }
+        .sidebar .sidebar-brand,
+        .sidebar li a {
+            padding-left: 1.5rem;
+            text-align: center;
+        }
+
+        .sidebar .sidebar-brand h2,
+        .sidebar li a span:last-child {
+            display: none;
+        }
+
+        .main-content {
+            margin-left: 100px;
+        }
+        .main-content header {
+            left: 100px;
+            width: calc(100% - 100px);
+        }
+    }
+
+    .tarjetas {
+        display: grid;
+        grid-template-columns: 200px 200px;
+        padding: .5rem;
+    }
+
+    .carde {
+        display: grid;
+        grid-template-columns: 350px 350px 100px;
+        background: lightgrey;
+    }
+
+    .red-btn {
+      width: 300px;
+      height: 150px;
+      margin: 15px;
+      background: rgb(131, 58, 180);
+      background: linear-gradient(
+        90deg,
+        rgba(131, 58, 180, 1) 0%,
+        rgba(253, 29, 29, 1) 50%,
+        rgba(252, 176, 69, 1) 100%
+      );
+      color: white;
+      border: none;
+      border-radius: 0.625em;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .blue-btn {
+      width: 300px;
+      height: 150px;
+      margin: 15px;
+      background: rgb(0, 8, 144);
+      background: linear-gradient(
+        90deg,
+        rgba(0, 8, 144, 1) 0%,
+        rgba(16, 0, 255, 1) 22%,
+        rgba(86, 255, 247, 1) 100%
+      );
+      color: white;
+      border: none;
+      border-radius: 0.625em;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    button:hover {
+      color: rgb(0, 0, 0);
+    }
+
+    button:after {
+      content: "";
+      background: white;
+      position: absolute;
+      z-index: -1;
+      left: -20%;
+      right: -20%;
+      top: 0;
+      bottom: 0;
+      transform: skewX(-45deg) scale(0, 1);
+      transition: all 0.5s;
+    }
+
+    button:hover:after {
+      transform: skewX(-45deg) scale(1, 1);
+      -webkit-transition: all 0.5s;
+      transition: all 0.5s;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    .red-card {
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .red-card h1 {
+        color: var(--main-color);
+        font-size: 2rem;
+        font-weight: 600;
+    }
+</style>
+
+    <input type="checkbox" id="nav-toggle">
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <h2><span class="lab la-facebook-f"></span>Fincomun</h2>
+        </div>
+
+        <div class="sidebar-menu">
+            <div class="navbar">
+                <ul>
+                    <li>
+                        <a href="#Mis resultados" class="active"><span class="las la-money-bill-wave"></span><span>Mis resultados</span></a>
+                    </li>
+                    <li>
+                        <a href="#Mi día modelo" class="active"><span class="las la-users"></span><span>Mi día modelo</span></a>
+                    </li>
+                    <li>
+                        <a href="#Mi agenda" class="active"><span class="las la-handshake"></span><span>Mi agenda</span></a>
+                    </li>
+                    <li>
+                        <a href="#Mis campañas" class="active"><span class="las la-donate"></span><span>Mis campañas</span></a>
+                    </li>
+                    <li>
+                        <a href="#Mi cartera de clientes" class="active"><span class="las la-comments"></span><span>Mi cartera de clientes</span></a>
+                    </li>
+                    <li>
+                        <a href="#Mis Ralys" class="active"><span class="las la-landmark"></span><span>Mis Ralys</span></a>
+                    </li>
+                    <li>
+                        <a href="#Contactos" class="active"><span class="las la-users"></span><span>Contactos</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <header>
+            <h2>
+                <label for="nav-toggle">
+                    <span class="las la-bars"></span>
+                </label>
+                Mis resultados
+            </h2>
+            <div class="search-wrapper">
+                <span class="las la-search"></span>
+                <input type="text" placeholder="Buscar" id="searchInput"/>
+            </div>
+            <div class="user-wrapper">
+                <img src="https://michcastilloa.github.io/logo2.PNG" width="60px" alt="">
+                <div>
+                    <h4>Planeación Financiera</h4>
+                    <small>Subdireción de incentivos y pleaneación estrategica</small>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div class="cards">
+                <div class="card-single">
+                    <div>
+                        <h1>7087</h1>
+                        <span>Ventas totales</span>
+                    </div>
+                    <div>
+                        <span class="las la-clipboard-list"></span>
+                    </div>
+                </div>
+                <div class="card-single">
+                    <div>
+                        <h1>680</h1>
+                        <span>Recompras</span>
+                    </div>
+                    <div>
+                        <span class="las la-tools"></span>
+                    </div>
+                </div>
+                <div class="card-single">
+                    <div>
+                        <h1>24</h1>
+                        <span>Nuevos</span>
+                    </div>
+                    <div>
+                        <span class="las la-sync-alt"></span>
+                    </div>
+                </div>
+                <div class="card-single">
+                    <div>
+                        <h1>76</h1>
+                        <span>Cobranza</span>
+                    </div>
+                    <div>
+                        <span class="las la-bullhorn"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recent-grid">
+                <iframe title="Actividades" width="1050" height="573.5" src="https://app.powerbi.com/view?r=eyJrIjoiYWY4ODMwYmMtYjc4NC00MDZjLThiNmUtYzUzYWNjZjQwYjI1IiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9" frameborder="0" allowFullScreen="true"></iframe>
+            </div>
+
+            <div id="Mis resultados">
+                <div class="red-card">
+                    <h1>Mis resultados</h1>
+                </div>
+                <div class="tarjetas">
+                    <div class="carde">
+                        <a href="https://app.powerbi.com/view?r=eyJrIjoiMjIwNzUwMTQtZWJjNC00NTJhLTliN2YtOTI3NjY3YzdmNWEzIiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
+                            <button class="red-btn">Cartera clientes</button>
+                        </a>
+                        <a href="https://app.powerbi.com/view?r=eyJrIjoiYmE5Y2UxYjYtN2RjNi00NDQxLWJkYzAtZGI3NTk2MDYxNjljIiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
+                            <button class="blue-btn">Seguimiento campañas</button>
+                        </a>
+                        <a href="https://us-east-1.quicksight.aws.amazon.com/sn/embed/share/accounts/683522079744/dashboards/6b47a5e6-0ef9-4f19-ba83-3ebb325562d9?directory_alias=fincomun-quicksight">
+                            <button class="red-btn">Ventas / Quick Sight</button>
+                        </a>
+                        <a href="https://app.hubspot.com/reports-dashboard/40034036/view/12332262">
+                            <button class="blue-btn">Campañas / HubSpot</button>
+                        </a>
+                        <a href="https://app.powerbi.com/view?r=eyJrIjoiNGFmZDIzMGItMTc1Mi00YTM4LWJiMzMtZDA5ZTNhOWEyZThiIiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
+                            <button class="red-btn">Colocacion y cobranza</button>
+                        </a>
+                        <a href="https://app.powerbi.com/view?r=eyJrIjoiMmJkY2IzMDgtOTUzMy00Zjk5LTkxYWEtNTMwMjA1YmI4ODcxIiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
+                            <button class="blue-btn">Asistencias</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="Mi día modelo">
+                <div class="red-card">
+                    <h1>Mi día modelo</h1>
+                </div>
+                <div class="tarjetas">
+                    <div class="carde">
+                        <a href="https://app.powerbi.com/view?r=eyJrIjoiMmU0MjNiNTMtODE0MS00OTI5LThlZDgtMzYzMjA1MjMzYjIxIiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
+                            <button class="red-btn">Credinomina</button>
+                        </a>
+                        <a href="https://app.powerbi.com/view?r=eyJrIjoiMjkzYjUzNTgtNTVhZi00ZjkzLWE2ODUtMjE4ZmNmYTU0NjU5IiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
+                            <button class="blue-btn">Alianzas</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="Mi agenda">
+                <div class="red-card">
+                    <h1>Mi agenda</h1>
+                </div>
+                <div class="tarjetas">
+                    <div class="carde">
+                        <a href="https://app.powerbi.com/view?r=eyJrIjoiZmZkMzJlZDAtMTQ2NS00YTNjLWE2ZTQtZDVjYWE4ODBmZWFkIiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
+                            <button class="red-btn">Tablero de inversiones</button>
+                        </a>
+                        <a href="https://app.powerbi.com/view?r=eyJrIjoiNmE0NDg3OWUtNWM2Zi00ZDc5LTgyYjAtNzc0YjkxZDczYmZjIiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
+                            <button class="blue-btn">Captación total</button>
+                        </a>
+                        <a href="https://app.powerbi.com/view?r=eyJrIjoiZjIzM2M0MWEtZjBkZS00ZDBjLTk2NjMtMDRmOWUyZjAwMjJkIiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
+                            <button class="red-btn">Plan de reconocimientos</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="Mis campañas">
+                <div class="red-card">
+                    <h1>Mis campañas</h1>
+                </div>
+                <div class="tarjetas">
+                    <div class="carde">
+                        <a href="https://app.powerbi.com/view?r=eyJrIjoiOGYxMWMzZDctY2M0MC00ZThjLTlkYWQtZmQ5ZWZmZGUzODU0IiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
+                            <button class="blue-btn">Tablero de pagos</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="Mi cartera de clientes">
+                <div class="red-card">
+                    <h1>Mi cartera de clientes</h1>
+                </div>
+                <div class="tarjetas">
+                    <div class="carde">
+                        <a href="https://app.powerbi.com/view?r=eyJrIjoiOTE5YzZkYTktNDMxNy00MjkxLThiNzEtMzgyNTE0MTMzZDE4IiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
+                            <button class="blue-btn">Clasificación de encuestas</button>
+                        </a>
+                        <a href="https://app.powerbi.com/view?r=eyJrIjoiOWRhODkxZjctMzAwZi00NmNkLTlmOGQtODkxMDMwOWNjYTZkIiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
+                            <button class="red-btn">Clasificación de clientes</button>
+                        </a>
+                        <a href="https://app.powerbi.com/view?r=eyJrIjoiYmU2NDFhMGYtMGY1Ny00NTgwLTk2NWEtM2Y2MGUzZTc3Njg3IiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
+                            <button class="blue-btn">Enrolados</button>
+                        </a>
+                        <a href="https://app.powerbi.com/view?r=eyJrIjoiNzM0YmYwMWItOWVkOC00MjFlLWFjODMtODgzY2U2MGEyNDVkIiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
+                            <button class="red-btn">Postventa</button>
+                        </a>
+                        <a href="https://app.powerbi.com/view?r=eyJrIjoiMTJjMDczMDctYjVhMy00ZTY3LThhOGMtZWZkMTUwYjU5OWY5IiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
+                            <button class="blue-btn">Digital</button>
+                        </a>
+                        <a href="https://app.powerbi.com/view?r=eyJrIjoiNWM1ZDBlZmYtYTZkMC00OTlhLThiNjgtMDg4YjAzYWI5N2U1IiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
+                            <button class="red-btn">Tasa ponderda</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="Mis Ralys">
+                <div class="red-card">
+                    <h1>Mis Ralys</h1>
+                </div>
+                <div class="tarjetas">
+                    <div class="carde">
+                        <a href="https://app.powerbi.com/view?r=eyJrIjoiZWRlMmZkZjYtYzQ5OS00NzViLThmYTMtMmM5MTdiNzQ2YjJmIiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
+                            <button class="blue-btn">Colocación historica</button>
+                        </a>
+                        <a href="https://app.powerbi.com/view?r=eyJrIjoiODkxMzg5ODItZDk5Zi00MDY0LTkyMzctYWNmNTA5Yzg2NTY0IiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
+                            <button class="red-btn">Cuentas por sistema</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="Contactos">
+                <div class="red-card">
+                    <h1>Contactos</h1>
+                </div>
+                <div class="customers">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Equipo</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="customer">
+                                <div class="info">
+                                    <img src="https://michcastilloa.github.io/christian.PNG" width="40px" height="40px" alt="">
+                                    <div>
+                                        <h4>Christian Bello</h4>
+                                        <small>Gerente de información y analisis</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="customer">
+                                <div class="info">
+                                    <img src="https://michcastilloa.github.io/carlos.PNG" width="40px" height="40px" alt="">
+                                    <div>
+                                        <h4>Carlos David</h4>
+                                        <small>Coordinador de información y analisis</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="customer">
+                                <div class="info">
+                                    <img src="https://michcastilloa.github.io/mizael.PNG" width="40px" height="40px" alt="">
+                                    <div>
+                                        <h4>Mizael Dario</h4>
+                                        <small>Coordinador de estadistica</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="customer">
+                                <div class="info">
+                                    <img src="https://michcastilloa.github.io/alfredo.PNG" width="40px" height="40px" alt="">
+                                    <div>
+                                        <h4>Jose Alfredo</h4>
+                                        <small>Analista de Informacion y Estadistica</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="customer">
+                                <div class="info">
+                                    <img src="https://michcastilloa.github.io/juan.PNG" width="40px" height="40px" alt="">
+                                    <div>
+                                        <h4>Juan Carlos</h4>
+                                        <small>Analista de inteligencia geografica</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="customer">
+                                <div class="info">
+                                    <img src="https://michcastilloa.github.io/michel.PNG" width="35px" height="40px" alt="">
+                                    <div>
+                                        <h4>Michael Castillo</h4>
+                                        <small>Analista de Informacion y Analisis</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchInput');
+        const cards = document.querySelectorAll('.carde');
+
+        searchInput.addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase();
+
+            cards.forEach(function(card) {
+                const cardText = card.textContent.toLowerCase();
+
+                if (cardText.includes(query)) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
