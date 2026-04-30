@@ -8,869 +8,819 @@
     <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
     <link rel="stylesheet" href="estilo prev.css">
     <title>panel v2</title>
-</head>
-<body>
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-    :root{
-        --main-color: #DD2F6E;
-        --color-dark: #1D2231;
-        --text-grey:  #8390A2;
-    }
-
-    *{
-        padding: 0;
-        margin : 0;
-        box-sizing: border-box;
-        list-style-type: none;
-        text-decoration: none;
-        font-family: 'Poppins', sans-serif;
-    }
-
-    .sidebar{
-        width: 230px;
-        position: fixed;
-        left: 0;
-        top: 0;
-        height: 100%;
-        background: var(--main-color);
-        z-index: 100;
-        transition: width 300ms;
-    }
-
-    .sidebar-brand{
-       height: 90px;
-       padding: 1rem 0rem 1rem 2rem;
-       color: #fff;
-    }
-
-    .sidebar-brand span {
-       display: inline-block;
-       padding-right: 1rem;
-    }
-
-    .sidebar-menu {
-        margin-top: 1rem;
-    }
-
-    .sidebar-menu li {
-        width: 100%;
-        margin-bottom: 1.3rem;
-        padding-left: 2rem;
-    }
-    .sidebar-menu a {
-        padding-left: 1rem;
-        display: block;
-        color: #fff;
-        font-size: 1.1rem;
-    }
-    .sidebar-menu a:hover{
-        background: #fff;
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-        color: var(--main-color);
-        border-radius: 30px 0px 0px 30px;
-    }
-    .sidebar-menu a span:first-child {
-        font-size: 1.5rem;
-        padding-right: 1rem;
-    }
-
-    .main-content {
-        transition: margin-left 300ms;
-        margin-left: 235px;
-    }
-
-    header {
-        display: flex;
-        justify-content: space-between;
-        padding: 2rem;
-        box-shadow: 4px 2px 5px rgba(0,0,0,0.1);
-        position: absolute;
-        left: 234px;
-        width: calc(100% - 230px);
-        top: 0;
-        z-index: 100;
-        transition: left 300ms;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 1rem;
-    }
-
-    header h2 {
-        color: #222;
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
-
-    header label span {
-        font-size: 1.7rem;
-        padding-right: 1rem;
-    }
-
-    .search-wrapper{
-        border: 1px solid #f0f0f0;
-        border-radius: 30px;
-        height: 50px;
-        display: flex;
-        align-items: center;
-        overflow-x: hidden;
-    }
-
-    .search-wrapper span {
-        display: inline-block;
-        padding: 0rem 1rem;
-        font-size: 1.5rem;
-    }
-
-    .search-wrapper input {
-        height: 100%;
-        padding: .5rem;
-        border: none;
-        outline: none;
-    }
-
-    .user-wrapper {
-        display: flex;
-        align-items: center;
-    }
-
-    .user-wrapper img {
-      border-radius: 50%;
-      margin-right: 1rem;
-    }
-
-    .user-wrapper small {
-        display: inline-block;
-        color: var(--text-grey);
-        margin-top: -3px !important;
-    }
-
-    main {
-        margin-top: 111px;
-        padding: 2rem 1.5rem;
-        background: #f1f5f9;
-        min-height: calc(100vh - 90px);
-    }
-
-    .cards {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        grid-gap: 2rem;
-        margin-top: .1rem;
-    }
-
-    .card-single {
-        display:flex;
-        justify-content: space-between;
-        background: #fff;
-        padding: 1rem;
-        border-radius: 6px;
-    }
-    .card-single:hover {
-        background: var(--main-color);
-        color: #fff;
-    }
-    .card-single h1 + span {
-        color: var(--text-grey);
-    }
-
-    .card-single:hover h1 + span {
-        color: #fff;
-    }
-    .card-single:hover span {
-        color: #fff;
-    }
-
-    .card-single span {
-        color: var(--text-grey);
-    }
-
-    .recent-grid {
-        margin-top: 1rem;
-        display: grid;
-        grid-gap: 2rem;
-        grid-template-columns: 70% auto;
-    }
-    .card {
-        background: #fff;
-    }
-
-    .card-header,
-    .card-body {
-        padding: 1rem;
-    }
-
-    .card-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    table {
-        border-collapse: collapse;
-    }
-
-    thead tr {
-        border-top: 1px solid #f0f0f0;
-        border-bottom: 1px solid #f0f0f0;
-    }
-    thead td {
-        font-weight: 700;
-    }
-
-    td {
-        padding: .5rem 1rem;
-        font-size: .9rem;
-        color: #222;
-    }
-
-    td .status {
-        height:20px;
-        width: 20px;
-        border-radius: 50%;
-        display: inline-block;
-        margin-right: 1rem;
-    }
-
-    tr td:last-child {
-        display: flex;
-        align-items: center;
-    }
-
-    td .status-orange {
-        height:20px;
-        width: 20px;
-        border-radius: 50%;
-        display: inline-block;
-        margin-right: 1rem;
-    }
-    .status-orange {
-        background: orange;
-    }
-
-    td .status-green {
-        height:20px;
-        width: 20px;
-        border-radius: 50%;
-        display: inline-block;
-        margin-right: 1rem;
-    }
-    .status-green {
-        background: green;
-    }
-    td .status-red {
-        height:20px;
-        width: 20px;
-        border-radius: 50%;
-        display: inline-block;
-        margin-right: 1rem;
-    }
-    .status-red {
-        background: red;
-    }
-
-    td .status-yellow {
-        height:20px;
-        width: 20px;
-        border-radius: 50%;
-        display: inline-block;
-        margin-right: 1rem;
-    }
-    .status-yellow {
-        background: yellow;
-    }
-
-    .table-responsive {
-        width: 100%;
-        overflow-x: auto;
-    }
-
-    .customer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: .3rem .2rem;
-    }
-
-    .info {
-        display: flex;
-        align-items: center;
-    }
-
-    .info img {
-        border-radius: 80%;
-        margin-right: 1rem;
-    }
-
-    .info h4 {
-        font-size: .8rem;
-        font-weight: 700;
-        color: #222;
-    }
-
-    .info small {
-        font-weight: 600;
-        color: var(--text-grey);
-    }
-
-    #nav-toggle:checked + .sidebar {
-        width: 100px;
-    }
-    #nav-toggle:checked + .sidebar .sidebar-brand,
-    #nav-toggle:checked + .sidebar li a {
-        padding-left: 1.5rem;
-        text-align: center;
-    }
-
-    #nav-toggle:checked + .sidebar .sidebar-brand h2,
-    #nav-toggle:checked + .sidebar li a span:last-child {
-        display: none;
-    }
-
-    #nav-toggle:checked ~ .main-content {
-        margin-left: 100px;
-    }
-    #nav-toggle:checked ~ .main-content header {
-        left: 100px;
-        width: calc(100% - 100px);
-    }
-
-    .tarjetas {
-        display: grid;
-        grid-template-columns: 200px 200px;
-        padding: .5rem;
-    }
-
-    .carde {
-        display: grid;
-        grid-template-columns: 350px 350px 100px;
-        background: lightgrey;
-    }
-
-    .red-btn {
-      width: 300px;
-      height: 150px;
-      margin: 15px;
-      background: rgb(131, 58, 180);
-      background: linear-gradient(
-        90deg,
-        rgba(131, 58, 180, 1) 0%,
-        rgba(253, 29, 29, 1) 50%,
-        rgba(252, 176, 69, 1) 100%
-      );
-      color: white;
-      border: none;
-      border-radius: 0.625em;
-      font-size: 20px;
-      font-weight: bold;
-      cursor: pointer;
-      position: relative;
-      z-index: 1;
-      overflow: hidden;
-    }
-    .blue-btn {
-      width: 300px;
-      height: 150px;
-      margin: 15px;
-      background: rgb(0, 8, 144);
-      background: linear-gradient(
-        90deg,
-        rgba(0, 8, 144, 1) 0%,
-        rgba(16, 0, 255, 1) 22%,
-        rgba(86, 255, 247, 1) 100%
-      );
-      color: white;
-      border: none;
-      border-radius: 0.625em;
-      font-size: 20px;
-      font-weight: bold;
-      cursor: pointer;
-      position: relative;
-      z-index: 1;
-      overflow: hidden;
-    }
-
-    button:hover {
-      color: rgb(0, 0, 0);
-    }
-
-    button:after {
-      content: "";
-      background: white;
-      position: absolute;
-      z-index: -1;
-      left: -20%;
-      right: -20%;
-      top: 0;
-      bottom: 0;
-      transform: skewX(-45deg) scale(0, 1);
-      transition: all 0.5s;
-    }
-
-    button:hover:after {
-      transform: skewX(-45deg) scale(1, 1);
-      -webkit-transition: all 0.5s;
-      transition: all 0.5s;
-    }
-
-    html {
-        scroll-behavior: smooth;
-    }
-
-    .red-card {
-        margin-top: 2rem;
-        margin-bottom: 1rem;
-    }
-
-    .red-card h1 {
-        color: var(--main-color);
-        font-size: 2rem;
-        font-weight: 600;
-    }
-
-    /* ===== MEDIA QUERIES RESPONSIVE ===== */
-
-    /* Tablets (iPad) */
-    @media only screen and (max-width: 1024px) {
-        .sidebar {
-            width: 100px;
-        }
-        .sidebar .sidebar-brand,
-        .sidebar li a {
-            padding-left: 1.5rem;
-            text-align: center;
+        :root{
+            --main-color: #DD2F6E;
+            --main-color-dark: #c41e5a;
+            --color-dark: #1D2231;
+            --text-grey: #8390A2;
+            --text-dark: #222;
+            --bg-light: #f1f5f9;
+            --white: #fff;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+            --radius: 12px;
+            --radius-pill: 30px;
+            --transition: all 0.3s ease;
         }
 
-        .sidebar .sidebar-brand h2,
-        .sidebar li a span:last-child {
-            display: none;
-        }
-
-        .main-content {
-            margin-left: 100px;
-        }
-        .main-content header {
-            left: 100px;
-            width: calc(100% - 100px);
-        }
-
-        .cards {
-            grid-template-columns: repeat(2, 1fr);
-            grid-gap: 1rem;
-        }
-
-        .recent-grid {
-            grid-template-columns: 1fr;
-        }
-
-        iframe {
-            width: 100% !important;
-            height: 400px !important;
-        }
-
-        .tarjetas {
-            grid-template-columns: 1fr;
-        }
-
-        .carde {
-            grid-template-columns: 1fr;
-        }
-
-        .red-btn, .blue-btn {
-            width: 100%;
-            height: 100px;
-            margin: 10px 0;
-            font-size: 16px;
-        }
-
-        header {
-            padding: 1rem;
-            position: static;
-            width: 100%;
-            left: auto;
-        }
-
-        header h2 {
-            font-size: 1.3rem;
-        }
-
-        .search-wrapper {
-            width: 100%;
-            order: 3;
-        }
-
-        .user-wrapper {
-            order: 2;
-            width: 100%;
-            font-size: 0.9rem;
-        }
-
-        .user-wrapper div {
-            display: none;
-        }
-
-        main {
-            margin-top: 80px;
-            padding: 1rem;
-        }
-    }
-
-    /* Teléfonos medianos (768px y menos) */
-    @media only screen and (max-width: 768px) {
-        .sidebar {
-            width: 60px;
-        }
-
-        .main-content {
-            margin-left: 60px;
-        }
-
-        .main-content header {
-            left: 60px;
-            width: calc(100% - 60px);
-            padding: 0.8rem;
-            position: static;
-        }
-
-        header {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 0.5rem;
-        }
-
-        header h2 {
-            font-size: 1.2rem;
-            width: 100%;
-        }
-
-        .search-wrapper {
-            width: 100%;
-            height: 45px;
-        }
-
-        .search-wrapper input {
-            font-size: 14px;
-        }
-
-        .user-wrapper {
-            width: 100%;
-            display: none;
-        }
-
-        .cards {
-            grid-template-columns: 1fr;
-            grid-gap: 1rem;
-        }
-
-        .card-single {
-            padding: 0.8rem;
-        }
-
-        .card-single h1 {
-            font-size: 1.5rem;
-        }
-
-        .card-single span {
-            font-size: 0.9rem;
-        }
-
-        .recent-grid {
-            grid-template-columns: 1fr;
-            grid-gap: 1rem;
-        }
-
-        iframe {
-            width: 100% !important;
-            height: 300px !important;
-        }
-
-        .tarjetas {
-            grid-template-columns: 1fr;
-            padding: 0.5rem;
-        }
-
-        .carde {
-            grid-template-columns: 1fr;
-            background: transparent;
-        }
-
-        .red-btn, .blue-btn {
-            width: 100%;
-            height: 80px;
-            margin: 8px 0;
-            font-size: 14px;
-            padding: 10px;
-        }
-
-        .red-card h1 {
-            font-size: 1.3rem;
-        }
-
-        main {
-            margin-top: 70px;
-            padding: 0.8rem;
-        }
-
-        .card {
+        *{
             padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            list-style-type: none;
+            text-decoration: none;
+            font-family: 'Poppins', sans-serif;
         }
 
-        .card-header {
-            padding: 0.8rem;
+        body {
+            background: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
         }
 
-        .card-body {
-            padding: 0.8rem;
+        /* ===== SIDEBAR ===== */
+        .sidebar{
+            width: 230px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            background: linear-gradient(180deg, var(--main-color) 0%, var(--main-color-dark) 100%);
+            z-index: 1000;
+            transition: var(--transition);
+            box-shadow: var(--shadow-md);
+            overflow-y: auto;
         }
 
-        .customer {
-            padding: 0.5rem 0;
-        }
-
-        .info img {
-            width: 30px !important;
-            height: 30px !important;
-        }
-
-        .info h4 {
-            font-size: 0.75rem;
-        }
-
-        .info small {
-            font-size: 0.65rem;
+        .sidebar-brand{
+            height: 90px;
+            padding: 1.5rem 2rem;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
         .sidebar-brand span {
-            display: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 10px;
+            margin-right: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .sidebar-brand h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar-menu {
+            padding: 1.5rem 0;
+        }
+
+        .sidebar-menu li {
+            margin: 0.3rem 0;
+            padding: 0 1rem;
+        }
+
+        .sidebar-menu a {
+            padding: 0.9rem 1.2rem;
+            display: flex;
+            align-items: center;
+            color: rgba(255,255,255,0.9);
+            font-size: 1rem;
+            font-weight: 400;
+            border-radius: var(--radius);
+            transition: var(--transition);
+            gap: 0.8rem;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: rgba(255,255,255,0.15);
+            color: var(--white);
+            transform: translateX(4px);
         }
 
         .sidebar-menu a span:first-child {
             font-size: 1.3rem;
-            padding-right: 0;
+            width: 24px;
+            text-align: center;
         }
 
-        .sidebar-menu li {
-            margin-bottom: 1rem;
-            padding-left: 0.5rem;
+        .sidebar-menu a.active {
+            background: rgba(255,255,255,0.25);
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
-        .sidebar-menu a {
-            padding-left: 0;
-            font-size: 0;
-        }
-    }
-
-    /* Teléfonos pequeños (480px y menos) */
-    @media only screen and (max-width: 480px) {
-        body {
-            font-size: 14px;
-        }
-
-        .sidebar {
-            width: 50px;
-        }
-
+        /* ===== MAIN CONTENT ===== */
         .main-content {
-            margin-left: 50px;
+            transition: var(--transition);
+            margin-left: 230px;
+            min-height: 100vh;
         }
 
-        .main-content header {
-            left: 50px;
-            width: calc(100% - 50px);
-            padding: 0.6rem;
+        /* ===== HEADER ===== */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            gap: 1rem;
+            flex-wrap: wrap;
         }
 
         header h2 {
-            font-size: 1rem;
-            gap: 0.5rem;
+            color: var(--text-dark);
+            font-size: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        header label {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
         }
 
         header label span {
-            font-size: 1.3rem;
-            padding-right: 0;
+            font-size: 1.5rem;
+            color: var(--text-grey);
+            transition: var(--transition);
         }
 
-        .search-wrapper {
-            width: 100%;
-            height: 40px;
-            font-size: 0.9rem;
+        header label span:hover {
+            color: var(--main-color);
+        }
+
+        .search-wrapper{
+            border: 2px solid #e2e8f0;
+            border-radius: var(--radius-pill);
+            height: 48px;
+            display: flex;
+            align-items: center;
+            background: var(--white);
+            transition: var(--transition);
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .search-wrapper:focus-within {
+            border-color: var(--main-color);
+            box-shadow: 0 0 0 3px rgba(221, 47, 110, 0.1);
         }
 
         .search-wrapper span {
-            font-size: 1.2rem;
+            padding: 0 1rem;
+            font-size: 1.3rem;
+            color: var(--text-grey);
         }
 
         .search-wrapper input {
-            font-size: 12px;
+            height: 100%;
+            padding: 0.5rem 0;
+            border: none;
+            outline: none;
+            flex: 1;
+            font-size: 0.95rem;
+            color: var(--text-dark);
         }
 
-        .cards {
-            grid-template-columns: 1fr;
-            grid-gap: 0.8rem;
+        .search-wrapper input::placeholder {
+            color: var(--text-grey);
         }
 
-        .card-single {
-            flex-direction: column;
-            padding: 0.6rem;
-            gap: 0.5rem;
+        .user-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.3rem 0;
         }
 
-        .card-single h1 {
-            font-size: 1.2rem;
+        .user-wrapper img {
+            border-radius: 50%;
+            border: 3px solid var(--main-color);
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .user-wrapper img:hover {
+            transform: scale(1.05);
+        }
+
+        .user-wrapper h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-dark);
             margin: 0;
         }
 
-        .card-single span {
+        .user-wrapper small {
+            display: block;
+            color: var(--text-grey);
             font-size: 0.8rem;
+            margin-top: 2px;
         }
 
-        .card-single div:last-child {
-            font-size: 1.5rem;
-            text-align: right;
+        /* ===== MAIN ===== */
+        main {
+            padding: 2rem;
+            background: var(--bg-light);
+            min-height: calc(100vh - 90px);
+        }
+
+        /* ===== CARDS ===== */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card-single {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--white);
+            padding: 1.3rem 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            cursor: pointer;
+            border-left: 4px solid var(--main-color);
+        }
+
+        .card-single:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            background: linear-gradient(135deg, var(--main-color) 0%, var(--main-color-dark) 100%);
+            color: var(--white);
+        }
+
+        .card-single h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0;
+            color: var(--text-dark);
+        }
+
+        .card-single:hover h1 {
+            color: var(--white);
+        }
+
+        .card-single span:not([class*="la"]) {
+            color: var(--text-grey);
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        .card-single:hover span:not([class*="la"]) {
+            color: rgba(255,255,255,0.9);
+        }
+
+        .card-single span[class*="la"] {
+            font-size: 1.8rem;
+            color: var(--main-color);
+            transition: var(--transition);
+        }
+
+        .card-single:hover span[class*="la"] {
+            color: var(--white);
+        }
+
+        /* ===== RECENT GRID & IFRAME ===== */
+        .recent-grid {
+            margin-bottom: 2.5rem;
         }
 
         iframe {
-            width: 100% !important;
-            height: 250px !important;
-        }
-
-        .tarjetas {
-            grid-template-columns: 1fr;
-            padding: 0;
-        }
-
-        .carde {
-            grid-template-columns: 1fr;
-            background: transparent;
-        }
-
-        .red-btn, .blue-btn {
             width: 100%;
-            height: 70px;
-            margin: 6px 0;
-            font-size: 12px;
-            padding: 8px;
-            border-radius: 0.5em;
+            height: 500px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            border: none;
+            background: var(--white);
         }
 
+        /* ===== SECTION TITLES ===== */
         .red-card {
-            margin-top: 1rem;
-            margin-bottom: 0.8rem;
+            margin: 2.5rem 0 1.5rem;
+            padding: 1rem 0;
+            border-bottom: 3px solid var(--main-color);
         }
 
         .red-card h1 {
-            font-size: 1.1rem;
+            color: var(--main-color);
+            font-size: 1.8rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        main {
-            margin-top: 60px;
-            padding: 0.6rem;
-            min-height: auto;
+        .red-card h1::before {
+            content: '';
+            width: 6px;
+            height: 24px;
+            background: var(--main-color);
+            border-radius: 3px;
+        }
+
+        /* ===== BUTTON CARDS ===== */
+        .tarjetas {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 0.5rem 0;
+        }
+
+        .carde {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            background: transparent;
+        }
+
+        /* ===== BUTTONS ===== */
+        .red-btn, .blue-btn {
+            width: 100%;
+            min-height: 140px;
+            padding: 1.2rem;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--white);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 0.5rem;
+            text-align: left;
+            transition: var(--transition);
+            box-shadow: var(--shadow-md);
+            background-size: 200% 200%;
+        }
+
+        .red-btn {
+            background: linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%);
+        }
+
+        .blue-btn {
+            background: linear-gradient(135deg, #000890 0%, #1000ff 50%, #56fff7 100%);
+        }
+
+        .red-btn:hover, .blue-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            background-position: 100% 0;
+        }
+
+        .red-btn:active, .blue-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .red-btn p, .blue-btn p {
+            font-size: 0.85rem;
+            font-weight: 400;
+            opacity: 0.95;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .red-btn:hover p, .blue-btn:hover p {
+            opacity: 1;
+        }
+
+        /* Button shine effect */
+        .red-btn::after, .blue-btn::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .red-btn:hover::after, .blue-btn:hover::after {
+            left: 100%;
+        }
+
+        /* ===== CUSTOMERS LIST ===== */
+        .customers {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
         }
 
         .card-header {
-            padding: 0.6rem;
+            padding: 1.2rem 1.5rem;
+            border-bottom: 1px solid #f0f0f0;
+            background: rgba(221, 47, 110, 0.03);
         }
 
         .card-header h3 {
-            font-size: 1rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin: 0;
         }
 
         .card-body {
-            padding: 0.6rem;
+            padding: 1rem;
         }
 
         .customer {
-            padding: 0.4rem 0;
-            flex-direction: column;
-            align-items: flex-start;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .customer:hover {
+            background: rgba(221, 47, 110, 0.05);
+            transform: translateX(4px);
         }
 
         .info {
-            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
         .info img {
-            width: 25px !important;
-            height: 25px !important;
-            margin-right: 0.5rem;
+            border-radius: 50%;
+            border: 2px solid var(--main-color);
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .customer:hover .info img {
+            transform: scale(1.05);
         }
 
         .info h4 {
-            font-size: 0.7rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-dark);
             margin: 0;
         }
 
         .info small {
-            font-size: 0.6rem;
+            font-size: 0.8rem;
+            color: var(--text-grey);
+            font-weight: 400;
             display: block;
+            margin-top: 2px;
         }
 
-        .sidebar-brand {
-            height: 70px;
-            padding: 0.5rem;
+        /* ===== STATUS BADGES ===== */
+        .status {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
         }
 
-        .sidebar-menu {
-            margin-top: 0.5rem;
+        .status-orange { background: #f59e0b; }
+        .status-green { background: #10b981; }
+        .status-red { background: #ef4444; }
+        .status-yellow { background: #eab308; }
+
+        /* ===== TOGGLE NAV ===== */
+        #nav-toggle {
+            display: none;
         }
 
-        .sidebar-menu li {
-            margin-bottom: 0.8rem;
-            padding-left: 0.3rem;
+        #nav-toggle:checked + .sidebar {
+            width: 70px;
         }
 
-        .sidebar-menu a {
-            padding-left: 0;
-            font-size: 0;
+        #nav-toggle:checked + .sidebar .sidebar-brand h2,
+        #nav-toggle:checked + .sidebar .sidebar-menu a span:last-child {
+            display: none;
         }
 
-        .sidebar-menu a span:first-child {
-            font-size: 1.2rem;
-            padding-right: 0;
+        #nav-toggle:checked + .sidebar .sidebar-brand {
+            justify-content: center;
+            padding: 1.5rem;
         }
-    }
 
-</style>
+        #nav-toggle:checked + .sidebar .sidebar-brand span {
+            margin: 0;
+        }
+
+        #nav-toggle:checked + .sidebar .sidebar-menu a {
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        #nav-toggle:checked + .sidebar .sidebar-menu a span:first-child {
+            margin: 0;
+        }
+
+        #nav-toggle:checked ~ .main-content {
+            margin-left: 70px;
+        }
+
+        #nav-toggle:checked ~ .main-content header {
+            left: 70px;
+            width: calc(100% - 70px);
+        }
+
+        /* ===== SMOOTH SCROLL ===== */
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 100px;
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+
+        /* Tablets (≤1024px) */
+        @media (max-width: 1024px) {
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .sidebar {
+                width: 70px;
+            }
+
+            .sidebar .sidebar-brand h2,
+            .sidebar .sidebar-menu a span:last-child {
+                display: none;
+            }
+
+            .sidebar .sidebar-brand {
+                justify-content: center;
+                padding: 1.5rem;
+            }
+
+            .sidebar .sidebar-brand span {
+                margin: 0;
+            }
+
+            .sidebar .sidebar-menu a {
+                justify-content: center;
+                padding: 1rem;
+            }
+
+            .sidebar .sidebar-menu a span:first-child {
+                margin: 0;
+            }
+
+            .main-content {
+                margin-left: 70px;
+            }
+
+            header {
+                left: 70px;
+                width: calc(100% - 70px);
+            }
+
+            .search-wrapper {
+                max-width: 300px;
+            }
+
+            iframe {
+                height: 400px;
+            }
+        }
+
+        /* Mobile Medium (≤768px) */
+        @media (max-width: 768px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                width: 60px;
+            }
+
+            .main-content {
+                margin-left: 60px;
+            }
+
+            header {
+                padding: 1rem 1.5rem;
+                left: 60px;
+                width: calc(100% - 60px);
+            }
+
+            header h2 {
+                font-size: 1.3rem;
+            }
+
+            .search-wrapper {
+                order: 3;
+                width: 100%;
+                max-width: none;
+            }
+
+            .user-wrapper {
+                order: 2;
+            }
+
+            .user-wrapper small {
+                display: none;
+            }
+
+            main {
+                padding: 1.5rem;
+                margin-top: 0;
+            }
+
+            iframe {
+                height: 350px;
+            }
+
+            .carde {
+                grid-template-columns: 1fr;
+            }
+
+            .red-btn, .blue-btn {
+                min-height: 120px;
+                padding: 1rem;
+                font-size: 1rem;
+            }
+
+            .red-btn p, .blue-btn p {
+                font-size: 0.8rem;
+            }
+
+            .red-card h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Mobile Small (≤480px) */
+        @media (max-width: 480px) {
+            .sidebar {
+                width: 55px;
+            }
+
+            .main-content {
+                margin-left: 55px;
+            }
+
+            header {
+                padding: 0.8rem 1rem;
+                left: 55px;
+                width: calc(100% - 55px);
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            header h2 {
+                font-size: 1.2rem;
+                justify-content: center;
+            }
+
+            .search-wrapper {
+                height: 44px;
+            }
+
+            .search-wrapper input {
+                font-size: 0.9rem;
+            }
+
+            .user-wrapper {
+                justify-content: center;
+            }
+
+            main {
+                padding: 1rem;
+            }
+
+            .cards {
+                gap: 1rem;
+            }
+
+            .card-single {
+                padding: 1rem 1.2rem;
+            }
+
+            .card-single h1 {
+                font-size: 1.5rem;
+            }
+
+            iframe {
+                height: 280px;
+            }
+
+            .red-card {
+                margin: 1.5rem 0 1rem;
+            }
+
+            .red-card h1 {
+                font-size: 1.3rem;
+            }
+
+            .red-btn, .blue-btn {
+                min-height: 110px;
+                padding: 0.9rem;
+                font-size: 0.95rem;
+            }
+
+            .red-btn p, .blue-btn p {
+                font-size: 0.75rem;
+            }
+
+            .customer {
+                padding: 0.7rem 0.8rem;
+            }
+
+            .info img {
+                width: 36px;
+                height: 36px;
+            }
+
+            .info h4 {
+                font-size: 0.9rem;
+            }
+
+            .info small {
+                font-size: 0.75rem;
+            }
+
+            .card-header h3 {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* ===== UTILITIES ===== */
+        .hidden {
+            display: none !important;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
 
     <input type="checkbox" id="nav-toggle">
+
+    <!-- SIDEBAR -->
     <div class="sidebar">
         <div class="sidebar-brand">
-            <h2><span class="lab la-facebook-f"></span>Fincomun</h2>
+            <span class="lab la-facebook-f"></span>
+            <h2>Fincomun</h2>
         </div>
 
         <div class="sidebar-menu">
-    <div class="navbar">
-        <ul>
-            <li>
-                <a href="#Mis resultados" class="active"><span class="las la-chart-line"></span><span>Mis resultados</span></a>
-            </li>
-            <li>
-                <a href="#Mi día modelo" class="active"><span class="las la-lightbulb"></span><span>Mi día modelo</span></a>
-            </li>
-            <li>
-                <a href="#Mi agenda" class="active"><span class="las la-calendar-alt"></span><span>Mi agenda</span></a>
-            </li>
-            <li>
-                <a href="#Mis campañas" class="active"><span class="las la-bullhorn"></span><span>Mis campañas</span></a>
-            </li>
-            <li>
-                <a href="#Mi cartera de clientes" class="active"><span class="las la-address-book"></span><span>Mi cartera de clientes</span></a>
-            </li>
-            <li>
-                <a href="#Mis Rallys" class="active"><span class="las la-trophy"></span><span>Mi bono y Mis Rallys</span></a>
-            </li>
-            <li>
-                <a href="#Contactos" class="active"><span class="las la-phone"></span><span>Contactos</span></a>
-            </li>
-        </ul>
-    </div>
-</div>
+            <ul>
+                <li><a href="#Mis resultados" class="active"><span class="las la-chart-line"></span><span>Mis resultados</span></a></li>
+                <li><a href="#Mi día modelo"><span class="las la-lightbulb"></span><span>Mi día modelo</span></a></li>
+                <li><a href="#Mi agenda"><span class="las la-calendar-alt"></span><span>Mi agenda</span></a></li>
+                <li><a href="#Mis campañas"><span class="las la-bullhorn"></span><span>Mis campañas</span></a></li>
+                <li><a href="#Mi cartera de clientes"><span class="las la-address-book"></span><span>Mi cartera de clientes</span></a></li>
+                <li><a href="#Mis Rallys"><span class="las la-trophy"></span><span>Mi bono y Mis Rallys</span></a></li>
+                <li><a href="#Contactos"><span class="las la-phone"></span><span>Contactos</span></a></li>
+            </ul>
+        </div>
     </div>
 
+    <!-- MAIN CONTENT -->
     <div class="main-content">
         <header>
             <h2>
@@ -879,285 +829,309 @@
                 </label>
                 Mis resultados
             </h2>
+
             <div class="search-wrapper">
                 <span class="las la-search"></span>
-                <input type="text" placeholder="Buscar" id="searchInput"/>
+                <input type="text" placeholder="Buscar..." id="searchInput"/>
             </div>
+
             <div class="user-wrapper">
-                <img src="https://michcastilloa.github.io/logo2.PNG" width="60px" alt="">
+                <img src="https://michcastilloa.github.io/logo2.PNG" width="45" height="45" alt="User">
                 <div>
                     <h4>Planeación Financiera</h4>
-                    <small>Subdireción de incentivos y pleaneación estrategica</small>
+                    <small>Subdirección de incentivos</small>
                 </div>
             </div>
         </header>
 
         <main>
+            <!-- KPI Cards -->
             <div class="cards">
                 <div class="card-single">
                     <div>
                         <h1>$185,000</h1>
                         <span>Ventas totales</span>
                     </div>
-                    <div>
-                        <span class="las la-clipboard-list"></span>
-                    </div>
+                    <div><span class="las la-clipboard-list"></span></div>
                 </div>
                 <div class="card-single">
                     <div>
                         <h1>$140,000</h1>
                         <span>Recompras</span>
                     </div>
-                    <div>
-                        <span class="las la-tools"></span>
-                    </div>
+                    <div><span class="las la-tools"></span></div>
                 </div>
                 <div class="card-single">
                     <div>
                         <h1>$45,000</h1>
                         <span>Nuevos</span>
                     </div>
-                    <div>
-                        <span class="las la-sync-alt"></span>
-                    </div>
+                    <div><span class="las la-sync-alt"></span></div>
                 </div>
                 <div class="card-single">
                     <div>
                         <h1>$85,000</h1>
                         <span>Cobranza</span>
                     </div>
-                    <div>
-                        <span class="las la-bullhorn"></span>
-                    </div>
+                    <div><span class="las la-bullhorn"></span></div>
                 </div>
             </div>
 
+            <!-- PowerBI iframe -->
             <div class="recent-grid">
-                <iframe title="Actividades" width="1050" height="573.5" src="https://app.powerbi.com/view?r=eyJrIjoiYWY4ODMwYmMtYjc4NC00MDZjLThiNmUtYzUzYWNjZjQwYjI1IiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9" frameborder="0" allowFullScreen="true"></iframe>
+                <iframe title="Actividades" src="https://app.powerbi.com/view?r=eyJrIjoiYWY4ODMwYmMtYjc4NC00MDZjLThiNmUtYzUzYWNjZjQwYjI1IiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9" frameborder="0" allowFullScreen="true"></iframe>
             </div>
 
-            <div id="Mis resultados">
-                <div class="red-card">
-                    <h1>Mis resultados</h1>
-                </div>
+            <!-- Secciones con botones -->
+            <section id="Mis resultados">
+                <div class="red-card"><h1>Mis resultados</h1></div>
                 <div class="tarjetas">
                     <div class="carde">
                         <a href="https://app.powerbi.com/view?r=eyJrIjoiZWEzYWNkZDEtNzE1Yy00MTg3LTk4ZmEtNTUwZTliYjM0NTI0IiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
-                            <button class="red-btn">Colocacion y cobranza diaria <h6>Resultados diarios y comparaciones semanales</h6></button>
+                            <button class="red-btn">
+                                Colocación y cobranza diaria
+                                <p>Resultados diarios y comparaciones semanales</p>
+                            </button>
                         </a>
                         <a href="https://app.powerbi.com/view?r=eyJrIjoiMmJkY2IzMDgtOTUzMy00Zjk5LTkxYWEtNTMwMjA1YmI4ODcxIiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
-                            <button class="blue-btn">Asistencias<h6>Resultados de las ventas de tus asistencias</h6></button>
+                            <button class="blue-btn">
+                                Asistencias
+                                <p>Resultados de las ventas de tus asistencias</p>
+                            </button>
                         </a>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <div id="Mi día modelo">
-                <div class="red-card">
-                    <h1>Mi día modelo</h1>
-                </div>
+            <section id="Mi día modelo">
+                <div class="red-card"><h1>Mi día modelo</h1></div>
                 <div class="tarjetas">
                     <div class="carde">
-                        <a href="">
-                            <button class="red-btn">Mi día modelo <h6>Pasos a seguir para lograr excelentes resultados</h6></button>
+                        <a href="#">
+                            <button class="red-btn">
+                                Mi día modelo
+                                <p>Pasos a seguir para lograr excelentes resultados</p>
+                            </button>
                         </a>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <div id="Mi agenda">
-                <div class="red-card">
-                    <h1>Mi agenda</h1>
-                </div>
+            <section id="Mi agenda">
+                <div class="red-card"><h1>Mi agenda</h1></div>
                 <div class="tarjetas">
                     <div class="carde">
-                        <a href="">
-                            <button class="red-btn">Mi agenda <h6>Consulta tus pendientes diarios</h6></button>
+                        <a href="#">
+                            <button class="red-btn">
+                                Mi agenda
+                                <p>Consulta tus pendientes diarios</p>
+                            </button>
                         </a>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <div id="Mis campañas">
-                <div class="red-card">
-                    <h1>Mis campañas</h1>
-                </div>
+            <section id="Mis campañas">
+                <div class="red-card"><h1>Mis campañas</h1></div>
                 <div class="tarjetas">
                     <div class="carde">
                         <a href="https://app.powerbi.com/view?r=eyJrIjoiYmE5Y2UxYjYtN2RjNi00NDQxLWJkYzAtZGI3NTk2MDYxNjljIiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
-                            <button class="blue-btn">Mis campañas <h6>Revisa las ofertas de tus clientes</h6></button>
+                            <button class="blue-btn">
+                                Mis campañas
+                                <p>Revisa las ofertas de tus clientes</p>
+                            </button>
                         </a>
                         <a href="https://app.powerbi.com/view?r=eyJrIjoiYmE5Y2UxYjYtN2RjNi00NDQxLWJkYzAtZGI3NTk2MDYxNjljIiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
-                            <button class="red-btn">Seguimiento Mis campañas <h6>Revisa los resultados de tus campañas</h6></button>
+                            <button class="red-btn">
+                                Seguimiento Mis campañas
+                                <p>Revisa los resultados de tus campañas</p>
+                            </button>
                         </a>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <div id="Mi cartera de clientes">
-                <div class="red-card">
-                    <h1>Mi cartera de clientes</h1>
-                </div>
+            <section id="Mi cartera de clientes">
+                <div class="red-card"><h1>Mi cartera de clientes</h1></div>
                 <div class="tarjetas">
                     <div class="carde">
                         <a href="https://app.powerbi.com/view?r=eyJrIjoiMjIwNzUwMTQtZWJjNC00NTJhLTliN2YtOTI3NjY3YzdmNWEzIiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
-                            <button class="blue-btn">Mi cartera de clientes<h6>Consulta la información de tus clientes</h6></button>
+                            <button class="blue-btn">
+                                Mi cartera de clientes
+                                <p>Consulta la información de tus clientes</p>
+                            </button>
                         </a>
                         <a href="https://app.powerbi.com/view?r=eyJrIjoiNzJiYjk0MGMtZTQwNS00YTQyLThkN2UtODc4ZTE5MzE2ZGU1IiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
-                            <button class="red-btn">Clasificación de clientes <h6>Indiadores de cómo está compuesta tu cartera de clientes</h6></button>
+                            <button class="red-btn">
+                                Clasificación de clientes
+                                <p>Indicadores de cómo está compuesta tu cartera</p>
+                            </button>
                         </a>
                         <a href="https://app.powerbi.com/view?r=eyJrIjoiYmU2NDFhMGYtMGY1Ny00NTgwLTk2NWEtM2Y2MGUzZTc3Njg3IiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
-                            <button class="blue-btn">Enrolados <h6>Resumen y detalles de quienes de tus clientes están enrolados y que además entran a la APP FCil</h6></button>
+                            <button class="blue-btn">
+                                Enrolados
+                                <p>Resumen de clientes enrolados en la APP FCil</p>
+                            </button>
                         </a>
                         <a href="https://app.powerbi.com/view?r=eyJrIjoiNWM1ZDBlZmYtYTZkMC00OTlhLThiNjgtMDg4YjAzYWI5N2U1IiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
-                            <button class="red-btn">Tasa ponderda <h6>Resumen de las tasas que manejan tus clientes de acuerdo a su antigüedad o producto</h6></button>
+                            <button class="red-btn">
+                                Tasa ponderada
+                                <p>Tasas por antigüedad o producto de tus clientes</p>
+                            </button>
                         </a>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <div id="Mis Rallys">
-                <div class="red-card">
-                    <h1>Mis Rallys</h1>
-                </div>
+            <section id="Mis Rallys">
+                <div class="red-card"><h1>Mis Rallys</h1></div>
                 <div class="tarjetas">
                     <div class="carde">
                         <a href="https://app.powerbi.com/view?r=eyJrIjoiOGVjODkyN2ItNDIxYy00ZmU1LThjY2EtZDk1NDU4YTg4NDY4IiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
-                            <button class="blue-btn">Mi bono <h6>Avance diario de tus metas para tu remuneración</h6></button>
+                            <button class="blue-btn">
+                                Mi bono
+                                <p>Avance diario de tus metas para tu remuneración</p>
+                            </button>
                         </a>
                         <a href="https://app.powerbi.com/view?r=eyJrIjoiMDUzMDRlMDEtNjIzYi00YTQxLWFmMzItZDYzMGMzMmRlMDhmIiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
-                            <button class="red-btn">Mis Rallys <h6>Avance diario de los rallys activos en los que tu participas </h6></button>
+                            <button class="red-btn">
+                                Mis Rallys
+                                <p>Avance de rallys activos en los que participas</p>
+                            </button>
                         </a>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <div id="Contactos">
-                <div class="red-card">
-                    <h1>Contactos</h1>
-                </div>
+            <!-- Contactos -->
+            <section id="Contactos">
+                <div class="red-card"><h1>Contactos</h1></div>
                 <div class="customers">
                     <div class="card">
-                        <div class="card-header">
-                            <h3>Equipo</h3>
-                        </div>
+                        <div class="card-header"><h3>Equipo</h3></div>
                         <div class="card-body">
                             <div class="customer">
                                 <div class="info">
-                                    <img src="./christian.PNG" width="40px" height="40px" alt="">
-                                    <div>
-                                        <h4>Christian Bello</h4>
-                                        <small>Gerente de información y analisis</small>
-                                    </div>
+                                    <img src="./christian.PNG" width="40" height="40" alt="">
+                                    <div><h4>Christian Bello</h4><small>Gerente de información y análisis</small></div>
                                 </div>
                             </div>
                             <div class="customer">
                                 <div class="info">
-                                    <img src="./carlos.PNG" width="40px" height="40px" alt="">
-                                    <div>
-                                        <h4>Carlos David</h4>
-                                        <small>Coordinador de información y analisis</small>
-                                    </div>
+                                    <img src="./carlos.PNG" width="40" height="40" alt="">
+                                    <div><h4>Carlos David</h4><small>Coordinador de información y análisis</small></div>
                                 </div>
                             </div>
                             <div class="customer">
                                 <div class="info">
-                                    <img src="./mizael.PNG" width="40px" height="40px" alt="">
-                                    <div>
-                                        <h4>Mizael Dario</h4>
-                                        <small>Coordinador de estadistica</small>
-                                    </div>
+                                    <img src="./mizael.PNG" width="40" height="40" alt="">
+                                    <div><h4>Mizael Dario</h4><small>Coordinador de estadística</small></div>
                                 </div>
                             </div>
                             <div class="customer">
                                 <div class="info">
-                                    <img src="./alfredo.PNG" width="40px" height="40px" alt="">
-                                    <div>
-                                        <h4>Jose Alfredo</h4>
-                                        <small>Analista de Informacion y Estadistica</small>
-                                    </div>
+                                    <img src="./alfredo.PNG" width="40" height="40" alt="">
+                                    <div><h4>Jose Alfredo</h4><small>Analista de Información y Estadística</small></div>
                                 </div>
                             </div>
                             <div class="customer">
                                 <div class="info">
-                                    <img src="./juan.png" width="40px" height="40px" alt="">
-                                    <div>
-                                        <h4>Juan Carlos Mejia</h4>
-                                        <small>Empresario de compensaciones e informacion</small>
-                                    </div>
+                                    <img src="./juan.png" width="40" height="40" alt="">
+                                    <div><h4>Juan Carlos Mejia</h4><small>Empresario de compensaciones</small></div>
                                 </div>
                             </div>
                             <div class="customer">
                                 <div class="info">
-                                    <img src="./michel.PNG" width="35px" height="40px" alt="">
-                                    <div>
-                                        <h4>Michael Castillo</h4>
-                                        <small>Analista de Informacion y Analisis</small>
-                                    </div>
+                                    <img src="./michel.PNG" width="40" height="40" alt="">
+                                    <div><h4>Michael Castillo</h4><small>Analista de Información y Análisis</small></div>
                                 </div>
                             </div>
                             <div class="customer">
                                 <div class="info">
-                                    <img src="./nixi.png" width="35px" height="40px" alt="">
-                                    <div>
-                                        <h4>Nixi Osornio Mejia</h4>
-                                        <small>Analista de inteligencia geografica</small>
-                                    </div>
+                                    <img src="./nixi.png" width="40" height="40" alt="">
+                                    <div><h4>Nixi Osornio Mejia</h4><small>Analista de inteligencia geográfica</small></div>
                                 </div>
                             </div>
                             <div class="customer">
                                 <div class="info">
-                                    <img src="./angel.png" width="35px" height="40px" alt="">
-                                    <div>
-                                        <h4>Angel Eduardo Pacheco</h4>
-                                        <small>Empresario de proyectos</small>
-                                    </div>
+                                    <img src="./angel.png" width="40" height="40" alt="">
+                                    <div><h4>Angel Eduardo Pacheco</h4><small>Empresario de proyectos</small></div>
                                 </div>
                             </div>
                             <div class="customer">
                                 <div class="info">
-                                    <img src="./yanet.png" width="35px" height="40px" alt="">
-                                    <div>
-                                        <h4>Yanet Dalia Rosales</h4>
-                                        <small>Coordinadora de compensaciones</small>
-                                    </div>
+                                    <img src="./yanet.png" width="40" height="40" alt="">
+                                    <div><h4>Yanet Dalia Rosales</h4><small>Coordinadora de compensaciones</small></div>
                                 </div>
                             </div>
-                             <div class="customer">
+                            <div class="customer">
                                 <div class="info">
-                                    <img src="./thelian.png" width="35px" height="40px" alt="">
-                                    <div>
-                                        <h4>Thelian Omar Arias</h4>
-                                        <small>Subdirector de Incentivos Y Planeacion Estrategica</small>
-                                    </div>
+                                    <img src="./thelian.png" width="40" height="40" alt="">
+                                    <div><h4>Thelian Omar Arias</h4><small>Subdirector de Incentivos</small></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
         </main>
     </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const searchInput = document.getElementById('searchInput');
-        const cards = document.querySelectorAll('.carde');
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const cards = document.querySelectorAll('.carde');
 
-        searchInput.addEventListener('input', function(e) {
-            const query = e.target.value.toLowerCase();
+            searchInput.addEventListener('input', function(e) {
+                const query = e.target.value.toLowerCase().trim();
 
-            cards.forEach(function(card) {
-                const cardText = card.textContent.toLowerCase();
+                cards.forEach(function(card) {
+                    const cardText = card.textContent.toLowerCase();
+                    if (query === '' || cardText.includes(query)) {
+                        card.classList.remove('hidden');
+                        card.classList.add('fade-in');
+                    } else {
+                        card.classList.add('hidden');
+                        card.classList.remove('fade-in');
+                    }
+                });
+            });
 
-                if (cardText.includes(query)) {
-                    card.style.display = '';
-                } else {
-                    card.style.display = 'none';
-                }
+            // Smooth scroll para navegación interna
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        // Actualizar clase active
+                        document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
+                        this.classList.add('active');
+                    }
+                });
+            });
+
+            // Highlight active section on scroll
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.sidebar-menu a');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - 150;
+                    if (pageYOffset >= sectionTop) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.add('active');
+                    }
+                });
             });
         });
-    });
-</script>
+    </script>
 </body>
 </html>
