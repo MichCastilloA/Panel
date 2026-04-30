@@ -1,33 +1,58 @@
 <!doctype html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
-    <link rel="stylesheet" href="estilo prev.css">
     <title>panel v2</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-        :root{
+        :root {
+            /* Tema Claro - Rosado */
             --main-color: #DD2F6E;
             --main-color-dark: #c41e5a;
+            --main-color-light: #ff6b9d;
             --color-dark: #1D2231;
             --text-grey: #8390A2;
             --text-dark: #222;
+            --text-light: #fff;
             --bg-light: #f1f5f9;
-            --white: #fff;
+            --bg-card: #fff;
+            --bg-sidebar: linear-gradient(180deg, var(--main-color) 0%, var(--main-color-dark) 100%);
             --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
             --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
             --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
             --radius: 12px;
             --radius-pill: 30px;
             --transition: all 0.3s ease;
+            --tooltip-bg: #fff;
+            --tooltip-text: #222;
+            --tooltip-border: var(--main-color);
         }
 
-        *{
+        /* Tema Oscuro - Azul */
+        [data-theme="dark"] {
+            --main-color: #3b82f6;
+            --main-color-dark: #1d4ed8;
+            --main-color-light: #60a5fa;
+            --color-dark: #f1f5f9;
+            --text-grey: #94a3b8;
+            --text-dark: #f8fafc;
+            --text-light: #1e293b;
+            --bg-light: #0f172a;
+            --bg-card: #1e293b;
+            --bg-sidebar: linear-gradient(180deg, var(--main-color-dark) 0%, #1e3a8a 100%);
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.5);
+            --tooltip-bg: #1e293b;
+            --tooltip-text: #f8fafc;
+            --tooltip-border: var(--main-color-light);
+        }
+
+        * {
             padding: 0;
             margin: 0;
             box-sizing: border-box;
@@ -40,26 +65,27 @@
             background: var(--bg-light);
             color: var(--text-dark);
             line-height: 1.6;
+            transition: var(--transition);
         }
 
         /* ===== SIDEBAR ===== */
-        .sidebar{
+        .sidebar {
             width: 230px;
             position: fixed;
             left: 0;
             top: 0;
             height: 100vh;
-            background: linear-gradient(180deg, var(--main-color) 0%, var(--main-color-dark) 100%);
+            background: var(--bg-sidebar);
             z-index: 1000;
             transition: var(--transition);
             box-shadow: var(--shadow-md);
             overflow-y: auto;
         }
 
-        .sidebar-brand{
+        .sidebar-brand {
             height: 90px;
             padding: 1.5rem 2rem;
-            color: var(--white);
+            color: var(--text-light);
             display: flex;
             align-items: center;
             border-bottom: 1px solid rgba(255,255,255,0.1);
@@ -75,12 +101,14 @@
             border-radius: 10px;
             margin-right: 1rem;
             font-size: 1.3rem;
+            transition: var(--transition);
         }
 
         .sidebar-brand h2 {
             font-size: 1.4rem;
             font-weight: 600;
             letter-spacing: 0.5px;
+            transition: var(--transition);
         }
 
         .sidebar-menu {
@@ -107,7 +135,7 @@
         .sidebar-menu a:hover,
         .sidebar-menu a.active {
             background: rgba(255,255,255,0.15);
-            color: var(--white);
+            color: var(--text-light);
             transform: translateX(4px);
         }
 
@@ -115,12 +143,22 @@
             font-size: 1.3rem;
             width: 24px;
             text-align: center;
+            transition: var(--transition);
         }
 
         .sidebar-menu a.active {
             background: rgba(255,255,255,0.25);
             font-weight: 500;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .sidebar-menu a.active span:first-child {
+            animation: iconPulse 1.5s infinite;
+        }
+
+        @keyframes iconPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
         }
 
         /* ===== MAIN CONTENT ===== */
@@ -136,13 +174,14 @@
             justify-content: space-between;
             align-items: center;
             padding: 1.5rem 2rem;
-            background: var(--white);
+            background: var(--bg-card);
             box-shadow: var(--shadow-sm);
             position: sticky;
             top: 0;
             z-index: 100;
             gap: 1rem;
             flex-wrap: wrap;
+            transition: var(--transition);
         }
 
         header h2 {
@@ -152,6 +191,7 @@
             display: flex;
             align-items: center;
             gap: 0.8rem;
+            transition: var(--transition);
         }
 
         header label {
@@ -170,16 +210,68 @@
             color: var(--main-color);
         }
 
-        .search-wrapper{
+        /* Dark Mode Toggle */
+        .theme-toggle {
+            background: var(--bg-light);
+            border: 2px solid var(--main-color);
+            border-radius: 50px;
+            width: 50px;
+            height: 26px;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 2px;
+            transition: var(--transition);
+        }
+
+        .theme-toggle::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--main-color);
+            border-radius: 50%;
+            left: 3px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        [data-theme="dark"] .theme-toggle::after {
+            left: calc(100% - 23px);
+            background: var(--main-color-light);
+        }
+
+        .theme-toggle span {
+            font-size: 0.7rem;
+            position: absolute;
+            color: var(--text-grey);
+            transition: var(--transition);
+        }
+
+        .theme-toggle .sun { left: 8px; opacity: 1; }
+        .theme-toggle .moon { right: 8px; opacity: 0; }
+
+        [data-theme="dark"] .theme-toggle .sun { opacity: 0; }
+        [data-theme="dark"] .theme-toggle .moon { opacity: 1; }
+
+        .search-wrapper {
             border: 2px solid #e2e8f0;
             border-radius: var(--radius-pill);
             height: 48px;
             display: flex;
             align-items: center;
-            background: var(--white);
+            background: var(--bg-card);
             transition: var(--transition);
             flex: 1;
             max-width: 400px;
+        }
+
+        [data-theme="dark"] .search-wrapper {
+            border-color: #334155;
+            background: #334155;
         }
 
         .search-wrapper:focus-within {
@@ -201,6 +293,7 @@
             flex: 1;
             font-size: 0.95rem;
             color: var(--text-dark);
+            background: transparent;
         }
 
         .search-wrapper input::placeholder {
@@ -230,6 +323,7 @@
             font-weight: 600;
             color: var(--text-dark);
             margin: 0;
+            transition: var(--transition);
         }
 
         .user-wrapper small {
@@ -237,6 +331,7 @@
             color: var(--text-grey);
             font-size: 0.8rem;
             margin-top: 2px;
+            transition: var(--transition);
         }
 
         /* ===== MAIN ===== */
@@ -244,6 +339,7 @@
             padding: 2rem;
             background: var(--bg-light);
             min-height: calc(100vh - 90px);
+            transition: var(--transition);
         }
 
         /* ===== CARDS ===== */
@@ -258,20 +354,32 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: var(--white);
+            background: var(--bg-card);
             padding: 1.3rem 1.5rem;
             border-radius: var(--radius);
             box-shadow: var(--shadow-sm);
             transition: var(--transition);
             cursor: pointer;
             border-left: 4px solid var(--main-color);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideUp 0.5s ease forwards;
+        }
+
+        .card-single:nth-child(1) { animation-delay: 0.1s; }
+        .card-single:nth-child(2) { animation-delay: 0.2s; }
+        .card-single:nth-child(3) { animation-delay: 0.3s; }
+        .card-single:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes slideUp {
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .card-single:hover {
             transform: translateY(-4px);
             box-shadow: var(--shadow-lg);
             background: linear-gradient(135deg, var(--main-color) 0%, var(--main-color-dark) 100%);
-            color: var(--white);
+            color: var(--text-light);
         }
 
         .card-single h1 {
@@ -279,16 +387,18 @@
             font-weight: 700;
             margin: 0;
             color: var(--text-dark);
+            transition: var(--transition);
         }
 
         .card-single:hover h1 {
-            color: var(--white);
+            color: var(--text-light);
         }
 
         .card-single span:not([class*="la"]) {
             color: var(--text-grey);
             font-size: 0.9rem;
             font-weight: 400;
+            transition: var(--transition);
         }
 
         .card-single:hover span:not([class*="la"]) {
@@ -302,12 +412,18 @@
         }
 
         .card-single:hover span[class*="la"] {
-            color: var(--white);
+            color: var(--text-light);
         }
 
         /* ===== RECENT GRID & IFRAME ===== */
         .recent-grid {
             margin-bottom: 2.5rem;
+            opacity: 0;
+            animation: fadeIn 0.6s ease 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
         }
 
         iframe {
@@ -316,7 +432,8 @@
             border-radius: var(--radius);
             box-shadow: var(--shadow-md);
             border: none;
-            background: var(--white);
+            background: var(--bg-card);
+            transition: var(--transition);
         }
 
         /* ===== SECTION TITLES ===== */
@@ -324,6 +441,20 @@
             margin: 2.5rem 0 1.5rem;
             padding: 1rem 0;
             border-bottom: 3px solid var(--main-color);
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: slideInLeft 0.5s ease forwards;
+        }
+
+        .red-card:nth-of-type(2) { animation-delay: 0.1s; }
+        .red-card:nth-of-type(3) { animation-delay: 0.2s; }
+        .red-card:nth-of-type(4) { animation-delay: 0.3s; }
+        .red-card:nth-of-type(5) { animation-delay: 0.4s; }
+        .red-card:nth-of-type(6) { animation-delay: 0.5s; }
+        .red-card:nth-of-type(7) { animation-delay: 0.6s; }
+
+        @keyframes slideInLeft {
+            to { opacity: 1; transform: translateX(0); }
         }
 
         .red-card h1 {
@@ -333,6 +464,7 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
+            transition: var(--transition);
         }
 
         .red-card h1::before {
@@ -341,6 +473,7 @@
             height: 24px;
             background: var(--main-color);
             border-radius: 3px;
+            transition: var(--transition);
         }
 
         /* ===== BUTTON CARDS ===== */
@@ -367,7 +500,7 @@
             border-radius: var(--radius);
             font-size: 1.1rem;
             font-weight: 600;
-            color: var(--white);
+            color: var(--text-light);
             cursor: pointer;
             position: relative;
             overflow: hidden;
@@ -412,6 +545,29 @@
             opacity: 1;
         }
 
+        /* Button Icon Animation */
+        .btn-icon {
+            position: absolute;
+            right: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .red-btn:hover .btn-icon,
+        .blue-btn:hover .btn-icon {
+            opacity: 1;
+            right: 1.5rem;
+            animation: bounceIcon 0.6s ease;
+        }
+
+        @keyframes bounceIcon {
+            0%, 100% { transform: translateY(-50%) scale(1); }
+            50% { transform: translateY(-50%) scale(1.3); }
+        }
+
         /* Button shine effect */
         .red-btn::after, .blue-btn::after {
             content: "";
@@ -435,16 +591,23 @@
         }
 
         .card {
-            background: var(--white);
+            background: var(--bg-card);
             border-radius: var(--radius);
             box-shadow: var(--shadow-sm);
             overflow: hidden;
+            transition: var(--transition);
         }
 
         .card-header {
             padding: 1.2rem 1.5rem;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
             background: rgba(221, 47, 110, 0.03);
+            transition: var(--transition);
+        }
+
+        [data-theme="dark"] .card-header {
+            border-bottom-color: rgba(255,255,255,0.1);
+            background: rgba(59, 130, 246, 0.1);
         }
 
         .card-header h3 {
@@ -452,6 +615,7 @@
             font-weight: 600;
             color: var(--text-dark);
             margin: 0;
+            transition: var(--transition);
         }
 
         .card-body {
@@ -465,11 +629,17 @@
             padding: 0.8rem 1rem;
             border-radius: 8px;
             transition: var(--transition);
+            position: relative;
+            cursor: pointer;
         }
 
         .customer:hover {
             background: rgba(221, 47, 110, 0.05);
             transform: translateX(4px);
+        }
+
+        [data-theme="dark"] .customer:hover {
+            background: rgba(59, 130, 246, 0.1);
         }
 
         .info {
@@ -487,6 +657,7 @@
 
         .customer:hover .info img {
             transform: scale(1.05);
+            border-color: var(--main-color-light);
         }
 
         .info h4 {
@@ -494,6 +665,7 @@
             font-weight: 600;
             color: var(--text-dark);
             margin: 0;
+            transition: var(--transition);
         }
 
         .info small {
@@ -502,6 +674,136 @@
             font-weight: 400;
             display: block;
             margin-top: 2px;
+            transition: var(--transition);
+        }
+
+        /* ===== CONTACT TOOLTIP/CREDENTIAL ===== */
+        .contact-tooltip {
+            position: absolute;
+            left: calc(100% + 15px);
+            top: 50%;
+            transform: translateY(-50%) scale(0.9);
+            background: var(--tooltip-bg);
+            border: 2px solid var(--tooltip-border);
+            border-radius: 16px;
+            padding: 1rem 1.5rem;
+            min-width: 280px;
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .contact-tooltip::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 10px solid transparent;
+            border-right-color: var(--tooltip-border);
+        }
+
+        .customer:hover .contact-tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(-50%) scale(1);
+            pointer-events: auto;
+        }
+
+        .tooltip-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            margin-bottom: 0.8rem;
+        }
+
+        [data-theme="dark"] .tooltip-header {
+            border-bottom-color: rgba(255,255,255,0.1);
+        }
+
+        .tooltip-header img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 3px solid var(--main-color);
+        }
+
+        .tooltip-header h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        .tooltip-header small {
+            color: var(--main-color);
+            font-weight: 500;
+        }
+
+        .tooltip-body {
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .tooltip-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-grey);
+        }
+
+        .tooltip-item span {
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .tooltip-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.8rem;
+            padding-top: 0.8rem;
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+
+        [data-theme="dark"] .tooltip-actions {
+            border-top-color: rgba(255,255,255,0.1);
+        }
+
+        .tooltip-btn {
+            flex: 1;
+            padding: 0.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+        }
+
+        .tooltip-btn.primary {
+            background: var(--main-color);
+            color: var(--text-light);
+        }
+
+        .tooltip-btn.secondary {
+            background: var(--bg-light);
+            color: var(--text-dark);
+            border: 1px solid var(--text-grey);
+        }
+
+        .tooltip-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
         }
 
         /* ===== STATUS BADGES ===== */
@@ -567,6 +869,18 @@
             scroll-padding-top: 100px;
         }
 
+        /* ===== SECTION ANIMATIONS ON SCROLL ===== */
+        section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         /* ===== RESPONSIVE DESIGN ===== */
 
         /* Tablets (≤1024px) */
@@ -617,6 +931,27 @@
 
             iframe {
                 height: 400px;
+            }
+
+            .contact-tooltip {
+                left: 50%;
+                top: auto;
+                bottom: calc(100% + 10px);
+                transform: translateX(-50%) scale(0.9);
+                min-width: 250px;
+            }
+
+            .contact-tooltip::before {
+                left: 50%;
+                top: auto;
+                bottom: -10px;
+                transform: translateX(-50%);
+                border-right-color: transparent;
+                border-top-color: var(--tooltip-border);
+            }
+
+            .customer:hover .contact-tooltip {
+                transform: translateX(-50%) scale(1);
             }
         }
 
@@ -683,6 +1018,25 @@
 
             .red-card h1 {
                 font-size: 1.5rem;
+            }
+
+            .contact-tooltip {
+                position: fixed;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%) scale(0.9);
+                bottom: auto;
+                min-width: 90%;
+                max-width: 320px;
+                z-index: 1000;
+            }
+
+            .contact-tooltip::before {
+                display: none;
+            }
+
+            .customer:hover .contact-tooltip {
+                transform: translate(-50%, -50%) scale(1);
             }
         }
 
@@ -779,6 +1133,20 @@
             .card-header h3 {
                 font-size: 1.1rem;
             }
+
+            .contact-tooltip {
+                min-width: 95%;
+                padding: 0.8rem 1.2rem;
+            }
+
+            .tooltip-header img {
+                width: 45px;
+                height: 45px;
+            }
+
+            .tooltip-header h4 {
+                font-size: 0.95rem;
+            }
         }
 
         /* ===== UTILITIES ===== */
@@ -793,6 +1161,25 @@
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Overlay para tooltip en móvil */
+        .tooltip-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .tooltip-overlay.active {
+            opacity: 1;
+            visibility: visible;
         }
     </style>
 </head>
@@ -809,12 +1196,12 @@
 
         <div class="sidebar-menu">
             <ul>
-                <li><a href="#Mis resultados" class="active"><span class="las la-chart-line"></span><span>Mis resultados</span></a></li>
-                <li><a href="#Mi día modelo"><span class="las la-lightbulb"></span><span>Mi día modelo</span></a></li>
-                <li><a href="#Mi agenda"><span class="las la-calendar-alt"></span><span>Mi agenda</span></a></li>
-                <li><a href="#Mis campañas"><span class="las la-bullhorn"></span><span>Mis campañas</span></a></li>
-                <li><a href="#Mi cartera de clientes"><span class="las la-address-book"></span><span>Mi cartera de clientes</span></a></li>
-                <li><a href="#Mis Rallys"><span class="las la-trophy"></span><span>Mi bono y Mis Rallys</span></a></li>
+                <li><a href="#Mis-resultados" class="active"><span class="las la-chart-line"></span><span>Mis resultados</span></a></li>
+                <li><a href="#Mi-dia-modelo"><span class="las la-lightbulb"></span><span>Mi día modelo</span></a></li>
+                <li><a href="#Mi-agenda"><span class="las la-calendar-alt"></span><span>Mi agenda</span></a></li>
+                <li><a href="#Mis-campanas"><span class="las la-bullhorn"></span><span>Mis campañas</span></a></li>
+                <li><a href="#Mi-cartera"><span class="las la-address-book"></span><span>Mi cartera de clientes</span></a></li>
+                <li><a href="#Mis-Rallys"><span class="las la-trophy"></span><span>Mi bono y Mis Rallys</span></a></li>
                 <li><a href="#Contactos"><span class="las la-phone"></span><span>Contactos</span></a></li>
             </ul>
         </div>
@@ -835,11 +1222,19 @@
                 <input type="text" placeholder="Buscar..." id="searchInput"/>
             </div>
 
-            <div class="user-wrapper">
-                <img src="./logo_fincomun.png" width="45" height="45" alt="User">
-                <div>
-                    <h4>Planeación Financiera</h4>
-                    <small>Subdirección de incentivos</small>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <!-- Dark Mode Toggle -->
+                <div class="theme-toggle" id="themeToggle" title="Cambiar tema">
+                    <span class="sun">☀️</span>
+                    <span class="moon">🌙</span>
+                </div>
+
+                <div class="user-wrapper">
+                    <img src="./logo_fincomun.png" width="45" height="45" alt="User">
+                    <div>
+                        <h4>Planeación Financiera</h4>
+                        <small>Subdirección de incentivos</small>
+                    </div>
                 </div>
             </div>
         </header>
@@ -883,7 +1278,7 @@
             </div>
 
             <!-- Secciones con botones -->
-            <section id="Mis resultados">
+            <section id="Mis-resultados">
                 <div class="red-card"><h1>Mis resultados</h1></div>
                 <div class="tarjetas">
                     <div class="carde">
@@ -891,19 +1286,21 @@
                             <button class="red-btn">
                                 Colocación y cobranza diaria
                                 <p>Resultados diarios y comparaciones semanales</p>
+                                <span class="btn-icon las la-arrow-right"></span>
                             </button>
                         </a>
                         <a href="https://app.powerbi.com/view?r=eyJrIjoiMmJkY2IzMDgtOTUzMy00Zjk5LTkxYWEtNTMwMjA1YmI4ODcxIiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
                             <button class="blue-btn">
                                 Asistencias
                                 <p>Resultados de las ventas de tus asistencias</p>
+                                <span class="btn-icon las la-arrow-right"></span>
                             </button>
                         </a>
                     </div>
                 </div>
             </section>
 
-            <section id="Mi día modelo">
+            <section id="Mi-dia-modelo">
                 <div class="red-card"><h1>Mi día modelo</h1></div>
                 <div class="tarjetas">
                     <div class="carde">
@@ -911,13 +1308,14 @@
                             <button class="red-btn">
                                 Mi día modelo
                                 <p>Pasos a seguir para lograr excelentes resultados</p>
+                                <span class="btn-icon las la-arrow-right"></span>
                             </button>
                         </a>
                     </div>
                 </div>
             </section>
 
-            <section id="Mi agenda">
+            <section id="Mi-agenda">
                 <div class="red-card"><h1>Mi agenda</h1></div>
                 <div class="tarjetas">
                     <div class="carde">
@@ -925,13 +1323,14 @@
                             <button class="red-btn">
                                 Mi agenda
                                 <p>Consulta tus pendientes diarios</p>
+                                <span class="btn-icon las la-arrow-right"></span>
                             </button>
                         </a>
                     </div>
                 </div>
             </section>
 
-            <section id="Mis campañas">
+            <section id="Mis-campanas">
                 <div class="red-card"><h1>Mis campañas</h1></div>
                 <div class="tarjetas">
                     <div class="carde">
@@ -939,19 +1338,21 @@
                             <button class="blue-btn">
                                 Mis campañas
                                 <p>Revisa las ofertas de tus clientes</p>
+                                <span class="btn-icon las la-arrow-right"></span>
                             </button>
                         </a>
                         <a href="https://app.powerbi.com/view?r=eyJrIjoiYmE5Y2UxYjYtN2RjNi00NDQxLWJkYzAtZGI3NTk2MDYxNjljIiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
                             <button class="red-btn">
                                 Seguimiento Mis campañas
                                 <p>Revisa los resultados de tus campañas</p>
+                                <span class="btn-icon las la-arrow-right"></span>
                             </button>
                         </a>
                     </div>
                 </div>
             </section>
 
-            <section id="Mi cartera de clientes">
+            <section id="Mi-cartera">
                 <div class="red-card"><h1>Mi cartera de clientes</h1></div>
                 <div class="tarjetas">
                     <div class="carde">
@@ -959,31 +1360,35 @@
                             <button class="blue-btn">
                                 Mi cartera de clientes
                                 <p>Consulta la información de tus clientes</p>
+                                <span class="btn-icon las la-arrow-right"></span>
                             </button>
                         </a>
                         <a href="https://app.powerbi.com/view?r=eyJrIjoiNzJiYjk0MGMtZTQwNS00YTQyLThkN2UtODc4ZTE5MzE2ZGU1IiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
                             <button class="red-btn">
                                 Clasificación de clientes
                                 <p>Indicadores de cómo está compuesta tu cartera</p>
+                                <span class="btn-icon las la-arrow-right"></span>
                             </button>
                         </a>
                         <a href="https://app.powerbi.com/view?r=eyJrIjoiYmU2NDFhMGYtMGY1Ny00NTgwLTk2NWEtM2Y2MGUzZTc3Njg3IiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
                             <button class="blue-btn">
                                 Enrolados
                                 <p>Resumen de clientes enrolados en la APP FCil</p>
+                                <span class="btn-icon las la-arrow-right"></span>
                             </button>
                         </a>
                         <a href="https://app.powerbi.com/view?r=eyJrIjoiNWM1ZDBlZmYtYTZkMC00OTlhLThiNjgtMDg4YjAzYWI5N2U1IiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
                             <button class="red-btn">
                                 Tasa ponderada
                                 <p>Tasas por antigüedad o producto de tus clientes</p>
+                                <span class="btn-icon las la-arrow-right"></span>
                             </button>
                         </a>
                     </div>
                 </div>
             </section>
 
-            <section id="Mis Rallys">
+            <section id="Mis-Rallys">
                 <div class="red-card"><h1>Mis Rallys</h1></div>
                 <div class="tarjetas">
                     <div class="carde">
@@ -991,12 +1396,14 @@
                             <button class="blue-btn">
                                 Mi bono
                                 <p>Avance diario de tus metas para tu remuneración</p>
+                                <span class="btn-icon las la-arrow-right"></span>
                             </button>
                         </a>
                         <a href="https://app.powerbi.com/view?r=eyJrIjoiMDUzMDRlMDEtNjIzYi00YTQxLWFmMzItZDYzMGMzMmRlMDhmIiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
                             <button class="red-btn">
                                 Mis Rallys
                                 <p>Avance de rallys activos en los que participas</p>
+                                <span class="btn-icon las la-arrow-right"></span>
                             </button>
                         </a>
                     </div>
@@ -1015,11 +1422,49 @@
                                     <img src="./christian.PNG" width="40" height="40" alt="">
                                     <div><h4>Christian Bello</h4><small>Gerente de información y análisis</small></div>
                                 </div>
+                                <div class="contact-tooltip">
+                                    <div class="tooltip-header">
+                                        <img src="./christian.PNG" alt="">
+                                        <div>
+                                            <h4>Christian Bello</h4>
+                                            <small>Gerente de información y análisis</small>
+                                        </div>
+                                    </div>
+                                    <div class="tooltip-body">
+                                        <div class="tooltip-item"><span>📧</span> christian.bello@fincomun.com</div>
+                                        <div class="tooltip-item"><span>📱</span> Ext. 2401</div>
+                                        <div class="tooltip-item"><span>🏢</span> Piso 3, Oficina 301</div>
+                                        <div class="tooltip-item"><span>🕐</span> Lun-Vie 9:00-18:00</div>
+                                    </div>
+                                    <div class="tooltip-actions">
+                                        <button class="tooltip-btn primary"><span class="las la-envelope"></span> Email</button>
+                                        <button class="tooltip-btn secondary"><span class="las la-phone"></span> Llamar</button>
+                                    </div>
+                                </div>
                             </div>
                             <div class="customer">
                                 <div class="info">
                                     <img src="./carlos.PNG" width="40" height="40" alt="">
                                     <div><h4>Carlos David</h4><small>Coordinador de información y análisis</small></div>
+                                </div>
+                                <div class="contact-tooltip">
+                                    <div class="tooltip-header">
+                                        <img src="./carlos.PNG" alt="">
+                                        <div>
+                                            <h4>Carlos David</h4>
+                                            <small>Coordinador de información</small>
+                                        </div>
+                                    </div>
+                                    <div class="tooltip-body">
+                                        <div class="tooltip-item"><span>📧</span> carlos.david@fincomun.com</div>
+                                        <div class="tooltip-item"><span>📱</span> Ext. 2402</div>
+                                        <div class="tooltip-item"><span>🏢</span> Piso 3, Oficina 302</div>
+                                        <div class="tooltip-item"><span>🕐</span> Lun-Vie 9:00-18:00</div>
+                                    </div>
+                                    <div class="tooltip-actions">
+                                        <button class="tooltip-btn primary"><span class="las la-envelope"></span> Email</button>
+                                        <button class="tooltip-btn secondary"><span class="las la-phone"></span> Llamar</button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="customer">
@@ -1027,11 +1472,49 @@
                                     <img src="./mizael.PNG" width="40" height="40" alt="">
                                     <div><h4>Mizael Dario</h4><small>Coordinador de estadística</small></div>
                                 </div>
+                                <div class="contact-tooltip">
+                                    <div class="tooltip-header">
+                                        <img src="./mizael.PNG" alt="">
+                                        <div>
+                                            <h4>Mizael Dario</h4>
+                                            <small>Coordinador de estadística</small>
+                                        </div>
+                                    </div>
+                                    <div class="tooltip-body">
+                                        <div class="tooltip-item"><span>📧</span> mizael.dario@fincomun.com</div>
+                                        <div class="tooltip-item"><span>📱</span> Ext. 2403</div>
+                                        <div class="tooltip-item"><span>🏢</span> Piso 3, Oficina 303</div>
+                                        <div class="tooltip-item"><span>🕐</span> Lun-Vie 9:00-18:00</div>
+                                    </div>
+                                    <div class="tooltip-actions">
+                                        <button class="tooltip-btn primary"><span class="las la-envelope"></span> Email</button>
+                                        <button class="tooltip-btn secondary"><span class="las la-phone"></span> Llamar</button>
+                                    </div>
+                                </div>
                             </div>
                             <div class="customer">
                                 <div class="info">
                                     <img src="./alfredo.PNG" width="40" height="40" alt="">
                                     <div><h4>Jose Alfredo</h4><small>Analista de Información y Estadística</small></div>
+                                </div>
+                                <div class="contact-tooltip">
+                                    <div class="tooltip-header">
+                                        <img src="./alfredo.PNG" alt="">
+                                        <div>
+                                            <h4>Jose Alfredo</h4>
+                                            <small>Analista de Información</small>
+                                        </div>
+                                    </div>
+                                    <div class="tooltip-body">
+                                        <div class="tooltip-item"><span>📧</span> jose.alfredo@fincomun.com</div>
+                                        <div class="tooltip-item"><span>📱</span> Ext. 2404</div>
+                                        <div class="tooltip-item"><span>🏢</span> Piso 3, Oficina 304</div>
+                                        <div class="tooltip-item"><span>🕐</span> Lun-Vie 9:00-18:00</div>
+                                    </div>
+                                    <div class="tooltip-actions">
+                                        <button class="tooltip-btn primary"><span class="las la-envelope"></span> Email</button>
+                                        <button class="tooltip-btn secondary"><span class="las la-phone"></span> Llamar</button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="customer">
@@ -1039,11 +1522,49 @@
                                     <img src="./juan.png" width="40" height="40" alt="">
                                     <div><h4>Juan Carlos Mejia</h4><small>Empresario de compensaciones</small></div>
                                 </div>
+                                <div class="contact-tooltip">
+                                    <div class="tooltip-header">
+                                        <img src="./juan.png" alt="">
+                                        <div>
+                                            <h4>Juan Carlos Mejia</h4>
+                                            <small>Compensaciones</small>
+                                        </div>
+                                    </div>
+                                    <div class="tooltip-body">
+                                        <div class="tooltip-item"><span>📧</span> juan.mejia@fincomun.com</div>
+                                        <div class="tooltip-item"><span>📱</span> Ext. 2405</div>
+                                        <div class="tooltip-item"><span>🏢</span> Piso 3, Oficina 305</div>
+                                        <div class="tooltip-item"><span>🕐</span> Lun-Vie 9:00-18:00</div>
+                                    </div>
+                                    <div class="tooltip-actions">
+                                        <button class="tooltip-btn primary"><span class="las la-envelope"></span> Email</button>
+                                        <button class="tooltip-btn secondary"><span class="las la-phone"></span> Llamar</button>
+                                    </div>
+                                </div>
                             </div>
                             <div class="customer">
                                 <div class="info">
                                     <img src="./michel.PNG" width="40" height="40" alt="">
                                     <div><h4>Michael Castillo</h4><small>Analista de Información y Análisis</small></div>
+                                </div>
+                                <div class="contact-tooltip">
+                                    <div class="tooltip-header">
+                                        <img src="./michel.PNG" alt="">
+                                        <div>
+                                            <h4>Michael Castillo</h4>
+                                            <small>Analista de Análisis</small>
+                                        </div>
+                                    </div>
+                                    <div class="tooltip-body">
+                                        <div class="tooltip-item"><span>📧</span> michael.castillo@fincomun.com</div>
+                                        <div class="tooltip-item"><span>📱</span> Ext. 2406</div>
+                                        <div class="tooltip-item"><span>🏢</span> Piso 3, Oficina 306</div>
+                                        <div class="tooltip-item"><span>🕐</span> Lun-Vie 9:00-18:00</div>
+                                    </div>
+                                    <div class="tooltip-actions">
+                                        <button class="tooltip-btn primary"><span class="las la-envelope"></span> Email</button>
+                                        <button class="tooltip-btn secondary"><span class="las la-phone"></span> Llamar</button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="customer">
@@ -1051,11 +1572,49 @@
                                     <img src="./nixi.png" width="40" height="40" alt="">
                                     <div><h4>Nixi Osornio Mejia</h4><small>Analista de inteligencia geográfica</small></div>
                                 </div>
+                                <div class="contact-tooltip">
+                                    <div class="tooltip-header">
+                                        <img src="./nixi.png" alt="">
+                                        <div>
+                                            <h4>Nixi Osornio Mejia</h4>
+                                            <small>Inteligencia Geográfica</small>
+                                        </div>
+                                    </div>
+                                    <div class="tooltip-body">
+                                        <div class="tooltip-item"><span>📧</span> nixi.osornio@fincomun.com</div>
+                                        <div class="tooltip-item"><span>📱</span> Ext. 2407</div>
+                                        <div class="tooltip-item"><span>🏢</span> Piso 3, Oficina 307</div>
+                                        <div class="tooltip-item"><span>🕐</span> Lun-Vie 9:00-18:00</div>
+                                    </div>
+                                    <div class="tooltip-actions">
+                                        <button class="tooltip-btn primary"><span class="las la-envelope"></span> Email</button>
+                                        <button class="tooltip-btn secondary"><span class="las la-phone"></span> Llamar</button>
+                                    </div>
+                                </div>
                             </div>
                             <div class="customer">
                                 <div class="info">
                                     <img src="./angel.png" width="40" height="40" alt="">
                                     <div><h4>Angel Eduardo Pacheco</h4><small>Empresario de proyectos</small></div>
+                                </div>
+                                <div class="contact-tooltip">
+                                    <div class="tooltip-header">
+                                        <img src="./angel.png" alt="">
+                                        <div>
+                                            <h4>Angel Eduardo Pacheco</h4>
+                                            <small>Proyectos</small>
+                                        </div>
+                                    </div>
+                                    <div class="tooltip-body">
+                                        <div class="tooltip-item"><span>📧</span> angel.pacheco@fincomun.com</div>
+                                        <div class="tooltip-item"><span>📱</span> Ext. 2408</div>
+                                        <div class="tooltip-item"><span>🏢</span> Piso 3, Oficina 308</div>
+                                        <div class="tooltip-item"><span>🕐</span> Lun-Vie 9:00-18:00</div>
+                                    </div>
+                                    <div class="tooltip-actions">
+                                        <button class="tooltip-btn primary"><span class="las la-envelope"></span> Email</button>
+                                        <button class="tooltip-btn secondary"><span class="las la-phone"></span> Llamar</button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="customer">
@@ -1063,11 +1622,49 @@
                                     <img src="./yanet.png" width="40" height="40" alt="">
                                     <div><h4>Yanet Dalia Rosales</h4><small>Coordinadora de compensaciones</small></div>
                                 </div>
+                                <div class="contact-tooltip">
+                                    <div class="tooltip-header">
+                                        <img src="./yanet.png" alt="">
+                                        <div>
+                                            <h4>Yanet Dalia Rosales</h4>
+                                            <small>Coordinadora</small>
+                                        </div>
+                                    </div>
+                                    <div class="tooltip-body">
+                                        <div class="tooltip-item"><span>📧</span> yanet.rosales@fincomun.com</div>
+                                        <div class="tooltip-item"><span>📱</span> Ext. 2409</div>
+                                        <div class="tooltip-item"><span>🏢</span> Piso 3, Oficina 309</div>
+                                        <div class="tooltip-item"><span>🕐</span> Lun-Vie 9:00-18:00</div>
+                                    </div>
+                                    <div class="tooltip-actions">
+                                        <button class="tooltip-btn primary"><span class="las la-envelope"></span> Email</button>
+                                        <button class="tooltip-btn secondary"><span class="las la-phone"></span> Llamar</button>
+                                    </div>
+                                </div>
                             </div>
                             <div class="customer">
                                 <div class="info">
                                     <img src="./thelian.png" width="40" height="40" alt="">
                                     <div><h4>Thelian Omar Arias</h4><small>Subdirector de Incentivos</small></div>
+                                </div>
+                                <div class="contact-tooltip">
+                                    <div class="tooltip-header">
+                                        <img src="./thelian.png" alt="">
+                                        <div>
+                                            <h4>Thelian Omar Arias</h4>
+                                            <small>Subdirector</small>
+                                        </div>
+                                    </div>
+                                    <div class="tooltip-body">
+                                        <div class="tooltip-item"><span>📧</span> thelian.arias@fincomun.com</div>
+                                        <div class="tooltip-item"><span>📱</span> Ext. 2410</div>
+                                        <div class="tooltip-item"><span>🏢</span> Piso 4, Oficina 401</div>
+                                        <div class="tooltip-item"><span>🕐</span> Lun-Vie 9:00-18:00</div>
+                                    </div>
+                                    <div class="tooltip-actions">
+                                        <button class="tooltip-btn primary"><span class="las la-envelope"></span> Email</button>
+                                        <button class="tooltip-btn secondary"><span class="las la-phone"></span> Llamar</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1077,8 +1674,12 @@
         </main>
     </div>
 
+    <!-- Overlay para tooltip móvil -->
+    <div class="tooltip-overlay" id="tooltipOverlay"></div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // ===== SEARCH FUNCTIONALITY =====
             const searchInput = document.getElementById('searchInput');
             const cards = document.querySelectorAll('.carde');
 
@@ -1097,25 +1698,42 @@
                 });
             });
 
-            // Smooth scroll para navegación interna
+            // ===== SMOOTH SCROLL NAVIGATION =====
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
                     e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
+                    const targetId = this.getAttribute('href');
+                    const target = document.querySelector(targetId);
+
                     if (target) {
-                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        // Actualizar clase active
+                        // Close sidebar on mobile after click
+                        const navToggle = document.getElementById('nav-toggle');
+                        if (navToggle.checked) {
+                            navToggle.checked = false;
+                        }
+
+                        // Smooth scroll with offset for sticky header
+                        const headerOffset = 100;
+                        const elementPosition = target.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+
+                        // Update active class
                         document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
                         this.classList.add('active');
                     }
                 });
             });
 
-            // Highlight active section on scroll
+            // ===== HIGHLIGHT ACTIVE SECTION ON SCROLL =====
             const sections = document.querySelectorAll('section[id]');
             const navLinks = document.querySelectorAll('.sidebar-menu a');
 
-            window.addEventListener('scroll', () => {
+            function updateActiveLink() {
                 let current = '';
                 sections.forEach(section => {
                     const sectionTop = section.offsetTop - 150;
@@ -1130,7 +1748,114 @@
                         link.classList.add('active');
                     }
                 });
+            }
+
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink(); // Initial call
+
+            // ===== SECTION ANIMATIONS ON SCROLL (Intersection Observer) =====
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const sectionObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                sectionObserver.observe(section);
             });
+
+            // ===== DARK MODE TOGGLE =====
+            const themeToggle = document.getElementById('themeToggle');
+            const html = document.documentElement;
+
+            // Check for saved theme preference or respect OS preference
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                html.setAttribute('data-theme', 'dark');
+            }
+
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = html.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+                html.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+
+                // Add subtle animation feedback
+                themeToggle.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    themeToggle.style.transform = 'scale(1)';
+                }, 150);
+            });
+
+            // ===== CONTACT TOOLTIP FOR MOBILE =====
+            const tooltipOverlay = document.getElementById('tooltipOverlay');
+            const customers = document.querySelectorAll('.customer');
+
+            // Show overlay on mobile when tooltip is visible
+            customers.forEach(customer => {
+                customer.addEventListener('mouseenter', function() {
+                    if (window.innerWidth <= 768) {
+                        tooltipOverlay.classList.add('active');
+                    }
+                });
+
+                customer.addEventListener('mouseleave', function() {
+                    tooltipOverlay.classList.remove('active');
+                });
+            });
+
+            // Close tooltip on overlay click
+            tooltipOverlay.addEventListener('click', () => {
+                tooltipOverlay.classList.remove('active');
+            });
+
+            // ===== BUTTON CLICK EFFECTS =====
+            document.querySelectorAll('.red-btn, .blue-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    // Create ripple effect
+                    const ripple = document.createElement('span');
+                    ripple.style.cssText = `
+                        position: absolute;
+                        border-radius: 50%;
+                        background: rgba(255,255,255,0.5);
+                        transform: scale(0);
+                        animation: ripple 0.6s linear;
+                        pointer-events: none;
+                    `;
+
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    ripple.style.width = ripple.style.height = `${size}px`;
+                    ripple.style.left = `${e.clientX - rect.left - size/2}px`;
+                    ripple.style.top = `${e.clientY - rect.top - size/2}px`;
+
+                    this.appendChild(ripple);
+
+                    setTimeout(() => ripple.remove(), 600);
+                });
+            });
+
+            // Add ripple keyframes dynamically
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes ripple {
+                    to {
+                        transform: scale(4);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
         });
     </script>
 </body>
