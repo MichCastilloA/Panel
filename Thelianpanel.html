@@ -6,1183 +6,1242 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
     <title>Fincomun - Panel de Control</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
-        :root {
-            --main-color: #DD2F6E;
-            --main-color-dark: #c41e5a;
-            --main-color-light: #ff6b9d;
-            --color-dark: #1D2231;
-            --text-grey: #8390A2;
-            --text-dark: #222;
-            --text-light: #fff;
-            --bg-light: #f1f5f9;
-            --bg-card: #fff;
-            --bg-sidebar: linear-gradient(180deg, var(--main-color) 0%, var(--main-color-dark) 100%);
-            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
-            --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
-            --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
-            --radius: 12px;
-            --radius-pill: 30px;
-            --transition: all 0.3s ease;
-        }
-
-        [data-theme="dark"] {
-            --main-color: #3b82f6;
-            --main-color-dark: #1d4ed8;
-            --main-color-light: #60a5fa;
-            --color-dark: #f1f5f9;
-            --text-grey: #94a3b8;
-            --text-dark: #ffffff;
-            --text-light: #ffffff;
-            --bg-light: #0f172a;
-            --bg-card: #1e293b;
-            --bg-sidebar: linear-gradient(180deg, var(--main-color-dark) 0%, #1e3a8a 100%);
-            --shadow-sm: 0 2px 4px rgba(0,0,0,0.3);
-            --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
-            --shadow-lg: 0 8px 24px rgba(0,0,0,0.5);
-        }
-
-        * {
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-            list-style-type: none;
-            text-decoration: none;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        body {
-            background: var(--bg-light);
-            color: var(--text-dark);
-            line-height: 1.6;
-            transition: var(--transition);
-            overflow-x: hidden;
-        }
-
-        /* ===== LOGIN SCREEN ===== */
-        #login-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background: linear-gradient(135deg, var(--main-color-dark) 0%, var(--main-color) 50%, var(--main-color-light) 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.4s ease;
-        }
-
-        #login-screen.slide-up {
-            transform: translateY(-100%);
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        [data-theme="dark"] #login-screen {
-            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #3b82f6 100%);
-        }
-
-        .login-container {
-            background: var(--bg-card);
-            padding: 2.5rem 3rem;
-            border-radius: 24px;
-            box-shadow: var(--shadow-lg);
-            width: 100%;
-            max-width: 420px;
-            animation: loginSlideIn 0.6s ease;
-            position: relative;
-        }
-
-        @keyframes loginSlideIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px) scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        .login-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .login-logo {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--main-color), var(--main-color-dark));
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1rem;
-            box-shadow: 0 8px 24px rgba(221, 47, 110, 0.3);
-        }
-
-        [data-theme="dark"] .login-logo {
-            background: linear-gradient(135deg, var(--main-color-dark), var(--main-color));
-            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
-        }
-
-        .login-logo i {
-            font-size: 2.5rem;
-            color: white;
-        }
-
-        .login-header h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 0.3rem;
-        }
-
-        .login-header p {
-            color: var(--text-grey);
-            font-size: 0.9rem;
-        }
-
-        .login-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-        }
-
-        .form-group {
-            position: relative;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: var(--text-dark);
-            margin-bottom: 0.5rem;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 0.9rem 1rem 0.9rem 2.8rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 1rem;
-            color: var(--text-dark);
-            background: var(--bg-light);
-            transition: var(--transition);
-        }
-
-        [data-theme="dark"] .form-group input {
-            border-color: #334155;
-            background: #334155;
-            color: #fff;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--main-color);
-            box-shadow: 0 0 0 3px rgba(221, 47, 110, 0.1);
-        }
-
-        [data-theme="dark"] .form-group input:focus {
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-        }
-
-        .form-group i {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(22px);
-            color: var(--text-grey);
-            font-size: 1.1rem;
-            transition: var(--transition);
-        }
-
-        .form-group input:focus + i,
-        .form-group input:focus ~ i {
-            color: var(--main-color);
-        }
-
-        .form-options {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.85rem;
-        }
-
-        .remember-me {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            color: var(--text-grey);
-            cursor: pointer;
-        }
-
-        .remember-me input {
-            width: 16px;
-            height: 16px;
-            accent-color: var(--main-color);
-            cursor: pointer;
-        }
-
-        .forgot-password {
-            color: var(--main-color);
-            font-weight: 500;
-            transition: var(--transition);
-        }
-
-        .forgot-password:hover {
-            text-decoration: underline;
-        }
-
-        .login-btn {
-            width: 100%;
-            padding: 1rem;
-            background: linear-gradient(135deg, var(--main-color), var(--main-color-dark));
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-            box-shadow: 0 4px 14px rgba(221, 47, 110, 0.3);
-        }
-
-        [data-theme="dark"] .login-btn {
-            background: linear-gradient(135deg, var(--main-color-dark), var(--main-color));
-            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
-        }
-
-        .login-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(221, 47, 110, 0.4);
-        }
-
-        [data-theme="dark"] .login-btn:hover {
-            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
-        }
-
-        .login-btn:active {
-            transform: translateY(0);
-        }
-
-        .login-btn.loading {
-            pointer-events: none;
-            opacity: 0.8;
-        }
-
-        .login-btn.loading i {
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        /* Error Message */
-        .error-message {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-            color: white;
-            padding: 0.8rem 1rem;
-            border-radius: 10px;
-            font-size: 0.9rem;
-            text-align: center;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            opacity: 0;
-            transform: translateY(-10px);
-            transition: var(--transition);
-            pointer-events: none;
-        }
-
-        .error-message.show {
-            opacity: 1;
-            transform: translateY(0);
-            animation: shake 0.5s ease;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-8px); }
-            75% { transform: translateX(8px); }
-        }
-
-        /* Theme toggle in login */
-        .login-theme-toggle {
-            position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
-            width: 45px;
-            height: 26px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 50px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            padding: 2px;
-            transition: var(--transition);
-        }
-
-        .login-theme-toggle::after {
-            content: '';
-            width: 20px;
-            height: 20px;
-            background: white;
-            border-radius: 50%;
-            transition: var(--transition);
-        }
-
-        [data-theme="dark"] .login-theme-toggle::after {
-            transform: translateX(19px);
-        }
-
-        .login-theme-toggle span {
-            position: absolute;
-            font-size: 0.7rem;
-            color: white;
-            transition: var(--transition);
-        }
-
-        .login-theme-toggle .sun { left: 6px; opacity: 1; }
-        .login-theme-toggle .moon { right: 6px; opacity: 0; }
-
-        [data-theme="dark"] .login-theme-toggle .sun { opacity: 0; }
-        [data-theme="dark"] .login-theme-toggle .moon { opacity: 1; }
-
-        /* ===== DASHBOARD (hidden initially) ===== */
-        #dashboard {
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.4s ease 0.3s;
-        }
-
-        #dashboard.loaded {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* ===== SIDEBAR ===== */
-        .sidebar {
-            width: 230px;
-            position: fixed;
-            left: 0;
-            top: 0;
-            height: 100vh;
-            background: var(--bg-sidebar);
-            z-index: 1000;
-            transition: var(--transition);
-            box-shadow: var(--shadow-md);
-            overflow-y: auto;
-        }
-
-        .sidebar-brand {
-            height: 90px;
-            padding: 1.5rem 2rem;
-            color: var(--text-light);
-            display: flex;
-            align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .sidebar-brand span {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background: rgba(255,255,255,0.15);
-            border-radius: 10px;
-            margin-right: 1rem;
-            font-size: 1.3rem;
-            transition: var(--transition);
-        }
-
-        .sidebar-brand h2 {
-            font-size: 1.4rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            transition: var(--transition);
-        }
-
-        .sidebar-menu {
-            padding: 1.5rem 0;
-        }
-
-        .sidebar-menu li {
-            margin: 0.3rem 0;
-            padding: 0 1rem;
-        }
-
-        .sidebar-menu a {
-            padding: 0.9rem 1.2rem;
-            display: flex;
-            align-items: center;
-            color: rgba(255,255,255,0.9);
-            font-size: 1rem;
-            font-weight: 400;
-            border-radius: var(--radius);
-            transition: var(--transition);
-            gap: 0.8rem;
-        }
-
-        .sidebar-menu a:hover,
-        .sidebar-menu a.active {
-            background: rgba(255,255,255,0.15);
-            color: var(--text-light);
-            transform: translateX(4px);
-        }
-
-        .sidebar-menu a span:first-child {
-            font-size: 1.3rem;
-            width: 24px;
-            text-align: center;
-            transition: var(--transition);
-        }
-
-        .sidebar-menu a.active {
-            background: rgba(255,255,255,0.25);
-            font-weight: 500;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-
-        .sidebar-menu a.active span:first-child {
-            animation: iconPulse 1.5s infinite;
-        }
-
-        @keyframes iconPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-        }
-
-        /* ===== MAIN CONTENT ===== */
-        .main-content {
-            transition: var(--transition);
-            margin-left: 230px;
-            min-height: 100vh;
-        }
-
-        /* ===== HEADER ===== */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.5rem 2rem;
-            background: var(--bg-card);
-            box-shadow: var(--shadow-sm);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            gap: 1rem;
-            flex-wrap: wrap;
-            transition: var(--transition);
-        }
-
-        header h2 {
-            color: var(--text-dark);
-            font-size: 1.5rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            transition: var(--transition);
-        }
-
-        header label {
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-        }
-
-        header label span {
-            font-size: 1.5rem;
-            color: var(--text-grey);
-            transition: var(--transition);
-        }
-
-        header label span:hover {
-            color: var(--main-color);
-        }
-
-        /* Dark Mode Toggle */
-        .theme-toggle {
-            background: var(--bg-light);
-            border: 2px solid var(--main-color);
-            border-radius: 50px;
-            width: 50px;
-            height: 26px;
-            position: relative;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            padding: 2px;
-            transition: var(--transition);
-        }
-
-        .theme-toggle::after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: var(--main-color);
-            border-radius: 50%;
-            left: 3px;
-            transition: var(--transition);
-        }
-
-        [data-theme="dark"] .theme-toggle::after {
-            left: calc(100% - 23px);
-            background: var(--main-color-light);
-        }
-
-        .theme-toggle span {
-            font-size: 0.7rem;
-            position: absolute;
-            color: var(--text-grey);
-            transition: var(--transition);
-        }
-
-        .theme-toggle .sun { left: 8px; opacity: 1; }
-        .theme-toggle .moon { right: 8px; opacity: 0; }
-
-        [data-theme="dark"] .theme-toggle .sun { opacity: 0; }
-        [data-theme="dark"] .theme-toggle .moon { opacity: 1; }
-
-        .user-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            padding: 0.3rem 0;
-        }
-
-        .user-wrapper img {
-            border-radius: 50%;
-            border: 3px solid var(--main-color);
-            object-fit: cover;
-            transition: var(--transition);
-        }
-
-        .user-wrapper img:hover {
-            transform: scale(1.05);
-        }
-
-        .user-wrapper h4 {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--text-dark);
-            margin: 0;
-            transition: var(--transition);
-        }
-
-        .user-wrapper small {
-            display: block;
-            color: var(--text-grey);
-            font-size: 0.8rem;
-            margin-top: 2px;
-            transition: var(--transition);
-        }
-
-        /* ===== MAIN ===== */
-        main {
-            padding: 2rem;
-            background: var(--bg-light);
-            min-height: calc(100vh - 90px);
-            transition: var(--transition);
-        }
-
-        /* ===== CARDS ===== */
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .card-single {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--bg-card);
-            padding: 1.3rem 1.5rem;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-sm);
-            transition: var(--transition);
-            cursor: pointer;
-            border-left: 4px solid var(--main-color);
-            opacity: 0;
-            transform: translateY(20px);
-            animation: slideUp 0.5s ease forwards;
-        }
-
-        .card-single:nth-child(1) { animation-delay: 0.1s; }
-        .card-single:nth-child(2) { animation-delay: 0.2s; }
-        .card-single:nth-child(3) { animation-delay: 0.3s; }
-        .card-single:nth-child(4) { animation-delay: 0.4s; }
-
-        @keyframes slideUp {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .card-single:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
-            background: linear-gradient(135deg, var(--main-color) 0%, var(--main-color-dark) 100%);
-            color: var(--text-light);
-        }
-
-        .card-single h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin: 0;
-            color: var(--text-dark);
-            transition: var(--transition);
-        }
-
-        .card-single:hover h1 {
-            color: var(--text-light);
-        }
-
-        .card-single span:not([class*="la"]) {
-            color: var(--text-grey);
-            font-size: 0.9rem;
-            font-weight: 400;
-            transition: var(--transition);
-        }
-
-        .card-single:hover span:not([class*="la"]) {
-            color: rgba(255,255,255,0.9);
-        }
-
-        .card-single span[class*="la"] {
-            font-size: 1.8rem;
-            color: var(--main-color);
-            transition: var(--transition);
-        }
-
-        .card-single:hover span[class*="la"] {
-            color: var(--text-light);
-        }
-
-        /* ===== RECENT GRID & IFRAME ===== */
-        .recent-grid {
-            margin-bottom: 2.5rem;
-            opacity: 0;
-            animation: fadeIn 0.6s ease 0.5s forwards;
-        }
-
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-
-        iframe {
-            width: 100%;
-            height: 500px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-md);
-            border: none;
-            background: var(--bg-card);
-            transition: var(--transition);
-        }
-
-        /* ===== SECTION TITLES ===== */
-        .red-card {
-            margin: 2.5rem 0 1.5rem;
-            padding: 1rem 0;
-            border-bottom: 3px solid var(--main-color);
-            opacity: 0;
-            transform: translateX(-20px);
-            animation: slideInLeft 0.5s ease forwards;
-        }
-
-        .red-card:nth-of-type(2) { animation-delay: 0.1s; }
-        .red-card:nth-of-type(3) { animation-delay: 0.2s; }
-        .red-card:nth-of-type(4) { animation-delay: 0.3s; }
-        .red-card:nth-of-type(5) { animation-delay: 0.4s; }
-        .red-card:nth-of-type(6) { animation-delay: 0.5s; }
-        .red-card:nth-of-type(7) { animation-delay: 0.6s; }
-
-        @keyframes slideInLeft {
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        .red-card h1 {
-            color: var(--main-color);
-            font-size: 1.8rem;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-        }
-
-        .red-card h1::before {
-            content: '';
-            width: 6px;
-            height: 24px;
-            background: var(--main-color);
-            border-radius: 3px;
-            transition: var(--transition);
-        }
-
-        /* ===== BUTTON CARDS ===== */
-        .tarjetas {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            padding: 0.5rem 0;
-        }
-
-        .carde {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1rem;
-            background: transparent;
-        }
-
-        /* ===== BUTTONS ===== */
-        .red-btn, .blue-btn {
-            width: 100%;
-            min-height: 140px;
-            padding: 1.2rem;
-            border: none;
-            border-radius: var(--radius);
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-light);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 0.5rem;
-            text-align: left;
-            transition: var(--transition);
-            box-shadow: var(--shadow-md);
-            background-size: 200% 200%;
-        }
-
-        .red-btn {
-            background: linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%);
-        }
-
-        .blue-btn {
-            background: linear-gradient(135deg, #000890 0%, #1000ff 50%, #56fff7 100%);
-        }
-
-        .red-btn:hover, .blue-btn:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
-            background-position: 100% 0;
-        }
-
-        .red-btn:active, .blue-btn:active {
-            transform: translateY(-1px);
-        }
-
-        .red-btn p, .blue-btn p {
-            font-size: 0.85rem;
-            font-weight: 400;
-            opacity: 0.95;
-            margin: 0;
-            line-height: 1.4;
-        }
-
-        .red-btn:hover p, .blue-btn:hover p {
-            opacity: 1;
-        }
-
-        .btn-icon {
-            position: absolute;
-            right: 1.2rem;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 1.5rem;
-            opacity: 0;
-            transition: var(--transition);
-        }
-
-        .red-btn:hover .btn-icon,
-        .blue-btn:hover .btn-icon {
-            opacity: 1;
-            right: 1.5rem;
-            animation: bounceIcon 0.6s ease;
-        }
-
-        @keyframes bounceIcon {
-            0%, 100% { transform: translateY(-50%) scale(1); }
-            50% { transform: translateY(-50%) scale(1.3); }
-        }
-
-        .red-btn::after, .blue-btn::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .red-btn:hover::after, .blue-btn:hover::after {
-            left: 100%;
-        }
-
-        /* ===== CUSTOMERS LIST ===== */
-        .customers {
-            display: grid;
-            gap: 1.5rem;
-        }
-
-        .card {
-            background: var(--bg-card);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-sm);
-            overflow: hidden;
-            transition: var(--transition);
-        }
-
-        .card-header {
-            padding: 1.2rem 1.5rem;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-            background: rgba(221, 47, 110, 0.03);
-            transition: var(--transition);
-        }
-
-        [data-theme="dark"] .card-header {
-            border-bottom-color: rgba(255,255,255,0.1);
-            background: rgba(59, 130, 246, 0.1);
-        }
-
-        .card-header h3 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--text-dark);
-            margin: 0;
-            transition: var(--transition);
-        }
-
-        .card-body {
-            padding: 1rem;
-        }
-
-        .customer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.8rem 1rem;
-            border-radius: 8px;
-            transition: var(--transition);
-            position: relative;
-            cursor: pointer;
-        }
-
-        .customer:hover {
-            background: rgba(221, 47, 110, 0.05);
-            transform: translateX(4px);
-        }
-
-        [data-theme="dark"] .customer:hover {
-            background: rgba(59, 130, 246, 0.1);
-        }
-
-        .info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .info img {
-            border-radius: 50%;
-            border: 2px solid var(--main-color);
-            object-fit: cover;
-            transition: var(--transition);
-        }
-
-        .customer:hover .info img {
-            transform: scale(1.05);
-            border-color: var(--main-color-light);
-        }
-
-        .info h4 {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--text-dark);
-            margin: 0;
-            transition: var(--transition);
-        }
-
-        .info small {
-            font-size: 0.8rem;
-            color: var(--text-grey);
-            font-weight: 400;
-            display: block;
-            margin-top: 2px;
-            transition: var(--transition);
-        }
-
-        /* ===== CONTACT TOOLTIP ===== */
-        .contact-tooltip {
-            position: absolute;
-            left: calc(100% + 15px);
-            top: 50%;
-            transform: translateY(-50%) scale(0.9);
-            background: var(--bg-card);
-            border: 2px solid var(--main-color);
-            border-radius: 16px;
-            padding: 1rem 1.5rem;
-            min-width: 280px;
-            box-shadow: var(--shadow-lg);
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-            z-index: 100;
-            pointer-events: none;
-        }
-
-        [data-theme="dark"] .contact-tooltip {
-            border-color: var(--main-color-light);
-        }
-
-        .contact-tooltip::before {
-            content: '';
-            position: absolute;
-            left: -10px;
-            top: 50%;
-            transform: translateY(-50%);
-            border: 10px solid transparent;
-            border-right-color: var(--main-color);
-        }
-
-        [data-theme="dark"] .contact-tooltip::before {
-            border-right-color: var(--main-color-light);
-        }
-
-        .customer:hover .contact-tooltip {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(-50%) scale(1);
-            pointer-events: auto;
-        }
-
-        .tooltip-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding-bottom: 0.8rem;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-            margin-bottom: 0.8rem;
-        }
-
-        [data-theme="dark"] .tooltip-header {
-            border-bottom-color: rgba(255,255,255,0.1);
-        }
-
-        .tooltip-header img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            border: 3px solid var(--main-color);
-        }
-
-        .tooltip-header h4 {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-dark);
-            margin: 0;
-        }
-
-        .tooltip-header small {
-            color: var(--main-color);
-            font-weight: 500;
-        }
-
-        .tooltip-body {
-            display: grid;
-            gap: 0.5rem;
-        }
-
-        .tooltip-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.85rem;
-            color: var(--text-grey);
-        }
-
-        .tooltip-item span {
-            color: var(--text-dark);
-            font-weight: 500;
-        }
-
-        .tooltip-actions {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: 0.8rem;
-            padding-top: 0.8rem;
-            border-top: 1px solid rgba(0,0,0,0.1);
-        }
-
-        [data-theme="dark"] .tooltip-actions {
-            border-top-color: rgba(255,255,255,0.1);
-        }
-
-        .tooltip-btn {
-            flex: 1;
-            padding: 0.5rem;
-            border: none;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.3rem;
-        }
-
-        .tooltip-btn.primary {
-            background: var(--main-color);
-            color: var(--text-light);
-        }
-
-        .tooltip-btn.secondary {
-            background: var(--bg-light);
-            color: var(--text-dark);
-            border: 1px solid var(--text-grey);
-        }
-
-        .tooltip-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-sm);
-        }
-
-        /* ===== STATUS BADGES ===== */
-        .status {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-right: 0.5rem;
-        }
-
-        .status-orange { background: #f59e0b; }
-        .status-green { background: #10b981; }
-        .status-red { background: #ef4444; }
-        .status-yellow { background: #eab308; }
-
-        /* ===== TOGGLE NAV ===== */
-        #nav-toggle { display: none; }
-
-        #nav-toggle:checked + .sidebar { width: 70px; }
-        #nav-toggle:checked + .sidebar .sidebar-brand h2,
-        #nav-toggle:checked + .sidebar .sidebar-menu a span:last-child { display: none; }
-        #nav-toggle:checked + .sidebar .sidebar-brand { justify-content: center; padding: 1.5rem; }
-        #nav-toggle:checked + .sidebar .sidebar-brand span { margin: 0; }
-        #nav-toggle:checked + .sidebar .sidebar-menu a { justify-content: center; padding: 1rem; }
-        #nav-toggle:checked + .sidebar .sidebar-menu a span:first-child { margin: 0; }
-        #nav-toggle:checked ~ .main-content { margin-left: 70px; }
-        #nav-toggle:checked ~ .main-content header { left: 70px; width: calc(100% - 70px); }
-
-        /* ===== SMOOTH SCROLL ===== */
-        html { scroll-behavior: smooth; scroll-padding-top: 100px; }
-
-        /* ===== SECTION ANIMATIONS ===== */
-        section {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-        section.visible { opacity: 1; transform: translateY(0); }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 1024px) {
-            .cards { grid-template-columns: repeat(2, 1fr); }
-            .sidebar { width: 70px; }
-            .sidebar .sidebar-brand h2, .sidebar .sidebar-menu a span:last-child { display: none; }
-            .sidebar .sidebar-brand { justify-content: center; padding: 1.5rem; }
-            .sidebar .sidebar-brand span { margin: 0; }
-            .sidebar .sidebar-menu a { justify-content: center; padding: 1rem; }
-            .sidebar .sidebar-menu a span:first-child { margin: 0; }
-            .main-content { margin-left: 70px; }
-            header { left: 70px; width: calc(100% - 70px); }
-            iframe { height: 400px; }
-            .contact-tooltip { left: 50%; top: auto; bottom: calc(100% + 10px); transform: translateX(-50%) scale(0.9); min-width: 250px; }
-            .contact-tooltip::before { left: 50%; top: auto; bottom: -10px; transform: translateX(-50%); border-right-color: transparent; border-top-color: var(--main-color); }
-            .customer:hover .contact-tooltip { transform: translateX(-50%) scale(1); }
-        }
-
-        @media (max-width: 768px) {
-            .cards { grid-template-columns: 1fr; }
-            .sidebar { width: 60px; }
-            .main-content { margin-left: 60px; }
-            header { padding: 1rem 1.5rem; left: 60px; width: calc(100% - 60px); }
-            header h2 { font-size: 1.3rem; }
-            .user-wrapper small { display: none; }
-            main { padding: 1.5rem; margin-top: 0; }
-            iframe { height: 350px; }
-            .carde { grid-template-columns: 1fr; }
-            .red-btn, .blue-btn { min-height: 120px; padding: 1rem; font-size: 1rem; }
-            .red-btn p, .blue-btn p { font-size: 0.8rem; }
-            .red-card h1 { font-size: 1.5rem; }
-            .contact-tooltip { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%) scale(0.9); bottom: auto; min-width: 90%; max-width: 320px; z-index: 1000; }
-            .contact-tooltip::before { display: none; }
-            .customer:hover .contact-tooltip { transform: translate(-50%, -50%) scale(1); }
-        }
-
-        @media (max-width: 480px) {
-            .sidebar { width: 55px; }
-            .main-content { margin-left: 55px; }
-            header { padding: 0.8rem 1rem; left: 55px; width: calc(100% - 55px); flex-direction: column; align-items: stretch; }
-            header h2 { font-size: 1.2rem; justify-content: center; }
-            .user-wrapper { justify-content: center; }
-            main { padding: 1rem; }
-            .cards { gap: 1rem; }
-            .card-single { padding: 1rem 1.2rem; }
-            .card-single h1 { font-size: 1.5rem; }
-            iframe { height: 280px; }
-            .red-card { margin: 1.5rem 0 1rem; }
-            .red-card h1 { font-size: 1.3rem; }
-            .red-btn, .blue-btn { min-height: 110px; padding: 0.9rem; font-size: 0.95rem; }
-            .red-btn p, .blue-btn p { font-size: 0.75rem; }
-            .customer { padding: 0.7rem 0.8rem; }
-            .info img { width: 36px; height: 36px; }
-            .info h4 { font-size: 0.9rem; }
-            .info small { font-size: 0.75rem; }
-            .card-header h3 { font-size: 1.1rem; }
-            .contact-tooltip { min-width: 95%; padding: 0.8rem 1.2rem; }
-            .tooltip-header img { width: 45px; height: 45px; }
-            .tooltip-header h4 { font-size: 0.95rem; }
-            .login-container { padding: 2rem; margin: 1rem; }
-            .login-header h1 { font-size: 1.5rem; }
-        }
-
-        .hidden { display: none !important; }
-        .fade-in { animation: fadeIn 0.3s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    </style>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --main-color: #DD2F6E;
+    --main-color-dark: #c41e5a;
+    --main-color-light: #ff6b9d;
+    --color-dark: #1D2231;
+    --text-grey: #8390A2;
+    --text-dark: #222;
+    --text-light: #fff;
+    --bg-light: #f1f5f9;
+    --bg-card: #fff;
+    --bg-sidebar: linear-gradient(180deg, var(--main-color) 0%, var(--main-color-dark) 100%);
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+    --radius: 12px;
+    --radius-pill: 30px;
+    --transition: all 0.3s ease;
+}
+
+[data-theme="dark"] {
+    --main-color: #3b82f6;
+    --main-color-dark: #1d4ed8;
+    --main-color-light: #60a5fa;
+    --color-dark: #f1f5f9;
+    --text-grey: #94a3b8;
+    --text-dark: #ffffff;
+    --text-light: #ffffff;
+    --bg-light: #0f172a;
+    --bg-card: #1e293b;
+    --bg-sidebar: linear-gradient(180deg, var(--main-color-dark) 0%, #1e3a8a 100%);
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.3);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,0.5);
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    list-style-type: none;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: var(--bg-light);
+    color: var(--text-dark);
+    line-height: 1.6;
+    transition: var(--transition);
+    overflow-x: hidden;
+}
+
+#login-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(135deg, var(--main-color-dark) 0%, var(--main-color) 50%, var(--main-color-light) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.4s ease;
+}
+
+#login-screen.slide-up {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+[data-theme="dark"] #login-screen {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #3b82f6 100%);
+}
+
+.login-container {
+    background: var(--bg-card);
+    padding: 2.5rem 3rem;
+    border-radius: 24px;
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+    max-width: 420px;
+    animation: loginSlideIn 0.6s ease;
+    position: relative;
+}
+
+@keyframes loginSlideIn {
+    from { opacity: 0; transform: translateY(30px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.login-logo {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--main-color), var(--main-color-dark));
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    box-shadow: 0 8px 24px rgba(221, 47, 110, 0.3);
+}
+
+[data-theme="dark"] .login-logo {
+    background: linear-gradient(135deg, var(--main-color-dark), var(--main-color));
+    box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
+}
+
+.login-logo i {
+    font-size: 2.5rem;
+    color: white;
+}
+
+.login-header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 0.3rem;
+}
+
+.login-header p {
+    color: var(--text-grey);
+    font-size: 0.9rem;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.form-group {
+    position: relative;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.9rem 1rem 0.9rem 2.8rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1rem;
+    color: var(--text-dark);
+    background: var(--bg-light);
+    transition: var(--transition);
+}
+
+[data-theme="dark"] .form-group input {
+    border-color: #334155;
+    background: #334155;
+    color: #fff;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--main-color);
+    box-shadow: 0 0 0 3px rgba(221, 47, 110, 0.1);
+}
+
+[data-theme="dark"] .form-group input:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.form-group i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(22px);
+    color: var(--text-grey);
+    font-size: 1.1rem;
+    transition: var(--transition);
+}
+
+.form-group input:focus + i {
+    color: var(--main-color);
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--text-grey);
+    cursor: pointer;
+}
+
+.remember-me input {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--main-color);
+    cursor: pointer;
+}
+
+.forgot-password {
+    color: var(--main-color);
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(135deg, var(--main-color), var(--main-color-dark));
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    box-shadow: 0 4px 14px rgba(221, 47, 110, 0.3);
+}
+
+[data-theme="dark"] .login-btn {
+    background: linear-gradient(135deg, var(--main-color-dark), var(--main-color));
+    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
+}
+
+.login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(221, 47, 110, 0.4);
+}
+
+[data-theme="dark"] .login-btn:hover {
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+.login-btn:active {
+    transform: translateY(0);
+}
+
+.login-btn.loading {
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+.login-btn.loading i {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.error-message {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+    padding: 0.8rem 1rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    text-align: center;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: var(--transition);
+    pointer-events: none;
+}
+
+.error-message.show {
+    opacity: 1;
+    transform: translateY(0);
+    animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+}
+
+.login-theme-toggle {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    width: 45px;
+    height: 26px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 2px;
+    transition: var(--transition);
+}
+
+.login-theme-toggle::after {
+    content: '';
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    transition: var(--transition);
+}
+
+[data-theme="dark"] .login-theme-toggle::after {
+    transform: translateX(19px);
+}
+
+.login-theme-toggle span {
+    position: absolute;
+    font-size: 0.7rem;
+    color: white;
+    transition: var(--transition);
+}
+
+.login-theme-toggle .sun { left: 6px; opacity: 1; }
+.login-theme-toggle .moon { right: 6px; opacity: 0; }
+
+[data-theme="dark"] .login-theme-toggle .sun { opacity: 0; }
+[data-theme="dark"] .login-theme-toggle .moon { opacity: 1; }
+
+#dashboard {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease 0.3s;
+}
+
+#dashboard.loaded {
+    opacity: 1;
+    visibility: visible;
+}
+
+.sidebar {
+    width: 230px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    background: var(--bg-sidebar);
+    z-index: 1000;
+    transition: var(--transition);
+    box-shadow: var(--shadow-md);
+    overflow-y: auto;
+}
+
+.sidebar-brand {
+    height: 90px;
+    padding: 1.5rem 2rem;
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar-brand span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 10px;
+    margin-right: 1rem;
+    font-size: 1.3rem;
+    transition: var(--transition);
+}
+
+.sidebar-brand h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: var(--transition);
+}
+
+.sidebar-menu {
+    padding: 1.5rem 0;
+}
+
+.sidebar-menu li {
+    margin: 0.3rem 0;
+    padding: 0 1rem;
+}
+
+.sidebar-menu a {
+    padding: 0.9rem 1.2rem;
+    display: flex;
+    align-items: center;
+    color: rgba(255,255,255,0.9);
+    font-size: 1rem;
+    font-weight: 400;
+    border-radius: var(--radius);
+    transition: var(--transition);
+    gap: 0.8rem;
+}
+
+.sidebar-menu a:hover,
+.sidebar-menu a.active {
+    background: rgba(255,255,255,0.15);
+    color: var(--text-light);
+    transform: translateX(4px);
+}
+
+.sidebar-menu a span:first-child {
+    font-size: 1.3rem;
+    width: 24px;
+    text-align: center;
+    transition: var(--transition);
+}
+
+.sidebar-menu a.active {
+    background: rgba(255,255,255,0.25);
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.sidebar-menu a.active span:first-child {
+    animation: iconPulse 1.5s infinite;
+}
+
+@keyframes iconPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}
+
+.main-content {
+    transition: var(--transition);
+    margin-left: 230px;
+    min-height: 100vh;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background: var(--bg-card);
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    gap: 1rem;
+    flex-wrap: wrap;
+    transition: var(--transition);
+}
+
+header h2 {
+    color: var(--text-dark);
+    font-size: 1.5rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    transition: var(--transition);
+}
+
+header label {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+header label span {
+    font-size: 1.5rem;
+    color: var(--text-grey);
+    transition: var(--transition);
+}
+
+header label span:hover {
+    color: var(--main-color);
+}
+
+.theme-toggle {
+    background: var(--bg-light);
+    border: 2px solid var(--main-color);
+    border-radius: 50px;
+    width: 50px;
+    height: 26px;
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 2px;
+    transition: var(--transition);
+}
+
+.theme-toggle::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: var(--main-color);
+    border-radius: 50%;
+    left: 3px;
+    transition: var(--transition);
+}
+
+[data-theme="dark"] .theme-toggle::after {
+    left: calc(100% - 23px);
+    background: var(--main-color-light);
+}
+
+.theme-toggle span {
+    font-size: 0.7rem;
+    position: absolute;
+    color: var(--text-grey);
+    transition: var(--transition);
+}
+
+.theme-toggle .sun { left: 8px; opacity: 1; }
+.theme-toggle .moon { right: 8px; opacity: 0; }
+
+[data-theme="dark"] .theme-toggle .sun { opacity: 0; }
+[data-theme="dark"] .theme-toggle .moon { opacity: 1; }
+
+.user-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.3rem 0;
+}
+
+.user-wrapper img {
+    border-radius: 50%;
+    border: 3px solid var(--main-color);
+    object-fit: cover;
+    transition: var(--transition);
+}
+
+.user-wrapper img:hover {
+    transform: scale(1.05);
+}
+
+.user-wrapper h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin: 0;
+    transition: var(--transition);
+}
+
+.user-wrapper small {
+    display: block;
+    color: var(--text-grey);
+    font-size: 0.8rem;
+    margin-top: 2px;
+    transition: var(--transition);
+}
+
+main {
+    padding: 2rem;
+    background: var(--bg-light);
+    min-height: calc(100vh - 90px);
+    transition: var(--transition);
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.card-single {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-card);
+    padding: 1.3rem 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    cursor: pointer;
+    border-left: 4px solid var(--main-color);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideUp 0.5s ease forwards;
+}
+
+.card-single:nth-child(1) { animation-delay: 0.1s; }
+.card-single:nth-child(2) { animation-delay: 0.2s; }
+.card-single:nth-child(3) { animation-delay: 0.3s; }
+.card-single:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes slideUp {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.card-single:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    background: linear-gradient(135deg, var(--main-color) 0%, var(--main-color-dark) 100%);
+    color: var(--text-light);
+}
+
+.card-single h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--text-dark);
+    transition: var(--transition);
+}
+
+.card-single:hover h1 {
+    color: var(--text-light);
+}
+
+.card-single span:not([class*="la"]) {
+    color: var(--text-grey);
+    font-size: 0.9rem;
+    font-weight: 400;
+    transition: var(--transition);
+}
+
+.card-single:hover span:not([class*="la"]) {
+    color: rgba(255,255,255,0.9);
+}
+
+.card-single span[class*="la"] {
+    font-size: 1.8rem;
+    color: var(--main-color);
+    transition: var(--transition);
+}
+
+.card-single:hover span[class*="la"] {
+    color: var(--text-light);
+}
+
+.recent-grid {
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeIn 0.6s ease 0.5s forwards;
+}
+
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+iframe {
+    width: 100%;
+    height: 500px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    border: none;
+    background: var(--bg-card);
+    transition: var(--transition);
+}
+
+.red-card {
+    margin: 2.5rem 0 1.5rem;
+    padding: 1rem 0;
+    border-bottom: 3px solid var(--main-color);
+    opacity: 0;
+    transform: translateX(-20px);
+    animation: slideInLeft 0.5s ease forwards;
+}
+
+.red-card:nth-of-type(2) { animation-delay: 0.1s; }
+.red-card:nth-of-type(3) { animation-delay: 0.2s; }
+.red-card:nth-of-type(4) { animation-delay: 0.3s; }
+.red-card:nth-of-type(5) { animation-delay: 0.4s; }
+.red-card:nth-of-type(6) { animation-delay: 0.5s; }
+.red-card:nth-of-type(7) { animation-delay: 0.6s; }
+.red-card:nth-of-type(8) { animation-delay: 0.7s; }
+
+@keyframes slideInLeft {
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.red-card h1 {
+    color: var(--main-color);
+    font-size: 1.8rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: var(--transition);
+}
+
+.red-card h1::before {
+    content: '';
+    width: 6px;
+    height: 24px;
+    background: var(--main-color);
+    border-radius: 3px;
+    transition: var(--transition);
+}
+
+.tarjetas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    padding: 0.5rem 0;
+}
+
+.carde {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+    background: transparent;
+}
+
+.red-btn, .blue-btn {
+    width: 100%;
+    min-height: 140px;
+    padding: 1.2rem;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-light);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 0.5rem;
+    text-align: left;
+    transition: var(--transition);
+    box-shadow: var(--shadow-md);
+    background-size: 200% 200%;
+}
+
+.red-btn {
+    background: linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%);
+}
+
+.blue-btn {
+    background: linear-gradient(135deg, #000890 0%, #1000ff 50%, #56fff7 100%);
+}
+
+.red-btn:hover, .blue-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    background-position: 100% 0;
+}
+
+.red-btn:active, .blue-btn:active {
+    transform: translateY(-1px);
+}
+
+.red-btn p, .blue-btn p {
+    font-size: 0.85rem;
+    font-weight: 400;
+    opacity: 0.95;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.red-btn:hover p, .blue-btn:hover p {
+    opacity: 1;
+}
+
+.btn-icon {
+    position: absolute;
+    right: 1.2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.red-btn:hover .btn-icon,
+.blue-btn:hover .btn-icon {
+    opacity: 1;
+    right: 1.5rem;
+    animation: bounceIcon 0.6s ease;
+}
+
+@keyframes bounceIcon {
+    0%, 100% { transform: translateY(-50%) scale(1); }
+    50% { transform: translateY(-50%) scale(1.3); }
+}
+
+.red-btn::after, .blue-btn::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.red-btn:hover::after, .blue-btn:hover::after {
+    left: 100%;
+}
+
+.customers {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.card {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.card-header {
+    padding: 1.2rem 1.5rem;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    background: rgba(221, 47, 110, 0.03);
+    transition: var(--transition);
+}
+
+[data-theme="dark"] .card-header {
+    border-bottom-color: rgba(255,255,255,0.1);
+    background: rgba(59, 130, 246, 0.1);
+}
+
+.card-header h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin: 0;
+    transition: var(--transition);
+}
+
+.card-body {
+    padding: 0.5rem;
+}
+
+.customer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.2rem;
+    border-radius: 10px;
+    transition: var(--transition);
+    position: relative;
+    margin-bottom: 0.3rem;
+    cursor: pointer;
+}
+
+.customer:last-child {
+    margin-bottom: 0;
+}
+
+.customer:hover {
+    background: rgba(221, 47, 110, 0.08);
+    transform: translateX(5px);
+}
+
+[data-theme="dark"] .customer:hover {
+    background: rgba(59, 130, 246, 0.15);
+}
+
+.info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+}
+
+.info img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 2px solid var(--main-color);
+    object-fit: cover;
+    transition: var(--transition);
+    flex-shrink: 0;
+}
+
+.customer:hover .info img {
+    transform: scale(1.1);
+    border-color: var(--main-color-light);
+    box-shadow: 0 4px 12px rgba(221, 47, 110, 0.3);
+}
+
+.info h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin: 0 0 0.2rem 0;
+    transition: var(--transition);
+}
+
+.info small {
+    font-size: 0.8rem;
+    color: var(--text-grey);
+    font-weight: 400;
+    display: block;
+    transition: var(--transition);
+}
+
+.contact-tooltip {
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%) translateX(10px) scale(0.95);
+    background: var(--bg-card);
+    border: 2px solid var(--main-color);
+    border-radius: 16px;
+    padding: 1.2rem;
+    min-width: 320px;
+    max-width: 350px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    z-index: 100;
+    pointer-events: none;
+    margin-left: 15px;
+}
+
+[data-theme="dark"] .contact-tooltip {
+    border-color: var(--main-color-light);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+}
+
+.contact-tooltip::before {
+    content: '';
+    position: absolute;
+    left: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 10px solid transparent;
+    border-right-color: var(--main-color);
+}
+
+[data-theme="dark"] .contact-tooltip::before {
+    border-right-color: var(--main-color-light);
+}
+
+.customer:hover .contact-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-50%) translateX(0) scale(1);
+    pointer-events: auto;
+}
+
+.tooltip-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid rgba(0,0,0,0.08);
+    margin-bottom: 1rem;
+}
+
+[data-theme="dark"] .tooltip-header {
+    border-bottom-color: rgba(255,255,255,0.1);
+}
+
+.tooltip-header img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 3px solid var(--main-color);
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.tooltip-header h4 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin: 0 0 0.2rem 0;
+}
+
+.tooltip-header small {
+    color: var(--main-color);
+    font-weight: 600;
+    font-size: 0.85rem;
+    display: block;
+}
+
+.tooltip-body {
+    display: grid;
+    gap: 0.7rem;
+    margin-bottom: 1rem;
+}
+
+.tooltip-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 0.85rem;
+    color: var(--text-grey);
+}
+
+.tooltip-item span:first-child {
+    font-size: 1.1rem;
+    min-width: 20px;
+}
+
+.tooltip-item span:last-child {
+    color: var(--text-dark);
+    font-weight: 500;
+}
+
+.tooltip-actions {
+    display: flex;
+    gap: 0.6rem;
+    padding-top: 1rem;
+    border-top: 2px solid rgba(0,0,0,0.08);
+}
+
+[data-theme="dark"] .tooltip-actions {
+    border-top-color: rgba(255,255,255,0.1);
+}
+
+.tooltip-btn {
+    flex: 1;
+    padding: 0.7rem 1rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.tooltip-btn.primary {
+    background: linear-gradient(135deg, var(--main-color), var(--main-color-dark));
+    color: white;
+    box-shadow: 0 4px 12px rgba(221, 47, 110, 0.3);
+}
+
+[data-theme="dark"] .tooltip-btn.primary {
+    background: linear-gradient(135deg, var(--main-color-dark), var(--main-color));
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.tooltip-btn.secondary {
+    background: var(--bg-light);
+    color: var(--text-dark);
+    border: 2px solid var(--text-grey);
+}
+
+.tooltip-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+
+.status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+}
+
+.status-orange { background: #f59e0b; }
+.status-green { background: #10b981; }
+.status-red { background: #ef4444; }
+.status-yellow { background: #eab308; }
+
+#nav-toggle { display: none; }
+
+#nav-toggle:checked + .sidebar { width: 70px; }
+#nav-toggle:checked + .sidebar .sidebar-brand h2,
+#nav-toggle:checked + .sidebar .sidebar-menu a span:last-child { display: none; }
+#nav-toggle:checked + .sidebar .sidebar-brand { justify-content: center; padding: 1.5rem; }
+#nav-toggle:checked + .sidebar .sidebar-brand span { margin: 0; }
+#nav-toggle:checked + .sidebar .sidebar-menu a { justify-content: center; padding: 1rem; }
+#nav-toggle:checked + .sidebar .sidebar-menu a span:first-child { margin: 0; }
+#nav-toggle:checked ~ .main-content { margin-left: 70px; }
+#nav-toggle:checked ~ .main-content header { left: 70px; width: calc(100% - 70px); }
+
+html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+
+section {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+section.visible { opacity: 1; transform: translateY(0); }
+
+.hidden { display: none !important; }
+.fade-in { animation: fadeIn 0.3s ease-in; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 1024px) {
+    .cards { grid-template-columns: repeat(2, 1fr); }
+    .sidebar { width: 70px; }
+    .sidebar .sidebar-brand h2,
+    .sidebar .sidebar-menu a span:last-child { display: none; }
+    .sidebar .sidebar-brand { justify-content: center; padding: 1.5rem; }
+    .sidebar .sidebar-brand span { margin: 0; }
+    .sidebar .sidebar-menu a { justify-content: center; padding: 1rem; }
+    .sidebar .sidebar-menu a span:first-child { margin: 0; }
+    .main-content { margin-left: 70px; }
+    header { left: 70px; width: calc(100% - 70px); }
+    iframe { height: 400px; }
+    .contact-tooltip {
+        left: 50%;
+        top: auto;
+        bottom: calc(100% + 10px);
+        transform: translateX(-50%) translateY(10px) scale(0.95);
+        margin-left: 0;
+        min-width: 300px;
+    }
+    .contact-tooltip::before {
+        left: 50%;
+        top: auto;
+        bottom: -10px;
+        transform: translateX(-50%);
+        border-right-color: transparent;
+        border-top-color: var(--main-color);
+    }
+    [data-theme="dark"] .contact-tooltip::before {
+        border-top-color: var(--main-color-light);
+    }
+    .customer:hover .contact-tooltip {
+        transform: translateX(-50%) translateY(0) scale(1);
+    }
+}
+
+@media (max-width: 768px) {
+    .cards { grid-template-columns: 1fr; }
+    .sidebar { width: 60px; }
+    .main-content { margin-left: 60px; }
+    header { padding: 1rem 1.5rem; left: 60px; width: calc(100% - 60px); }
+    header h2 { font-size: 1.3rem; }
+    .user-wrapper small { display: none; }
+    main { padding: 1.5rem; margin-top: 0; }
+    iframe { height: 350px; }
+    .carde { grid-template-columns: 1fr; }
+    .red-btn, .blue-btn { min-height: 120px; padding: 1rem; font-size: 1rem; }
+    .red-btn p, .blue-btn p { font-size: 0.8rem; }
+    .red-card h1 { font-size: 1.5rem; }
+    .contact-tooltip {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) scale(0.95);
+        bottom: auto;
+        min-width: 90%;
+        max-width: 350px;
+        z-index: 1000;
+        margin-left: 0;
+    }
+    .contact-tooltip::before { display: none; }
+    .customer:hover .contact-tooltip {
+        transform: translate(-50%, -50%) scale(1);
+    }
+    .tooltip-overlay {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 999;
+        opacity: 0;
+        visibility: hidden;
+        transition: var(--transition);
+    }
+    .tooltip-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar { width: 55px; }
+    .main-content { margin-left: 55px; }
+    header {
+        padding: 0.8rem 1rem;
+        left: 55px;
+        width: calc(100% - 55px);
+        flex-direction: column;
+        align-items: stretch;
+    }
+    header h2 { font-size: 1.2rem; justify-content: center; }
+    .user-wrapper { justify-content: center; }
+    main { padding: 1rem; }
+    .cards { gap: 1rem; }
+    .card-single { padding: 1rem 1.2rem; }
+    .card-single h1 { font-size: 1.5rem; }
+    iframe { height: 280px; }
+    .red-card { margin: 1.5rem 0 1rem; }
+    .red-card h1 { font-size: 1.3rem; }
+    .red-btn, .blue-btn { min-height: 110px; padding: 0.9rem; font-size: 0.95rem; }
+    .red-btn p, .blue-btn p { font-size: 0.75rem; }
+    .customer { padding: 0.8rem 1rem; }
+    .info img { width: 40px; height: 40px; }
+    .info h4 { font-size: 0.9rem; }
+    .info small { font-size: 0.75rem; }
+    .card-header h3 { font-size: 1.1rem; }
+    .contact-tooltip { min-width: 95%; padding: 1rem; }
+    .tooltip-header img { width: 50px; height: 50px; }
+    .tooltip-header h4 { font-size: 1rem; }
+    .login-container { padding: 2rem; margin: 1rem; }
+    .login-header h1 { font-size: 1.5rem; }
+}
+
+@keyframes ripple {
+    to { transform: scale(4); opacity: 0; }
+}
+</style>
 </head>
 <body>
 
-    <!-- ===== LOGIN SCREEN ===== -->
     <div id="login-screen">
         <div class="login-theme-toggle" id="loginThemeToggle" title="Cambiar tema">
             <span class="sun">☀️</span>
@@ -1232,11 +1291,9 @@
         </div>
     </div>
 
-    <!-- ===== DASHBOARD (hidden until login) ===== -->
     <div id="dashboard">
         <input type="checkbox" id="nav-toggle">
 
-        <!-- SIDEBAR -->
         <div class="sidebar">
             <div class="sidebar-brand">
                 <span class="lab la-facebook-f"></span>
@@ -1255,7 +1312,6 @@
             </div>
         </div>
 
-        <!-- MAIN CONTENT -->
         <div class="main-content">
             <header>
                 <h2>
@@ -1278,7 +1334,6 @@
             </header>
 
             <main>
-                <!-- KPI Cards -->
                 <div class="cards">
                     <div class="card-single">
                         <div><h1>$185,000</h1><span>Ventas totales</span></div>
@@ -1298,12 +1353,10 @@
                     </div>
                 </div>
 
-                <!-- PowerBI iframe -->
                 <div class="recent-grid">
                     <iframe title="Actividades" src="https://app.powerbi.com/view?r=eyJrIjoiYWY4ODMwYmMtYjc4NC00MDZjLThiNmUtYzUzYWNjZjQwYjI1IiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9" frameborder="0" allowFullScreen="true"></iframe>
                 </div>
 
-                <!-- Secciones -->
                 <section id="Mis-resultados">
                     <div class="red-card"><h1>Mis resultados</h1></div>
                     <div class="tarjetas">
@@ -1384,278 +1437,474 @@
                     </div>
                 </section>
 
-                <!-- Contactos -->
                 <section id="Contactos">
                     <div class="red-card"><h1>Contactos</h1></div>
                     <div class="customers">
                         <div class="card">
                             <div class="card-header"><h3>Equipo</h3></div>
                             <div class="card-body">
+
                                 <div class="customer">
                                     <div class="info">
-                                        <img src="./christian.PNG" width="40" height="40" alt="" onerror="this.src='https://via.placeholder.com/40'">
-                                        <div><h4>Christian Bello</h4><small>Gerente de información y análisis</small></div>
-                                    </div>
-                                    <div class="contact-tooltip">
-                                        <div class="tooltip-header">
-                                            <img src="./christian.PNG" alt="" onerror="this.src='https://via.placeholder.com/50'">
-                                            <div><h4>Christian Bello</h4><small>Gerente de información y análisis</small></div>
-                                        </div>
-                                        <div class="tooltip-body">
-                                            <div class="tooltip-item"><span>📧</span> christian.bello@fincomun.com</div>
-                                            <div class="tooltip-item"><span>📱</span> Ext. 2401</div>
-                                            <div class="tooltip-item"><span>🏢</span> Piso 3, Oficina 301</div>
-                                        </div>
-                                        <div class="tooltip-actions">
-                                            <button class="tooltip-btn primary"><span class="las la-envelope"></span> Email</button>
-                                            <button class="tooltip-btn secondary"><span class="las la-phone"></span> Llamar</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Repetir estructura para cada contacto... -->
-                                <div class="customer">
-                                    <div class="info">
-                                        <img src="./carlos.PNG" width="40" height="40" alt="" onerror="this.src='https://via.placeholder.com/40'">
-                                        <div><h4>Carlos David</h4><small>Coordinador de información</small></div>
-                                    </div>
-                                    <div class="contact-tooltip">
-                                    <div class="tooltip-header">
-                                        <img src="./christian.PNG" alt="">
+                                        <img src="./christian.PNG" width="45" height="45" alt="" onerror="this.src='https://via.placeholder.com/45'">
                                         <div>
                                             <h4>Christian Bello</h4>
                                             <small>Gerente de información y análisis</small>
                                         </div>
                                     </div>
-                                    <div class="tooltip-body">
-                                        <div class="tooltip-item"><span>📧</span> christian.bello@fincomun.com</div>
-                                        <div class="tooltip-item"><span>📱</span> Ext. 2401</div>
-                                        <div class="tooltip-item"><span>🏢</span> Piso 3, Oficina 301</div>
-                                        <div class="tooltip-item"><span>🕐</span> Lun-Vie 9:00-18:00</div>
-                                    </div>
-                                    <div class="tooltip-actions">
-                                        <button class="tooltip-btn primary"><span class="las la-envelope"></span> Email</button>
-                                        <button class="tooltip-btn secondary"><span class="las la-phone"></span> Llamar</button>
+                                    <div class="contact-tooltip">
+                                        <div class="tooltip-header">
+                                            <img src="./christian.PNG" alt="" onerror="this.src='https://via.placeholder.com/60'">
+                                            <div>
+                                                <h4>Christian Bello</h4>
+                                                <small>Gerente de información y análisis</small>
+                                            </div>
+                                        </div>
+                                        <div class="tooltip-body">
+                                            <div class="tooltip-item">
+                                                <span class="las la-envelope" style="color: var(--main-color);"></span>
+                                                <span>cbello@fincomun.com.mx</span>
+                                            </div>
+                                            <div class="tooltip-item">
+                                                <span class="las la-phone" style="color: var(--main-color);"></span>
+                                                <span>Ext. 4088</span>
+                                            </div>
+                                            <div class="tooltip-item">
+                                                <span class="las la-building" style="color: var(--main-color);"></span>
+                                                <span>Piso 5</span>
+                                            </div>
+                                            <div class="tooltip-item">
+                                                <span class="las la-clock" style="color: var(--main-color);"></span>
+                                                <span>Lun, Mar, Mié 9:00-19:00</span>
+                                            </div>
+                                        </div>
+                                        <div class="tooltip-actions">
+                                            <button class="tooltip-btn primary" onclick="window.location.href='mailto:cbello@fincomun.com.mx'">
+                                                <span class="las la-envelope"></span> Email
+                                            </button>
+                                            <button class="tooltip-btn secondary" onclick="alert('Llamando a Christian Bello...')">
+                                                <span class="las la-phone"></span> Llamar
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="customer">
-                                <div class="info">
-                                    <img src="./carlos.PNG" width="40" height="40" alt="">
-                                    <div><h4>Carlos David</h4><small>Coordinador de información y análisis</small></div>
-                                </div>
-                                    <div class="tooltip-body">
-                                        <div class="tooltip-item"><span>📧</span> carlos.david@fincomun.com</div>
-                                        <div class="tooltip-item"><span>📱</span> Ext. 2402</div>
-                                        <div class="tooltip-item"><span>🏢</span> Piso 3, Oficina 302</div>
-                                        <div class="tooltip-item"><span>🕐</span> Lun-Vie 9:00-18:00</div>
+
+                                <div class="customer">
+                                    <div class="info">
+                                        <img src="./carlos.PNG" width="45" height="45" alt="" onerror="this.src='https://via.placeholder.com/45'">
+                                        <div>
+                                            <h4>Carlos David Gonzalez</h4>
+                                            <small>Coordinador de información</small>
+                                        </div>
                                     </div>
-                                    <div class="tooltip-actions">
-                                        <button class="tooltip-btn primary"><span class="las la-envelope"></span> Email</button>
-                                        <button class="tooltip-btn secondary"><span class="las la-phone"></span> Llamar</button>
+                                    <div class="contact-tooltip">
+                                        <div class="tooltip-header">
+                                            <img src="./carlos.PNG" alt="" onerror="this.src='https://via.placeholder.com/60'">
+                                            <div>
+                                                <h4>Carlos David Gonzalez</h4>
+                                                <small>Coordinador de información</small>
+                                            </div>
+                                        </div>
+                                        <div class="tooltip-body">
+                                            <div class="tooltip-item">
+                                                <span class="las la-envelope" style="color: var(--main-color);"></span>
+                                                <span>cgonzalezq@fincomun.com.mx</span>
+                                            </div>
+                                            <div class="tooltip-item">
+                                                <span class="las la-phone" style="color: var(--main-color);"></span>
+                                                <span>Ext. 4148</span>
+                                            </div>
+                                            <div class="tooltip-item">
+                                                <span class="las la-building" style="color: var(--main-color);"></span>
+                                                <span>Piso 5</span>
+                                            </div>
+                                            <div class="tooltip-item">
+                                                <span class="las la-clock" style="color: var(--main-color);"></span>
+                                                <span>Lun, Jue, Vie 9:00-19:00</span>
+                                            </div>
+                                        </div>
+                                        <div class="tooltip-actions">
+                                            <button class="tooltip-btn primary" onclick="window.location.href='mailto:cgonzalezq@fincomun.com.mx'">
+                                                <span class="las la-envelope"></span> Email
+                                            </button>
+                                            <button class="tooltip-btn secondary" onclick="alert('Llamando a Carlos David...')">
+                                                <span class="las la-phone"></span> Llamar
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="customer">
-                                <div class="info">
-                                    <img src="./mizael.PNG" width="40" height="40" alt="">
-                                    <div><h4>Mizael Dario</h4><small>Coordinador de estadística</small></div>
-                                </div>
-                                <div class="contact-tooltip">
-                                    <div class="tooltip-header">
-                                        <img src="./mizael.PNG" alt="">
+
+                                <div class="customer">
+                                    <div class="info">
+                                        <img src="./mizael.PNG" width="45" height="45" alt="" onerror="this.src='https://via.placeholder.com/45'">
                                         <div>
                                             <h4>Mizael Dario</h4>
                                             <small>Coordinador de estadística</small>
                                         </div>
                                     </div>
-                                    <div class="tooltip-body">
-                                        <div class="tooltip-item"><span>📧</span> mizael.dario@fincomun.com</div>
-                                        <div class="tooltip-item"><span>📱</span> Ext. 2403</div>
-                                        <div class="tooltip-item"><span>🏢</span> Piso 3, Oficina 303</div>
-                                        <div class="tooltip-item"><span>🕐</span> Lun-Vie 9:00-18:00</div>
-                                    </div>
-                                    <div class="tooltip-actions">
-                                        <button class="tooltip-btn primary"><span class="las la-envelope"></span> Email</button>
-                                        <button class="tooltip-btn secondary"><span class="las la-phone"></span> Llamar</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="customer">
-                                <div class="info">
-                                    <img src="./alfredo.PNG" width="40" height="40" alt="">
-                                    <div><h4>Jose Alfredo</h4><small>Analista de Información y Estadística</small></div>
-                                </div>
-                                <div class="contact-tooltip">
-                                    <div class="tooltip-header">
-                                        <img src="./alfredo.PNG" alt="">
-                                        <div>
-                                            <h4>Jose Alfredo</h4>
-                                            <small>Analista de Información</small>
+                                    <div class="contact-tooltip">
+                                        <div class="tooltip-header">
+                                            <img src="./mizael.PNG" alt="" onerror="this.src='https://via.placeholder.com/60'">
+                                            <div>
+                                                <h4>Mizael Dario</h4>
+                                                <small>Coordinador de estadística</small>
+                                            </div>
+                                        </div>
+                                        <div class="tooltip-body">
+                                            <div class="tooltip-item">
+                                                <span class="las la-envelope" style="color: var(--main-color);"></span>
+                                                <span>morozcob.e@fincomun.com.mx</span>
+                                            </div>
+                                            <div class="tooltip-item">
+                                                <span class="las la-phone" style="color: var(--main-color);"></span>
+                                                <span>555200-1610</span>
+                                            </div>
+                                            <div class="tooltip-item">
+                                                <span class="las la-building" style="color: var(--main-color);"></span>
+                                                <span>Piso 5</span>
+                                            </div>
+                                            <div class="tooltip-item">
+                                                <span class="las la-clock" style="color: var(--main-color);"></span>
+                                                <span>Lun-Vie 9:00-19:00</span>
+                                            </div>
+                                        </div>
+                                        <div class="tooltip-actions">
+                                            <button class="tooltip-btn primary" onclick="window.location.href='mailto:morozcob.e@fincomun.com.mx'">
+                                                <span class="las la-envelope"></span> Email
+                                            </button>
+                                            <button class="tooltip-btn secondary" onclick="alert('Llamando a Mizael Dario...')">
+                                                <span class="las la-phone"></span> Llamar
+                                            </button>
                                         </div>
                                     </div>
-                                    <div class="tooltip-body">
-                                        <div class="tooltip-item"><span>📧</span> jose.alfredo@fincomun.com</div>
-                                        <div class="tooltip-item"><span>📱</span> Ext. 2404</div>
-                                        <div class="tooltip-item"><span>🏢</span> Piso 3, Oficina 304</div>
-                                        <div class="tooltip-item"><span>🕐</span> Lun-Vie 9:00-18:00</div>
+                                </div>
+
+                                <div class="customer">
+                                    <div class="info">
+                                        <img src="./alfredo.PNG" width="45" height="45" alt="" onerror="this.src='https://via.placeholder.com/45'">
+                                        <div>
+                                            <h4>Jose Alfredo Garcia</h4>
+                                            <small>Analista de Información y Estadística</small>
+                                        </div>
                                     </div>
-                                    <div class="tooltip-actions">
-                                        <button class="tooltip-btn primary"><span class="las la-envelope"></span> Email</button>
-                                        <button class="tooltip-btn secondary"><span class="las la-phone"></span> Llamar</button>
+                                    <div class="contact-tooltip">
+                                        <div class="tooltip-header">
+                                            <img src="./alfredo.PNG" alt="" onerror="this.src='https://via.placeholder.com/60'">
+                                            <div>
+                                                <h4>Jose Alfredo Garcia</h4>
+                                                <small>Analista de Información</small>
+                                            </div>
+                                        </div>
+                                        <div class="tooltip-body">
+                                            <div class="tooltip-item">
+                                                <span class="las la-envelope" style="color: var(--main-color);"></span>
+                                                <span>jgarciac@fincomun.com.mx</span>
+                                            </div>
+                                            <div class="tooltip-item">
+                                                <span class="las la-phone" style="color: var(--main-color);"></span>
+                                                <span>Ext. 4061</span>
+                                            </div>
+                                            <div class="tooltip-item">
+                                                <span class="las la-building" style="color: var(--main-color);"></span>
+                                                <span>Piso 5</span>
+                                            </div>
+                                            <div class="tooltip-item">
+                                                <span class="las la-clock" style="color: var(--main-color);"></span>
+                                                <span>Lun, Mar, Mié 9:00-19:00</span>
+                                            </div>
+                                        </div>
+                                        <div class="tooltip-actions">
+                                            <button class="tooltip-btn primary" onclick="window.location.href='mailto:jgarciac@fincomun.com.mx'">
+                                                <span class="las la-envelope"></span> Email
+                                            </button>
+                                            <button class="tooltip-btn secondary" onclick="alert('Llamando a Jose Alfredo...')">
+                                                <span class="las la-phone"></span> Llamar
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="customer">
-                                <div class="info">
-                                    <img src="./juan.png" width="40" height="40" alt="">
-                                    <div><h4>Juan Carlos Mejia</h4><small>Empresario de compensaciones</small></div>
-                                </div>
-                                <div class="contact-tooltip">
-                                    <div class="tooltip-header">
-                                        <img src="./juan.png" alt="">
+
+                                <div class="customer">
+                                    <div class="info">
+                                        <img src="./juan.png" width="45" height="45" alt="" onerror="this.src='https://via.placeholder.com/45'">
                                         <div>
                                             <h4>Juan Carlos Mejia</h4>
-                                            <small>Compensaciones</small>
+                                            <small>Empresario de compensaciones</small>
                                         </div>
                                     </div>
-                                    <div class="tooltip-body">
-                                        <div class="tooltip-item"><span>📧</span> juan.mejia@fincomun.com</div>
-                                        <div class="tooltip-item"><span>📱</span> Ext. 2405</div>
-                                        <div class="tooltip-item"><span>🏢</span> Piso 3, Oficina 305</div>
-                                        <div class="tooltip-item"><span>🕐</span> Lun-Vie 9:00-18:00</div>
-                                    </div>
-                                    <div class="tooltip-actions">
-                                        <button class="tooltip-btn primary"><span class="las la-envelope"></span> Email</button>
-                                        <button class="tooltip-btn secondary"><span class="las la-phone"></span> Llamar</button>
+                                    <div class="contact-tooltip">
+                                        <div class="tooltip-header">
+                                            <img src="./juan.png" alt="" onerror="this.src='https://via.placeholder.com/60'">
+                                            <div>
+                                                <h4>Juan Carlos Mejia</h4>
+                                                <small>Empresario de compensaciones</small>
+                                            </div>
+                                        </div>
+                                        <div class="tooltip-body">
+                                            <div class="tooltip-item">
+                                                <span class="las la-envelope" style="color: var(--main-color);"></span>
+                                                <span>jmejia.e@fincomun.com.mx</span>
+                                            </div>
+                                            <div class="tooltip-item">
+                                                <span class="las la-phone" style="color: var(--main-color);"></span>
+                                                <span>555200-1610</span>
+                                            </div>
+                                            <div class="tooltip-item">
+                                                <span class="las la-building" style="color: var(--main-color);"></span>
+                                                <span>Piso 5</span>
+                                            </div>
+                                            <div class="tooltip-item">
+                                                <span class="las la-clock" style="color: var(--main-color);"></span>
+                                                <span>Lun, Mié, Jue 9:00-19:00</span>
+                                            </div>
+                                        </div>
+                                        <div class="tooltip-actions">
+                                            <button class="tooltip-btn primary" onclick="window.location.href='mailto:jmejia.e@fincomun.com.mx'">
+                                                <span class="las la-envelope"></span> Email
+                                            </button>
+                                            <button class="tooltip-btn secondary" onclick="alert('Llamando a Juan Carlos...')">
+                                                <span class="las la-phone"></span> Llamar
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="customer">
-                                <div class="info">
-                                    <img src="./michel.PNG" width="40" height="40" alt="">
-                                    <div><h4>Michael Castillo</h4><small>Analista de Información y Análisis</small></div>
-                                </div>
-                                <div class="contact-tooltip">
-                                    <div class="tooltip-header">
-                                        <img src="./michel.PNG" alt="">
+
+                                <div class="customer">
+                                    <div class="info">
+                                        <img src="./michel.PNG" width="45" height="45" alt="" onerror="this.src='https://via.placeholder.com/45'">
                                         <div>
                                             <h4>Michael Castillo</h4>
-                                            <small>Analista de Análisis</small>
+                                            <small>Analista de Información y Análisis</small>
                                         </div>
                                     </div>
-                                    <div class="tooltip-body">
-                                        <div class="tooltip-item"><span>📧</span> michael.castillo@fincomun.com</div>
-                                        <div class="tooltip-item"><span>📱</span> Ext. 2406</div>
-                                        <div class="tooltip-item"><span>🏢</span> Piso 3, Oficina 306</div>
-                                        <div class="tooltip-item"><span>🕐</span> Lun-Vie 9:00-18:00</div>
-                                    </div>
-                                    <div class="tooltip-actions">
-                                        <button class="tooltip-btn primary"><span class="las la-envelope"></span> Email</button>
-                                        <button class="tooltip-btn secondary"><span class="las la-phone"></span> Llamar</button>
+                                    <div class="contact-tooltip">
+                                        <div class="tooltip-header">
+                                            <img src="./michel.PNG" alt="" onerror="this.src='https://via.placeholder.com/60'">
+                                            <div>
+                                                <h4>Michael Castillo</h4>
+                                                <small>Analista de Análisis</small>
+                                            </div>
+                                        </div>
+                                        <div class="tooltip-body">
+                                            <div class="tooltip-item">
+                                                <span class="las la-envelope" style="color: var(--main-color);"></span>
+                                                <span>mcastillo.e@fincomun.com.mx</span>
+                                            </div>
+                                            <div class="tooltip-item">
+                                                <span class="las la-phone" style="color: var(--main-color);"></span>
+                                                <span>555200-1610</span>
+                                            </div>
+                                            <div class="tooltip-item">
+                                                <span class="las la-building" style="color: var(--main-color);"></span>
+                                                <span>Piso 5</span>
+                                            </div>
+                                            <div class="tooltip-item">
+                                                <span class="las la-clock" style="color: var(--main-color);"></span>
+                                                <span>Mié, Jue, Vie 9:00-19:00</span>
+                                            </div>
+                                        </div>
+                                        <div class="tooltip-actions">
+                                            <button class="tooltip-btn primary" onclick="window.location.href='mailto:mcastillo.e@fincomun.com.mx'">
+                                                <span class="las la-envelope"></span> Email
+                                            </button>
+                                            <button class="tooltip-btn secondary" onclick="alert('Llamando a Michael...')">
+                                                <span class="las la-phone"></span> Llamar
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="customer">
-                                <div class="info">
-                                    <img src="./nixi.png" width="40" height="40" alt="">
-                                    <div><h4>Nixi Osornio Mejia</h4><small>Analista de inteligencia geográfica</small></div>
-                                </div>
-                                <div class="contact-tooltip">
-                                    <div class="tooltip-header">
-                                        <img src="./nixi.png" alt="">
+
+                                <div class="customer">
+                                    <div class="info">
+                                        <img src="./nixi.png" width="45" height="45" alt="" onerror="this.src='https://via.placeholder.com/45'">
                                         <div>
                                             <h4>Nixi Osornio Mejia</h4>
-                                            <small>Inteligencia Geográfica</small>
+                                            <small>Analista de inteligencia geográfica</small>
                                         </div>
                                     </div>
-                                    <div class="tooltip-body">
-                                        <div class="tooltip-item"><span>📧</span> nixi.osornio@fincomun.com</div>
-                                        <div class="tooltip-item"><span>📱</span> Ext. 2407</div>
-                                        <div class="tooltip-item"><span>🏢</span> Piso 3, Oficina 307</div>
-                                        <div class="tooltip-item"><span>🕐</span> Lun-Vie 9:00-18:00</div>
-                                    </div>
-                                    <div class="tooltip-actions">
-                                        <button class="tooltip-btn primary"><span class="las la-envelope"></span> Email</button>
-                                        <button class="tooltip-btn secondary"><span class="las la-phone"></span> Llamar</button>
+                                    <div class="contact-tooltip">
+                                        <div class="tooltip-header">
+                                            <img src="./nixi.png" alt="" onerror="this.src='https://via.placeholder.com/60'">
+                                            <div>
+                                                <h4>Nixi Osornio Mejia</h4>
+                                                <small>Inteligencia Geográfica</small>
+                                            </div>
+                                        </div>
+                                        <div class="tooltip-body">
+                                            <div class="tooltip-item">
+                                                <span class="las la-envelope" style="color: var(--main-color);"></span>
+                                                <span>nosorniom@fincomun.com.mx</span>
+                                            </div>
+                                            <div class="tooltip-item">
+                                                <span class="las la-phone" style="color: var(--main-color);"></span>
+                                                <span>555200-1610</span>
+                                            </div>
+                                            <div class="tooltip-item">
+                                                <span class="las la-building" style="color: var(--main-color);"></span>
+                                                <span>Piso 5</span>
+                                            </div>
+                                            <div class="tooltip-item">
+                                                <span class="las la-clock" style="color: var(--main-color);"></span>
+                                                <span>Mié, Jue, Vie 9:00-19:00</span>
+                                            </div>
+                                        </div>
+                                        <div class="tooltip-actions">
+                                            <button class="tooltip-btn primary" onclick="window.location.href='mailto:nosorniom@fincomun.com.mx'">
+                                                <span class="las la-envelope"></span> Email
+                                            </button>
+                                            <button class="tooltip-btn secondary" onclick="alert('Llamando a Nixi...')">
+                                                <span class="las la-phone"></span> Llamar
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="customer">
-                                <div class="info">
-                                    <img src="./angel.png" width="40" height="40" alt="">
-                                    <div><h4>Angel Eduardo Pacheco</h4><small>Empresario de proyectos</small></div>
-                                </div>
-                                <div class="contact-tooltip">
-                                    <div class="tooltip-header">
-                                        <img src="./angel.png" alt="">
+
+                                <div class="customer">
+                                    <div class="info">
+                                        <img src="./angel.png" width="45" height="45" alt="" onerror="this.src='https://via.placeholder.com/45'">
                                         <div>
                                             <h4>Angel Eduardo Pacheco</h4>
-                                            <small>Proyectos</small>
+                                            <small>Empresario de proyectos</small>
                                         </div>
                                     </div>
-                                    <div class="tooltip-body">
-                                        <div class="tooltip-item"><span>📧</span> angel.pacheco@fincomun.com</div>
-                                        <div class="tooltip-item"><span>📱</span> Ext. 2408</div>
-                                        <div class="tooltip-item"><span>🏢</span> Piso 3, Oficina 308</div>
-                                        <div class="tooltip-item"><span>🕐</span> Lun-Vie 9:00-18:00</div>
-                                    </div>
-                                    <div class="tooltip-actions">
-                                        <button class="tooltip-btn primary"><span class="las la-envelope"></span> Email</button>
-                                        <button class="tooltip-btn secondary"><span class="las la-phone"></span> Llamar</button>
+                                    <div class="contact-tooltip">
+                                        <div class="tooltip-header">
+                                            <img src="./angel.png" alt="" onerror="this.src='https://via.placeholder.com/60'">
+                                            <div>
+                                                <h4>Angel Eduardo Pacheco</h4>
+                                                <small>Empresario de proyectos</small>
+                                            </div>
+                                        </div>
+                                        <div class="tooltip-body">
+                                            <div class="tooltip-item">
+                                                <span class="las la-envelope" style="color: var(--main-color);"></span>
+                                                <span>apacheco.e@fincomun.com.mx</span>
+                                            </div>
+                                            <div class="tooltip-item">
+                                                <span class="las la-phone" style="color: var(--main-color);"></span>
+                                                <span>555200-1610</span>
+                                            </div>
+                                            <div class="tooltip-item">
+                                                <span class="las la-building" style="color: var(--main-color);"></span>
+                                                <span>Piso 5</span>
+                                            </div>
+                                            <div class="tooltip-item">
+                                                <span class="las la-clock" style="color: var(--main-color);"></span>
+                                                <span>Lun, Mié, Jue 9:00-19:00</span>
+                                            </div>
+                                        </div>
+                                        <div class="tooltip-actions">
+                                            <button class="tooltip-btn primary" onclick="window.location.href='mailto:apacheco.e@fincomun.com.mx'">
+                                                <span class="las la-envelope"></span> Email
+                                            </button>
+                                            <button class="tooltip-btn secondary" onclick="alert('Llamando a Angel...')">
+                                                <span class="las la-phone"></span> Llamar
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="customer">
-                                <div class="info">
-                                    <img src="./yanet.png" width="40" height="40" alt="">
-                                    <div><h4>Yanet Dalia Rosales</h4><small>Coordinadora de compensaciones</small></div>
-                                </div>
-                                <div class="contact-tooltip">
-                                    <div class="tooltip-header">
-                                        <img src="./yanet.png" alt="">
+
+                                <div class="customer">
+                                    <div class="info">
+                                        <img src="./yanet.png" width="45" height="45" alt="" onerror="this.src='https://via.placeholder.com/45'">
                                         <div>
                                             <h4>Yanet Dalia Rosales</h4>
-                                            <small>Coordinadora</small>
+                                            <small>Coordinadora de compensaciones</small>
                                         </div>
                                     </div>
-                                    <div class="tooltip-body">
-                                        <div class="tooltip-item"><span>📧</span> yanet.rosales@fincomun.com</div>
-                                        <div class="tooltip-item"><span>📱</span> Ext. 2409</div>
-                                        <div class="tooltip-item"><span>🏢</span> Piso 3, Oficina 309</div>
-                                        <div class="tooltip-item"><span>🕐</span> Lun-Vie 9:00-18:00</div>
-                                    </div>
-                                    <div class="tooltip-actions">
-                                        <button class="tooltip-btn primary"><span class="las la-envelope"></span> Email</button>
-                                        <button class="tooltip-btn secondary"><span class="las la-phone"></span> Llamar</button>
+                                    <div class="contact-tooltip">
+                                        <div class="tooltip-header">
+                                            <img src="./yanet.png" alt="" onerror="this.src='https://via.placeholder.com/60'">
+                                            <div>
+                                                <h4>Yanet Dalia Rosales</h4>
+                                                <small>Coordinadora</small>
+                                            </div>
+                                        </div>
+                                        <div class="tooltip-body">
+                                            <div class="tooltip-item">
+                                                <span class="las la-envelope" style="color: var(--main-color);"></span>
+                                                <span>yrosalesg@fincomun.com.mx</span>
+                                            </div>
+                                            <div class="tooltip-item">
+                                                <span class="las la-phone" style="color: var(--main-color);"></span>
+                                                <span>555200-1610</span>
+                                            </div>
+                                            <div class="tooltip-item">
+                                                <span class="las la-building" style="color: var(--main-color);"></span>
+                                                <span>Piso 5</span>
+                                            </div>
+                                            <div class="tooltip-item">
+                                                <span class="las la-clock" style="color: var(--main-color);"></span>
+                                                <span>Lun, Mar 9:00-19:00</span>
+                                            </div>
+                                        </div>
+                                        <div class="tooltip-actions">
+                                            <button class="tooltip-btn primary" onclick="window.location.href='mailto:yrosalesg@fincomun.com.mx'">
+                                                <span class="las la-envelope"></span> Email
+                                            </button>
+                                            <button class="tooltip-btn secondary" onclick="alert('Llamando a Yanet...')">
+                                                <span class="las la-phone"></span> Llamar
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="customer">
-                                <div class="info">
-                                    <img src="./thelian.png" width="40" height="40" alt="">
-                                    <div><h4>Thelian Omar Arias</h4><small>Subdirector de Incentivos</small></div>
-                                </div>
-                                <div class="contact-tooltip">
-                                    <div class="tooltip-header">
-                                        <img src="./thelian.png" alt="">
+
+                                <div class="customer">
+                                    <div class="info">
+                                        <img src="./thelian.png" width="45" height="45" alt="" onerror="this.src='https://via.placeholder.com/45'">
                                         <div>
                                             <h4>Thelian Omar Arias</h4>
-                                            <small>Subdirector</small>
+                                            <small>Subdirector de Incentivos</small>
+                                        </div>
+                                    </div>
+                                    <div class="contact-tooltip">
+                                        <div class="tooltip-header">
+                                            <img src="./thelian.png" alt="" onerror="this.src='https://via.placeholder.com/60'">
+                                            <div>
+                                                <h4>Thelian Omar Arias</h4>
+                                                <small>Subdirector</small>
+                                            </div>
+                                        </div>
+                                        <div class="tooltip-body">
+                                            <div class="tooltip-item">
+                                                <span class="las la-envelope" style="color: var(--main-color);"></span>
+                                                <span>omarias@fincomun.com.mx</span>
+                                            </div>
+                                            <div class="tooltip-item">
+                                                <span class="las la-phone" style="color: var(--main-color);"></span>
+                                                <span>555200-1610</span>
+                                            </div>
+                                            <div class="tooltip-item">
+                                                <span class="las la-building" style="color: var(--main-color);"></span>
+                                                <span>Piso 5</span>
+                                            </div>
+                                            <div class="tooltip-item">
+                                                <span class="las la-clock" style="color: var(--main-color);"></span>
+                                                <span>Lun-Vie 9:00-19:00</span>
+                                            </div>
+                                        </div>
+                                        <div class="tooltip-actions">
+                                            <button class="tooltip-btn primary" onclick="window.location.href='mailto:omarias@fincomun.com.mx'">
+                                                <span class="las la-envelope"></span> Email
+                                            </button>
+                                            <button class="tooltip-btn secondary" onclick="alert('Llamando a Thelian...')">
+                                                <span class="las la-phone"></span> Llamar
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Agrega más contactos según necesites -->
+
                             </div>
                         </div>
                     </div>
                 </section>
+
             </main>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // ===== LOGIN FUNCTIONALITY =====
             const loginScreen = document.getElementById('login-screen');
             const dashboard = document.getElementById('dashboard');
             const loginForm = document.getElementById('loginForm');
@@ -1664,60 +1913,46 @@
             const usernameInput = document.getElementById('username');
             const passwordInput = document.getElementById('password');
 
-            // Credenciales (en producción usar backend)
             const VALID_USER = 'planfin';
             const VALID_PASS = '1234';
 
-            // Cargar usuario guardado si existe
             const savedUser = localStorage.getItem('fincomun_user');
             if (savedUser) {
                 usernameInput.value = savedUser;
                 document.getElementById('remember').checked = true;
             }
 
-            // Manejar submit del formulario
             loginForm.addEventListener('submit', function(e) {
                 e.preventDefault();
 
                 const username = usernameInput.value.trim();
                 const password = passwordInput.value;
 
-                // Mostrar estado de carga
                 loginBtn.classList.add('loading');
                 loginBtn.querySelector('span').textContent = 'Verificando...';
                 errorMessage.classList.remove('show');
 
-                // Simular validación (en producción usar fetch a backend)
                 setTimeout(() => {
                     if (username === VALID_USER && password === VALID_PASS) {
-                        // Login exitoso
                         if (document.getElementById('remember').checked) {
                             localStorage.setItem('fincomun_user', username);
                         } else {
                             localStorage.removeItem('fincomun_user');
                         }
 
-                        // Animación: login se desliza hacia arriba
                         loginScreen.classList.add('slide-up');
 
-                        // Mostrar dashboard después de la animación
                         setTimeout(() => {
                             loginScreen.style.display = 'none';
                             dashboard.classList.add('loaded');
-
-                            // Inicializar animaciones del dashboard
                             initDashboardAnimations();
                         }, 600);
 
                     } else {
-                        // Login fallido
                         loginBtn.classList.remove('loading');
                         loginBtn.querySelector('span').textContent = 'Acceder';
-
-                        // Mostrar mensaje de error con animación
                         errorMessage.classList.add('show');
 
-                        // Shake en los inputs
                         usernameInput.parentElement.classList.add('shake');
                         passwordInput.parentElement.classList.add('shake');
                         setTimeout(() => {
@@ -1725,16 +1960,13 @@
                             passwordInput.parentElement.classList.remove('shake');
                         }, 500);
 
-                        // Limpiar contraseña
                         passwordInput.value = '';
                         passwordInput.focus();
                     }
                 }, 800);
             });
 
-            // ===== DASHBOARD ANIMATIONS =====
             function initDashboardAnimations() {
-                // Smooth scroll navigation
                 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                     anchor.addEventListener('click', function(e) {
                         e.preventDefault();
@@ -1751,11 +1983,17 @@
 
                             document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
                             this.classList.add('active');
+
+                            // Actualizar el título del header
+                            const headerTitle = document.querySelector('header h2');
+                            if (headerTitle) {
+                                const text = this.querySelector('span:last-child').textContent;
+                                headerTitle.childNodes[2].textContent = text;
+                            }
                         }
                     });
                 });
 
-                // Highlight active section on scroll
                 const sections = document.querySelectorAll('section[id]');
                 const navLinks = document.querySelectorAll('.sidebar-menu a');
 
@@ -1773,7 +2011,6 @@
                 window.addEventListener('scroll', updateActiveLink);
                 updateActiveLink();
 
-                // Section animations on scroll
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting) entry.target.classList.add('visible');
@@ -1783,7 +2020,6 @@
                 sections.forEach(section => observer.observe(section));
             }
 
-            // ===== DARK MODE TOGGLE (Login & Dashboard) =====
             const loginThemeToggle = document.getElementById('loginThemeToggle');
             const dashboardThemeToggle = document.getElementById('themeToggle');
             const html = document.documentElement;
@@ -1804,7 +2040,6 @@
             if (loginThemeToggle) loginThemeToggle.addEventListener('click', toggleTheme);
             if (dashboardThemeToggle) dashboardThemeToggle.addEventListener('click', toggleTheme);
 
-            // ===== BUTTON RIPPLE EFFECT =====
             document.querySelectorAll('.red-btn, .blue-btn, .login-btn').forEach(btn => {
                 btn.addEventListener('click', function(e) {
                     if (this.classList.contains('loading')) return;
@@ -1820,7 +2055,6 @@
                 });
             });
 
-            // Add ripple keyframes
             const style = document.createElement('style');
             style.textContent = `@keyframes ripple{to{transform:scale(4);opacity:0}}`;
             document.head.appendChild(style);
