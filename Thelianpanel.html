@@ -61,6 +61,8 @@ body {
     overflow-x: hidden;
 }
 
+/* ===== LOGIN SCREEN - COMENTADO/INACTIVO ===== */
+/*
 #login-screen {
     position: fixed;
     top: 0;
@@ -74,288 +76,11 @@ body {
     z-index: 9999;
     transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.4s ease;
 }
-
-#login-screen.slide-up {
-    transform: translateY(-100%);
-    opacity: 0;
-    pointer-events: none;
-}
-
-[data-theme="dark"] #login-screen {
-    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #3b82f6 100%);
-}
-
-.login-container {
-    background: var(--bg-card);
-    padding: 2.5rem 3rem;
-    border-radius: 24px;
-    box-shadow: var(--shadow-lg);
-    width: 100%;
-    max-width: 420px;
-    animation: loginSlideIn 0.6s ease;
-    position: relative;
-}
-
-@keyframes loginSlideIn {
-    from { opacity: 0; transform: translateY(30px) scale(0.95); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-.login-header {
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.login-logo {
-    width: 80px;
-    height: 80px;
-    background: linear-gradient(135deg, var(--main-color), var(--main-color-dark));
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1rem;
-    box-shadow: 0 8px 24px rgba(221, 47, 110, 0.3);
-}
-
-[data-theme="dark"] .login-logo {
-    background: linear-gradient(135deg, var(--main-color-dark), var(--main-color));
-    box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
-}
-
-.login-logo i {
-    font-size: 2.5rem;
-    color: white;
-}
-
-.login-header h1 {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--text-dark);
-    margin-bottom: 0.3rem;
-}
-
-.login-header p {
-    color: var(--text-grey);
-    font-size: 0.9rem;
-}
-
-.login-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-}
-
-.form-group {
-    position: relative;
-}
-
-.form-group label {
-    display: block;
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: var(--text-dark);
-    margin-bottom: 0.5rem;
-}
-
-.form-group input {
-    width: 100%;
-    padding: 0.9rem 1rem 0.9rem 2.8rem;
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    font-size: 1rem;
-    color: var(--text-dark);
-    background: var(--bg-light);
-    transition: var(--transition);
-}
-
-[data-theme="dark"] .form-group input {
-    border-color: #334155;
-    background: #334155;
-    color: #fff;
-}
-
-.form-group input:focus {
-    outline: none;
-    border-color: var(--main-color);
-    box-shadow: 0 0 0 3px rgba(221, 47, 110, 0.1);
-}
-
-[data-theme="dark"] .form-group input:focus {
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-}
-
-.form-group i {
-    position: absolute;
-    left: 1rem;
-    top: 50%;
-    transform: translateY(22px);
-    color: var(--text-grey);
-    font-size: 1.1rem;
-    transition: var(--transition);
-}
-
-.form-group input:focus + i {
-    color: var(--main-color);
-}
-
-.form-options {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.85rem;
-}
-
-.remember-me {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    color: var(--text-grey);
-    cursor: pointer;
-}
-
-.remember-me input {
-    width: 16px;
-    height: 16px;
-    accent-color: var(--main-color);
-    cursor: pointer;
-}
-
-.forgot-password {
-    color: var(--main-color);
-    font-weight: 500;
-    transition: var(--transition);
-}
-
-.forgot-password:hover {
-    text-decoration: underline;
-}
-
-.login-btn {
-    width: 100%;
-    padding: 1rem;
-    background: linear-gradient(135deg, var(--main-color), var(--main-color-dark));
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--transition);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-    box-shadow: 0 4px 14px rgba(221, 47, 110, 0.3);
-}
-
-[data-theme="dark"] .login-btn {
-    background: linear-gradient(135deg, var(--main-color-dark), var(--main-color));
-    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
-}
-
-.login-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(221, 47, 110, 0.4);
-}
-
-[data-theme="dark"] .login-btn:hover {
-    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
-}
-
-.login-btn:active {
-    transform: translateY(0);
-}
-
-.login-btn.loading {
-    pointer-events: none;
-    opacity: 0.8;
-}
-
-.login-btn.loading i {
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-.error-message {
-    background: linear-gradient(135deg, #ef4444, #dc2626);
-    color: white;
-    padding: 0.8rem 1rem;
-    border-radius: 10px;
-    font-size: 0.9rem;
-    text-align: center;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    opacity: 0;
-    transform: translateY(-10px);
-    transition: var(--transition);
-    pointer-events: none;
-}
-
-.error-message.show {
-    opacity: 1;
-    transform: translateY(0);
-    animation: shake 0.5s ease;
-}
-
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-8px); }
-    75% { transform: translateX(8px); }
-}
-
-.login-theme-toggle {
-    position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
-    width: 45px;
-    height: 26px;
-    background: rgba(255,255,255,0.2);
-    border-radius: 50px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    padding: 2px;
-    transition: var(--transition);
-}
-
-.login-theme-toggle::after {
-    content: '';
-    width: 20px;
-    height: 20px;
-    background: white;
-    border-radius: 50%;
-    transition: var(--transition);
-}
-
-[data-theme="dark"] .login-theme-toggle::after {
-    transform: translateX(19px);
-}
-
-.login-theme-toggle span {
-    position: absolute;
-    font-size: 0.7rem;
-    color: white;
-    transition: var(--transition);
-}
-
-.login-theme-toggle .sun { left: 6px; opacity: 1; }
-.login-theme-toggle .moon { right: 6px; opacity: 0; }
-
-[data-theme="dark"] .login-theme-toggle .sun { opacity: 0; }
-[data-theme="dark"] .login-theme-toggle .moon { opacity: 1; }
+*/
 
 #dashboard {
-    opacity: 0;
-    visibility: hidden;
+    opacity: 1;
+    visibility: visible;
     transition: opacity 0.4s ease 0.3s;
 }
 
@@ -695,6 +420,7 @@ iframe {
 .red-card:nth-of-type(6) { animation-delay: 0.5s; }
 .red-card:nth-of-type(7) { animation-delay: 0.6s; }
 .red-card:nth-of-type(8) { animation-delay: 0.7s; }
+.red-card:nth-of-type(9) { animation-delay: 0.8s; }
 
 @keyframes slideInLeft {
     to { opacity: 1; transform: translateX(0); }
@@ -1231,8 +957,6 @@ section.visible { opacity: 1; transform: translateY(0); }
     .contact-tooltip { min-width: 95%; padding: 1rem; }
     .tooltip-header img { width: 50px; height: 50px; }
     .tooltip-header h4 { font-size: 1rem; }
-    .login-container { padding: 2rem; margin: 1rem; }
-    .login-header h1 { font-size: 1.5rem; }
 }
 
 @keyframes ripple {
@@ -1242,56 +966,14 @@ section.visible { opacity: 1; transform: translateY(0); }
 </head>
 <body>
 
+    <!-- ===== LOGIN SCREEN - COMENTADO/INACTIVO ===== -->
+    <!--
     <div id="login-screen">
-        <div class="login-theme-toggle" id="loginThemeToggle" title="Cambiar tema">
-            <span class="sun">☀️</span>
-            <span class="moon">🌙</span>
-        </div>
-
-        <div class="login-container">
-            <div class="login-header">
-                <div class="login-logo">
-                    <i class="lab la-facebook-f"></i>
-                </div>
-                <h1>Fincomun</h1>
-                <p>Panel de Control - Planeación Financiera</p>
-            </div>
-
-            <form class="login-form" id="loginForm">
-                <div class="error-message" id="errorMessage">
-                    <i class="las la-exclamation-circle"></i>
-                    <span>Usuario y/o contraseña incorrecta</span>
-                </div>
-
-                <div class="form-group">
-                    <label for="username">Usuario</label>
-                    <input type="text" id="username" name="username" placeholder="Ingresa tu usuario" autocomplete="username" required>
-                    <i class="las la-user"></i>
-                </div>
-
-                <div class="form-group">
-                    <label for="password">Contraseña</label>
-                    <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña" autocomplete="current-password" required>
-                    <i class="las la-lock"></i>
-                </div>
-
-                <div class="form-options">
-                    <label class="remember-me">
-                        <input type="checkbox" id="remember">
-                        <span>Recordarme</span>
-                    </label>
-                    <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
-                </div>
-
-                <button type="submit" class="login-btn" id="loginBtn">
-                    <i class="las la-sign-in-alt"></i>
-                    <span>Acceder</span>
-                </button>
-            </form>
-        </div>
+        ... contenido del login ...
     </div>
+    -->
 
-    <div id="dashboard">
+    <div id="dashboard" class="loaded">
         <input type="checkbox" id="nav-toggle">
 
         <div class="sidebar">
@@ -1922,6 +1604,8 @@ section.visible { opacity: 1; transform: translateY(0); }
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // ===== LOGIN FUNCIONALIDAD - COMENTADA/INACTIVA =====
+            /*
             const loginScreen = document.getElementById('login-screen');
             const dashboard = document.getElementById('dashboard');
             const loginForm = document.getElementById('loginForm');
@@ -1929,61 +1613,20 @@ section.visible { opacity: 1; transform: translateY(0); }
             const loginBtn = document.getElementById('loginBtn');
             const usernameInput = document.getElementById('username');
             const passwordInput = document.getElementById('password');
-
             const VALID_USER = 'planfin';
             const VALID_PASS = '1234';
+            ... resto del código de login ...
+            */
 
-            const savedUser = localStorage.getItem('fincomun_user');
-            if (savedUser) {
-                usernameInput.value = savedUser;
-                document.getElementById('remember').checked = true;
+            // ===== INICIALIZAR DASHBOARD DIRECTAMENTE =====
+            const dashboard = document.getElementById('dashboard');
+            if (dashboard) {
+                dashboard.classList.add('loaded');
+                initDashboardAnimations();
             }
 
-            loginForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-
-                const username = usernameInput.value.trim();
-                const password = passwordInput.value;
-
-                loginBtn.classList.add('loading');
-                loginBtn.querySelector('span').textContent = 'Verificando...';
-                errorMessage.classList.remove('show');
-
-                setTimeout(() => {
-                    if (username === VALID_USER && password === VALID_PASS) {
-                        if (document.getElementById('remember').checked) {
-                            localStorage.setItem('fincomun_user', username);
-                        } else {
-                            localStorage.removeItem('fincomun_user');
-                        }
-
-                        loginScreen.classList.add('slide-up');
-
-                        setTimeout(() => {
-                            loginScreen.style.display = 'none';
-                            dashboard.classList.add('loaded');
-                            initDashboardAnimations();
-                        }, 600);
-
-                    } else {
-                        loginBtn.classList.remove('loading');
-                        loginBtn.querySelector('span').textContent = 'Acceder';
-                        errorMessage.classList.add('show');
-
-                        usernameInput.parentElement.classList.add('shake');
-                        passwordInput.parentElement.classList.add('shake');
-                        setTimeout(() => {
-                            usernameInput.parentElement.classList.remove('shake');
-                            passwordInput.parentElement.classList.remove('shake');
-                        }, 500);
-
-                        passwordInput.value = '';
-                        passwordInput.focus();
-                    }
-                }, 800);
-            });
-
             function initDashboardAnimations() {
+                // Smooth scroll navigation
                 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                     anchor.addEventListener('click', function(e) {
                         e.preventDefault();
@@ -2011,6 +1654,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                     });
                 });
 
+                // Highlight active section on scroll
                 const sections = document.querySelectorAll('section[id]');
                 const navLinks = document.querySelectorAll('.sidebar-menu a');
 
@@ -2028,6 +1672,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                 window.addEventListener('scroll', updateActiveLink);
                 updateActiveLink();
 
+                // Section animations on scroll
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting) entry.target.classList.add('visible');
@@ -2037,7 +1682,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                 sections.forEach(section => observer.observe(section));
             }
 
-            const loginThemeToggle = document.getElementById('loginThemeToggle');
+            // ===== DARK MODE TOGGLE =====
             const dashboardThemeToggle = document.getElementById('themeToggle');
             const html = document.documentElement;
 
@@ -2054,12 +1699,11 @@ section.visible { opacity: 1; transform: translateY(0); }
                 localStorage.setItem('theme', newTheme);
             }
 
-            if (loginThemeToggle) loginThemeToggle.addEventListener('click', toggleTheme);
             if (dashboardThemeToggle) dashboardThemeToggle.addEventListener('click', toggleTheme);
 
-            document.querySelectorAll('.red-btn, .blue-btn, .login-btn').forEach(btn => {
+            // ===== BUTTON RIPPLE EFFECT =====
+            document.querySelectorAll('.red-btn, .blue-btn').forEach(btn => {
                 btn.addEventListener('click', function(e) {
-                    if (this.classList.contains('loading')) return;
                     const ripple = document.createElement('span');
                     ripple.style.cssText = `position:absolute;border-radius:50%;background:rgba(255,255,255,0.5);transform:scale(0);animation:ripple 0.6s linear;pointer-events:none;`;
                     const rect = this.getBoundingClientRect();
