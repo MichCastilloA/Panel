@@ -386,6 +386,7 @@ main {
 
 .recent-grid {
     margin-bottom: 2.5rem;
+    margin-left:230px;
     opacity: 0;
     animation: fadeIn 0.6s ease 0.5s forwards;
 }
@@ -396,7 +397,7 @@ main {
 
 iframe {
     width: 100%;
-    height: 500px;
+    height: 700px;
     border-radius: var(--radius);
     box-shadow: var(--shadow-md);
     border: none;
@@ -995,50 +996,9 @@ section.visible { opacity: 1; transform: translateY(0); }
             </div>
         </div>
 
-        <div class="main-content">
-            <header>
-                <h2>
-                    <label for="nav-toggle"><span class="las la-bars"></span></label>
-                    Mis resultados
-                </h2>
-                <div style="display: flex; align-items: center; gap: 1rem;">
-                    <div class="theme-toggle" id="themeToggle" title="Cambiar tema">
-                        <span class="sun">☀️</span>
-                        <span class="moon">🌙</span>
-                    </div>
-                    <div class="user-wrapper">
-                        <img src="./logo_fincomun.png" width="45" height="45" alt="User" onerror="this.src='https://via.placeholder.com/45'">
-                        <div>
-                            <h4>Planeación Financiera</h4>
-                            <small>Subdirección de incentivos</small>
-                        </div>
-                    </div>
-                </div>
-            </header>
-
-            <main>
-                <div class="cards">
-                    <div class="card-single">
-                        <div><h1>$185,000</h1><span>Ventas totales</span></div>
-                        <div><span class="las la-clipboard-list"></span></div>
-                    </div>
-                    <div class="card-single">
-                        <div><h1>$140,000</h1><span>Recompras</span></div>
-                        <div><span class="las la-tools"></span></div>
-                    </div>
-                    <div class="card-single">
-                        <div><h1>$45,000</h1><span>Nuevos</span></div>
-                        <div><span class="las la-sync-alt"></span></div>
-                    </div>
-                    <div class="card-single">
-                        <div><h1>$85,000</h1><span>Cobranza</span></div>
-                        <div><span class="las la-bullhorn"></span></div>
-                    </div>
-                </div>
-
-                <div class="recent-grid">
-                    <iframe title="Actividades" src="https://app.powerbi.com/view?r=eyJrIjoiOTc2ZjE2ODctOGI4My00NmY1LTgwYTMtM2ExMTU3MjY4OTM3IiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9" frameborder="0" allowFullScreen="true"></iframe>
-                </div>
+            <div class="recent-grid">
+                <iframe title="Actividades" src="https://app.powerbi.com/view?r=eyJrIjoiOTc2ZjE2ODctOGI4My00NmY1LTgwYTMtM2ExMTU3MjY4OTM3IiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9" frameborder="0" allowFullScreen="true"></iframe>
+            </div>
 
                 <section id="Mis-resultados">
                     <div class="red-card"><h1>Mis resultados</h1></div>
@@ -1093,7 +1053,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                             <a href="https://app.hubspot.com/contacts/40034036/objects/0-3/views/my/list?noprefetch=">
                                 <button class="blue-btn">Mi cartera de clientes (CRM) HubSpot<p>Consulta la información de tus clientes</p><span class="btn-icon las la-arrow-right"></span></button>
                             </a>
-                            <a href="https://app.powerbi.com/view?r=eyJrIjoiMDE0ZWE3ZDEtNjg0MS00ZmUyLWI1ZjQtOWM5NzVlOGE1ODc4IiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
+                            <a href="https://app.powerbi.com/view?r=eyJrIjoiNzJiYjk0MGMtZTQwNS00YTQyLThkN2UtODc4ZTE5MzE2ZGU1IiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
                                 <button class="red-btn">Clasificación de clientes<p>Indicadores de cómo está compuesta tu cartera</p><span class="btn-icon las la-arrow-right"></span></button>
                             </a>
                             <a href="https://app.powerbi.com/view?r=eyJrIjoiYmU2NDFhMGYtMGY1Ny00NTgwLTk2NWEtM2Y2MGUzZTc3Njg3IiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9">
