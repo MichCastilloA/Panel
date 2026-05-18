@@ -639,10 +639,10 @@ iframe {
 
 .contact-tooltip {
     position: absolute;
-    left: 100%;
+    right: 0;
     top: 50%;
     transform: translateY(-50%) translateX(10px) scale(0.95);
-    background: var(--bg-card);
+    background: #fff !important; /* FIX: Fondo blanco forzado */
     border: 2px solid var(--main-color);
     border-radius: 16px;
     padding: 1.2rem;
@@ -652,12 +652,13 @@ iframe {
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    z-index: 100;
+    z-index: 9999; /* FIX: z-index muy alto para aparecer encima de todo */
     pointer-events: none;
-    margin-left: 15px;
+    margin-right: 15px;
 }
 
 [data-theme="dark"] .contact-tooltip {
+    background: #1e293b !important; /* FIX: Fondo oscuro en modo dark */
     border-color: var(--main-color-light);
     box-shadow: 0 10px 40px rgba(0,0,0,0.4);
 }
@@ -665,22 +666,73 @@ iframe {
 .contact-tooltip::before {
     content: '';
     position: absolute;
-    left: -10px;
+    right: -10px;
     top: 50%;
     transform: translateY(-50%);
     border: 10px solid transparent;
-    border-right-color: var(--main-color);
+    border-left-color: var(--main-color);
 }
 
 [data-theme="dark"] .contact-tooltip::before {
-    border-right-color: var(--main-color-light);
+    border-left-color: var(--main-color-light);
 }
 
-.customer:hover .contact-tooltip {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(-50%) translateX(0) scale(1);
-    pointer-events: auto;
+/* Desktop: Mostrar tooltip al hacer hover */
+@media (min-width: 769px) {
+    .customer:hover .contact-tooltip {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(-50%) translateX(0) scale(1);
+        pointer-events: auto;
+    }
+}
+
+/* Mobile: Tooltip como modal con overlay */
+@media (max-width: 768px) {
+    .contact-tooltip {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        right: auto;
+        bottom: auto;
+        transform: translate(-50%, -50%) scale(0.95);
+        min-width: 90%;
+        max-width: 350px;
+        z-index: 10000;
+        margin-right: 0;
+        background: #fff !important; /* FIX: Fondo blanco explícito */
+    }
+
+    [data-theme="dark"] .contact-tooltip {
+        background: #1e293b !important;
+    }
+
+    .contact-tooltip::before {
+        display: none;
+    }
+
+    /* Mostrar tooltip cuando tiene clase active (vía JS en móvil) */
+    .contact-tooltip.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translate(-50%, -50%) scale(1);
+        pointer-events: auto;
+    }
+
+    /* Overlay para móvil */
+    .tooltip-overlay {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 9998;
+        opacity: 0;
+        visibility: hidden;
+        transition: var(--transition);
+    }
+    .tooltip-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
 }
 
 .tooltip-header {
@@ -834,28 +886,6 @@ section.visible { opacity: 1; transform: translateY(0); }
     .sidebar .sidebar-menu a span:first-child { margin: 0; }
     .main-content { margin-left: 70px; width: calc(100% - 70px); }
     iframe { height: 500px; }
-    .contact-tooltip {
-        left: 50%;
-        top: auto;
-        bottom: calc(100% + 10px);
-        transform: translateX(-50%) translateY(10px) scale(0.95);
-        margin-left: 0;
-        min-width: 300px;
-    }
-    .contact-tooltip::before {
-        left: 50%;
-        top: auto;
-        bottom: -10px;
-        transform: translateX(-50%);
-        border-right-color: transparent;
-        border-top-color: var(--main-color);
-    }
-    [data-theme="dark"] .contact-tooltip::before {
-        border-top-color: var(--main-color-light);
-    }
-    .customer:hover .contact-tooltip {
-        transform: translateX(-50%) translateY(0) scale(1);
-    }
 }
 
 @media (max-width: 768px) {
@@ -871,34 +901,6 @@ section.visible { opacity: 1; transform: translateY(0); }
     .red-btn, .blue-btn { min-height: 120px; padding: 1rem; font-size: 1rem; }
     .red-btn p, .blue-btn p { font-size: 0.8rem; }
     .red-card h1 { font-size: 1.5rem; }
-    .contact-tooltip {
-        position: fixed;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%) scale(0.95);
-        bottom: auto;
-        min-width: 90%;
-        max-width: 350px;
-        z-index: 1000;
-        margin-left: 0;
-    }
-    .contact-tooltip::before { display: none; }
-    .customer:hover .contact-tooltip {
-        transform: translate(-50%, -50%) scale(1);
-    }
-    .tooltip-overlay {
-        position: fixed;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: rgba(0,0,0,0.5);
-        z-index: 999;
-        opacity: 0;
-        visibility: hidden;
-        transition: var(--transition);
-    }
-    .tooltip-overlay.active {
-        opacity: 1;
-        visibility: visible;
-    }
 }
 
 @media (max-width: 480px) {
@@ -1066,7 +1068,7 @@ section.visible { opacity: 1; transform: translateY(0); }
                             <div class="card-header"><h3>Equipo</h3></div>
                             <div class="card-body">
 
-                                <div class="customer">
+                                <div class="customer" onclick="showContactTooltip(this)">
                                     <div class="info">
                                         <img src="./christian.PNG" width="45" height="45" alt="" onerror="this.src='https://via.placeholder.com/45'">
                                         <div>
@@ -1101,17 +1103,17 @@ section.visible { opacity: 1; transform: translateY(0); }
                                             </div>
                                         </div>
                                         <div class="tooltip-actions">
-                                            <button class="tooltip-btn primary" onclick="window.location.href='mailto:cbello@fincomun.com.mx'">
+                                            <button class="tooltip-btn primary" onclick="event.stopPropagation(); window.location.href='mailto:cbello@fincomun.com.mx'">
                                                 <span class="las la-envelope"></span> Email
                                             </button>
-                                            <button class="tooltip-btn secondary" onclick="alert('Llamando a Christian Bello...')">
+                                            <button class="tooltip-btn secondary" onclick="event.stopPropagation(); alert('Llamando a Christian Bello...')">
                                                 <span class="las la-phone"></span> Llamar
                                             </button>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="customer">
+                                <div class="customer" onclick="showContactTooltip(this)">
                                     <div class="info">
                                         <img src="./carlos.PNG" width="45" height="45" alt="" onerror="this.src='https://via.placeholder.com/45'">
                                         <div>
@@ -1146,17 +1148,17 @@ section.visible { opacity: 1; transform: translateY(0); }
                                             </div>
                                         </div>
                                         <div class="tooltip-actions">
-                                            <button class="tooltip-btn primary" onclick="window.location.href='mailto:cgonzalezq@fincomun.com.mx'">
+                                            <button class="tooltip-btn primary" onclick="event.stopPropagation(); window.location.href='mailto:cgonzalezq@fincomun.com.mx'">
                                                 <span class="las la-envelope"></span> Email
                                             </button>
-                                            <button class="tooltip-btn secondary" onclick="alert('Llamando a Carlos David...')">
+                                            <button class="tooltip-btn secondary" onclick="event.stopPropagation(); alert('Llamando a Carlos David...')">
                                                 <span class="las la-phone"></span> Llamar
                                             </button>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="customer">
+                                <div class="customer" onclick="showContactTooltip(this)">
                                     <div class="info">
                                         <img src="./mizael.PNG" width="45" height="45" alt="" onerror="this.src='https://via.placeholder.com/45'">
                                         <div>
@@ -1191,17 +1193,17 @@ section.visible { opacity: 1; transform: translateY(0); }
                                             </div>
                                         </div>
                                         <div class="tooltip-actions">
-                                            <button class="tooltip-btn primary" onclick="window.location.href='mailto:morozcob.e@fincomun.com.mx'">
+                                            <button class="tooltip-btn primary" onclick="event.stopPropagation(); window.location.href='mailto:morozcob.e@fincomun.com.mx'">
                                                 <span class="las la-envelope"></span> Email
                                             </button>
-                                            <button class="tooltip-btn secondary" onclick="alert('Llamando a Mizael Dario...')">
+                                            <button class="tooltip-btn secondary" onclick="event.stopPropagation(); alert('Llamando a Mizael Dario...')">
                                                 <span class="las la-phone"></span> Llamar
                                             </button>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="customer">
+                                <div class="customer" onclick="showContactTooltip(this)">
                                     <div class="info">
                                         <img src="./alfredo.PNG" width="45" height="45" alt="" onerror="this.src='https://via.placeholder.com/45'">
                                         <div>
@@ -1236,17 +1238,17 @@ section.visible { opacity: 1; transform: translateY(0); }
                                             </div>
                                         </div>
                                         <div class="tooltip-actions">
-                                            <button class="tooltip-btn primary" onclick="window.location.href='mailto:jgarciac@fincomun.com.mx'">
+                                            <button class="tooltip-btn primary" onclick="event.stopPropagation(); window.location.href='mailto:jgarciac@fincomun.com.mx'">
                                                 <span class="las la-envelope"></span> Email
                                             </button>
-                                            <button class="tooltip-btn secondary" onclick="alert('Llamando a Jose Alfredo...')">
+                                            <button class="tooltip-btn secondary" onclick="event.stopPropagation(); alert('Llamando a Jose Alfredo...')">
                                                 <span class="las la-phone"></span> Llamar
                                             </button>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="customer">
+                                <div class="customer" onclick="showContactTooltip(this)">
                                     <div class="info">
                                         <img src="./juan.png" width="45" height="45" alt="" onerror="this.src='https://via.placeholder.com/45'">
                                         <div>
@@ -1281,17 +1283,17 @@ section.visible { opacity: 1; transform: translateY(0); }
                                             </div>
                                         </div>
                                         <div class="tooltip-actions">
-                                            <button class="tooltip-btn primary" onclick="window.location.href='mailto:jmejia.e@fincomun.com.mx'">
+                                            <button class="tooltip-btn primary" onclick="event.stopPropagation(); window.location.href='mailto:jmejia.e@fincomun.com.mx'">
                                                 <span class="las la-envelope"></span> Email
                                             </button>
-                                            <button class="tooltip-btn secondary" onclick="alert('Llamando a Juan Carlos...')">
+                                            <button class="tooltip-btn secondary" onclick="event.stopPropagation(); alert('Llamando a Juan Carlos...')">
                                                 <span class="las la-phone"></span> Llamar
                                             </button>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="customer">
+                                <div class="customer" onclick="showContactTooltip(this)">
                                     <div class="info">
                                         <img src="./michel.PNG" width="45" height="45" alt="" onerror="this.src='https://via.placeholder.com/45'">
                                         <div>
@@ -1326,17 +1328,17 @@ section.visible { opacity: 1; transform: translateY(0); }
                                             </div>
                                         </div>
                                         <div class="tooltip-actions">
-                                            <button class="tooltip-btn primary" onclick="window.location.href='mailto:mcastillo.e@fincomun.com.mx'">
+                                            <button class="tooltip-btn primary" onclick="event.stopPropagation(); window.location.href='mailto:mcastillo.e@fincomun.com.mx'">
                                                 <span class="las la-envelope"></span> Email
                                             </button>
-                                            <button class="tooltip-btn secondary" onclick="alert('Llamando a Michael...')">
+                                            <button class="tooltip-btn secondary" onclick="event.stopPropagation(); alert('Llamando a Michael...')">
                                                 <span class="las la-phone"></span> Llamar
                                             </button>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="customer">
+                                <div class="customer" onclick="showContactTooltip(this)">
                                     <div class="info">
                                         <img src="./nixi.png" width="45" height="45" alt="" onerror="this.src='https://via.placeholder.com/45'">
                                         <div>
@@ -1371,17 +1373,17 @@ section.visible { opacity: 1; transform: translateY(0); }
                                             </div>
                                         </div>
                                         <div class="tooltip-actions">
-                                            <button class="tooltip-btn primary" onclick="window.location.href='mailto:nosorniom@fincomun.com.mx'">
+                                            <button class="tooltip-btn primary" onclick="event.stopPropagation(); window.location.href='mailto:nosorniom@fincomun.com.mx'">
                                                 <span class="las la-envelope"></span> Email
                                             </button>
-                                            <button class="tooltip-btn secondary" onclick="alert('Llamando a Nixi...')">
+                                            <button class="tooltip-btn secondary" onclick="event.stopPropagation(); alert('Llamando a Nixi...')">
                                                 <span class="las la-phone"></span> Llamar
                                             </button>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="customer">
+                                <div class="customer" onclick="showContactTooltip(this)">
                                     <div class="info">
                                         <img src="./angel.png" width="45" height="45" alt="" onerror="this.src='https://via.placeholder.com/45'">
                                         <div>
@@ -1416,17 +1418,17 @@ section.visible { opacity: 1; transform: translateY(0); }
                                             </div>
                                         </div>
                                         <div class="tooltip-actions">
-                                            <button class="tooltip-btn primary" onclick="window.location.href='mailto:apacheco.e@fincomun.com.mx'">
+                                            <button class="tooltip-btn primary" onclick="event.stopPropagation(); window.location.href='mailto:apacheco.e@fincomun.com.mx'">
                                                 <span class="las la-envelope"></span> Email
                                             </button>
-                                            <button class="tooltip-btn secondary" onclick="alert('Llamando a Angel...')">
+                                            <button class="tooltip-btn secondary" onclick="event.stopPropagation(); alert('Llamando a Angel...')">
                                                 <span class="las la-phone"></span> Llamar
                                             </button>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="customer">
+                                <div class="customer" onclick="showContactTooltip(this)">
                                     <div class="info">
                                         <img src="./yanet.png" width="45" height="45" alt="" onerror="this.src='https://via.placeholder.com/45'">
                                         <div>
@@ -1461,17 +1463,17 @@ section.visible { opacity: 1; transform: translateY(0); }
                                             </div>
                                         </div>
                                         <div class="tooltip-actions">
-                                            <button class="tooltip-btn primary" onclick="window.location.href='mailto:yrosalesg@fincomun.com.mx'">
+                                            <button class="tooltip-btn primary" onclick="event.stopPropagation(); window.location.href='mailto:yrosalesg@fincomun.com.mx'">
                                                 <span class="las la-envelope"></span> Email
                                             </button>
-                                            <button class="tooltip-btn secondary" onclick="alert('Llamando a Yanet...')">
+                                            <button class="tooltip-btn secondary" onclick="event.stopPropagation(); alert('Llamando a Yanet...')">
                                                 <span class="las la-phone"></span> Llamar
                                             </button>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="customer">
+                                <div class="customer" onclick="showContactTooltip(this)">
                                     <div class="info">
                                         <img src="./thelian.png" width="45" height="45" alt="" onerror="this.src='https://via.placeholder.com/45'">
                                         <div>
@@ -1506,10 +1508,10 @@ section.visible { opacity: 1; transform: translateY(0); }
                                             </div>
                                         </div>
                                         <div class="tooltip-actions">
-                                            <button class="tooltip-btn primary" onclick="window.location.href='mailto:omarias@fincomun.com.mx'">
+                                            <button class="tooltip-btn primary" onclick="event.stopPropagation(); window.location.href='mailto:omarias@fincomun.com.mx'">
                                                 <span class="las la-envelope"></span> Email
                                             </button>
-                                            <button class="tooltip-btn secondary" onclick="alert('Llamando a Thelian...')">
+                                            <button class="tooltip-btn secondary" onclick="event.stopPropagation(); alert('Llamando a Thelian...')">
                                                 <span class="las la-phone"></span> Llamar
                                             </button>
                                         </div>
