@@ -4,12 +4,16 @@ import plotly.graph_objects as go
 import base64
 import re
 
-@st.cache_data
+@st.cache_data(ttl=3600) 
 def load_data():
     df = pd.read_csv("https://raw.githubusercontent.com/MichCastilloA/Panel/main/consolidado.csv")
     df["FileDate"] = pd.to_datetime(df["FileDate"])
     df["Fecha"] = df["FileDate"].dt.date
     return df
+    
+if st.button("Actualizar datos"):
+    st.cache_data.clear()
+    st.rerun()
 
 df = load_data()
 col_sucursal = "SUCURSAL"
