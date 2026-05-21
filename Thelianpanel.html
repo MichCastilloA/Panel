@@ -389,6 +389,16 @@ iframe {
     background: var(--fondo-tarjeta);
     transition: var(--transicion);
 }
+@media (max-width: 1024px) {
+    iframe {
+        height: 800px;  /* ← Ajusta si lo necesitas */
+    }
+}
+@media (max-width: 480px) {
+    iframe {
+        height: 1850px;
+    }
+}
 
 .encabezado-seccion {
     margin: 2.5rem 0 1.5rem;
@@ -962,7 +972,7 @@ section.visible { opacity: 1; transform: translateY(0); }
         <div class="contenido-principal">
 
                 <div class="cuadrícula-principal">
-                    <iframe title="Actividades" src="https://app.powerbi.com/view?r=eyJrIjoiMzNkZTVhNjgtZjU2OS00NmRmLWE1ZjYtZDU3ZTY5Zjk3YjUxIiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9" frameborder="0" allowFullScreen="true"></iframe>
+                    <iframe id="iframe-actividades" title="Actividades" src="https://app.powerbi.com/view?r=eyJrIjoiMzNkZTVhNjgtZjU2OS00NmRmLWE1ZjYtZDU3ZTY5Zjk3YjUxIiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9" frameborder="0" allowFullScreen="true"></iframe>
                 </div>
 
                 <section id="Mis-resultados">
@@ -1529,15 +1539,12 @@ section.visible { opacity: 1; transform: translateY(0); }
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // ===== INICIALIZAR PANEL =====
             const panelPrincipal = document.getElementById('panel-principal');
             if (panelPrincipal) {
                 panelPrincipal.classList.add('cargado');
                 inicializarAnimacionesPanel();
             }
-
             function inicializarAnimacionesPanel() {
-                // Navegación con desplazamiento suave
                 document.querySelectorAll('a[href^="#"]').forEach(enlace => {
                     enlace.addEventListener('click', function(e) {
                         e.preventDefault();
@@ -1551,8 +1558,6 @@ section.visible { opacity: 1; transform: translateY(0); }
 
                             document.querySelectorAll('.menu-barra-lateral a').forEach(a => a.classList.remove('activo'));
                             this.classList.add('activo');
-
-                            // Actualizar el título del encabezado
                             const tituloEncabezado = document.querySelector('header h2');
                             if (tituloEncabezado) {
                                 const texto = this.querySelector('span:last-child').textContent;
@@ -1561,11 +1566,8 @@ section.visible { opacity: 1; transform: translateY(0); }
                         }
                     });
                 });
-
-                // Resaltar enlace activo al hacer scroll
                 const secciones = document.querySelectorAll('section[id]');
                 const enlacesNavegacion = document.querySelectorAll('.menu-barra-lateral a');
-
                 function actualizarEnlaceActivo() {
                     let actual = '';
                     secciones.forEach(seccion => {
@@ -1579,37 +1581,27 @@ section.visible { opacity: 1; transform: translateY(0); }
                 }
                 window.addEventListener('scroll', actualizarEnlaceActivo);
                 actualizarEnlaceActivo();
-
-                // Animaciones de secciones al hacer scroll
                 const observador = new IntersectionObserver((entradas) => {
                     entradas.forEach(entrada => {
                         if (entrada.isIntersecting) entrada.target.classList.add('visible');
                     });
                 }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-
                 secciones.forEach(seccion => observador.observe(seccion));
             }
-
-            // ===== ALTERNAR TEMA OSCURO/CLARO =====
             const interruptorTemaPanel = document.getElementById('themeToggle');
             const html = document.documentElement;
-
             const temaGuardado = localStorage.getItem('theme');
             const prefiereOscuro = window.matchMedia('(prefers-color-scheme: dark)').matches;
             if (temaGuardado === 'dark' || (!temaGuardado && prefiereOscuro)) {
                 html.setAttribute('data-theme', 'dark');
             }
-
             function alternarTema() {
                 const actual = html.getAttribute('data-theme');
                 const nuevoTema = actual === 'dark' ? 'light' : 'dark';
                 html.setAttribute('data-theme', nuevoTema);
                 localStorage.setItem('theme', nuevoTema);
             }
-
             if (interruptorTemaPanel) interruptorTemaPanel.addEventListener('click', alternarTema);
-
-            // ===== EFECTO ONDA EN BOTONES =====
             document.querySelectorAll('.boton-gradiente-rojo, .boton-gradiente-azul').forEach(boton => {
                 boton.addEventListener('click', function(e) {
                     const onda = document.createElement('span');
@@ -1623,32 +1615,24 @@ section.visible { opacity: 1; transform: translateY(0); }
                     setTimeout(() => onda.remove(), 600);
                 });
             });
-
             const estilo = document.createElement('style');
             estilo.textContent = `@keyframes onda{to{transform:scale(4);opacity:0}}`;
             document.head.appendChild(estilo);
         });
-
-        // ===== FUNCIÓN PARA MOSTRAR PANEL DE CONTACTO (MÓVIL) =====
         function mostrarPanelContacto(elemento) {
-            // Solo activar en móvil (pantallas pequeñas)
             if (window.innerWidth <= 768) {
                 const panel = elemento.querySelector('.panel-contacto');
                 const overlay = document.querySelector('.overlay-panel') || crearOverlay();
-                
-                // Cerrar otros paneles abiertos
+
                 document.querySelectorAll('.panel-contacto.activo').forEach(p => {
                     if (p !== panel) {
                         p.classList.remove('activo');
                         overlay.classList.remove('activo');
                     }
                 });
-                
-                // Alternar estado del panel actual
+
                 panel.classList.toggle('activo');
                 overlay.classList.toggle('activo');
-                
-                // Cerrar al hacer clic en el overlay
                 overlay.onclick = function(e) {
                     if (e.target === overlay) {
                         panel.classList.remove('activo');
@@ -1657,13 +1641,26 @@ section.visible { opacity: 1; transform: translateY(0); }
                 };
             }
         }
-
         function crearOverlay() {
             const overlay = document.createElement('div');
             overlay.className = 'overlay-panel';
             document.body.appendChild(overlay);
             return overlay;
         }
+        (function() {
+    const iframe = document.getElementById('iframe-actividades');
+    if (!iframe) return;
+    const URL_ESCRITORIO = 'https://app.powerbi.com/view?r=eyJrIjoiMzNkZTVhNjgtZjU2OS00NmRmLWE1ZjYtZDU3ZTY5Zjk3YjUxIiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9';
+    const URL_MOVIL = 'https://app.powerbi.com/view?r=eyJrIjoiNzIwZTI0ZDktMGQxMy00NjY3LThkMmUtNWY1MDY5OWE1NWE3IiwidCI6IjcxNDZkYjg4LTJiZDktNGQwZS1iZmVjLWY1YmJjZGU3OThhZiJ9';
+    const PUNTO_QUIEBRE = 768;
+    function actualizarIframe() {
+        const esMovil = window.innerWidth < PUNTO_QUIEBRE;
+        iframe.src = esMovil ? URL_MOVIL : URL_ESCRITORIO;
+        iframe.style.height = esMovil ? '950px' : '1400px';
+    }
+    actualizarIframe();
+    window.addEventListener('resize', actualizarIframe);
+})();
     </script>
 </body>
 </html>
